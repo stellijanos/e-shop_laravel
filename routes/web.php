@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -35,3 +36,4 @@ Route::delete('/account/delete', [UserController::class, 'destroy'])->name('acco
 Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
 
 Route::resource('/admin/employee',EmployeeController::class);
+Route::resource('/admin/customer',CustomerController::class);

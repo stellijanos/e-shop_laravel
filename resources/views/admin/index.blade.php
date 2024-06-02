@@ -23,7 +23,7 @@
                             </a>
                         </div>
                         <div class="col-md-2 text-center">
-                            <a href="" class="nav-link option">
+                            <a href="{{url('admin/customer')}}" class="nav-link option">
                                 <img src="{{asset('public/images/users.png')}}" alt="users" width="100px;">
                                 <p>Customers</p>
                             </a>
