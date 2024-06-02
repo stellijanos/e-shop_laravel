@@ -32,3 +32,4 @@ Route::delete('/account/delete', [UserController::class, 'destroy'])->name('acco
 
 
 Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
+Route::get('/admin/employees', [AdminController::class, 'employees'])->name('admin.employees.index');

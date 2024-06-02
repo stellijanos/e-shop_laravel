@@ -17,7 +17,7 @@
                     <div class="row">
                         
                         <div class="col-md-2 text-center">
-                            <a href="" class="nav-link option">
+                            <a href="{{route('admin.employees.index')}}" class="nav-link option">
                                 <img src="{{asset('public/images/employees.png')}}" alt="employees" width="100px;">
                                 <p>Employees</p>
                             </a>
@@ -40,7 +40,7 @@
                                 <p>Orders</p>
                             </a>
                         </div>
-                        <div class="col-md-3 text-center">
+                        <div class="col-md-2 text-center">
                             <a href="" class="nav-link option">
                                 <img src="{{asset('public/images/reports.png')}}" alt="reports" width="100px;">
                                 <p>Reports</p>
