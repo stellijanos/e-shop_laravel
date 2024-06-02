@@ -30,7 +30,7 @@
                         </div>
                     @endif
                     <div class="details mx-3">
-                        <p>customer #{{$customer->id}}</p>
+                        <p>Customer #{{$customer->id}}</p>
                         <p>Position: {{$customer->role}}</p>
                         <p>Firstname: {{$customer->firstname}}</p>
                         <p>Lastname: {{$customer->lastname}}</p>
@@ -50,7 +50,6 @@
                             <button class="btn btn-danger w-25">Delete</button>
                         </form>
                     </div>
-                                    
                 </div>
             </div>
         </div>
