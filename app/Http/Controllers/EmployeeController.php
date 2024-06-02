@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class EmployeeController extends Controller
@@ -89,7 +90,6 @@ class EmployeeController extends Controller
     {
 
         $employee = User::find($id);
-
         if (!$employee) {
             abort(404);
         }
@@ -104,7 +104,7 @@ class EmployeeController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, $id)
     {
@@ -112,25 +112,39 @@ class EmployeeController extends Controller
             'role' => 'required|string|max:255',
             'firstname' => 'required|string|max:255',
             'lastname' => 'required|string|max:255',
-            'email' => 'required|email|unique:users',
+            'email' => 'required|email',
             'password' => 'required|string|max:255',
         ]);
 
-        $employee = User::find($id);
 
-        if ($employee) {
+        if (!Hash::check($request->password, Auth::user()->password)) {
+            return redirect()->back()->withErrors(['password' => 'Password is incorrect.']);
+        }
+
+
+        $employee = User::find($id);
+        if (!$employee) {
             abort(404);
         }
 
-        User::update([
+
+        if ($request->email !== $employee->email) {
+            $request->validate([
+                'email' => 'unique:users'
+            ]);
+        }
+
+        
+        $employee->update([
             'role' => $request->role,
             'firstname' => $request->firstname,
             'lastname' => $request->lastname,
             'email' => $request->email
         ]);
 
-        $request->session()->flash('status', 'Employee successfully added!');
-        return redirect('/admin/employee');
+
+        $request->session()->flash('status', 'Employee successfully updated!');
+        return redirect('/admin/employee/'.$id);
     }
 
     /**

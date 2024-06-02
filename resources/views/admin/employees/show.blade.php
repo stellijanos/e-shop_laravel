@@ -31,6 +31,7 @@
                     @endif
                     <div class="details mx-3">
                         <p>Employee #{{$employee->id}}</p>
+                        <p>Position: {{$employee->role}}</p>
                         <p>Firstname: {{$employee->firstname}}</p>
                         <p>Lastname: {{$employee->lastname}}</p>
                         <p>Email: {{$employee->email}}</p>
