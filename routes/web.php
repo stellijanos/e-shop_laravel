@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,3 +29,6 @@ Route::get('/account/edit', [UserController::class, 'edit'])->name('account.edit
 Route::put('/account/edit', [UserController::class, 'update']);
 Route::get('/account/delete', [UserController::class, 'delete'])->name('account.delete');
 Route::delete('/account/delete', [UserController::class, 'destroy'])->name('account.delete');
+
+
+Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
