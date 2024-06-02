@@ -44,11 +44,19 @@ class CustomerController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View
      */
     public function show($id)
     {
-        //
+        $customer = User::find($id);
+
+        if (!$customer) {
+            abort(404);
+        }
+
+        return view('admin.customers.show',[
+            'customer' => $customer
+        ]);
     }
 
     /**

@@ -20,10 +20,6 @@
                         </div>
                     @endif
 
-                    <div class="bar text-end mb-3">
-                        <a href="{{url('admin/customer/create')}}" class="btn btn-success">+ Add new customer</a>
-                    </div>
-
                     <table class="table table-striped">
                         <thead>
                             <tr>
