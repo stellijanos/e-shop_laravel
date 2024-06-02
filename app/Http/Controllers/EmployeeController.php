@@ -151,10 +151,18 @@ class EmployeeController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy($id)
     {
-        //
+        $employee = User::find($id);
+        if (!$employee) {
+            abort(404);
+        }
+
+        $employee->delete();
+        
+        Session()->flash('status', 'Employee successfully deleted!');
+        return redirect('/admin/employee');
     }
 }

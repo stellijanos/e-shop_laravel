@@ -40,9 +40,15 @@
                         <p>Address</p>
                     </div>
 
-                    <div class="options">
-                    <a href="{{url('admin/employee/'.$employee->id.'/edit')}}" class="btn btn-warning w-25 mx-3">Edit</a>
-                    <a class="btn btn-danger w-25">Delete</a>
+                    <div class="row">
+                        <div class="mb-3">
+                            <a href="{{url('admin/employee/'.$employee->id.'/edit')}}" class="btn btn-warning w-25">Edit</a>
+                        </div>
+                        <form action="{{url('admin/employee/'.$employee->id)}}" method="post">
+                            @csrf 
+                            @method('DELETE')
+                            <button class="btn btn-danger w-25">Delete</button>
+                        </form>
                     </div>
                                     
                 </div>
