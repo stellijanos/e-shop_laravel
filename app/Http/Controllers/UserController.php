@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -75,7 +76,12 @@ class UserController extends Controller
             'password' => 'required|string|max:255',
         ]);
 
-        
+
+        if (!Hash::check($request->password, Auth::user()->password)) {
+            return redirect()->back()->withErrors(['password' => 'Password is incorrect.']);
+        }
+
+
         if ($request->email !== Auth::user()->email) {
             $request->validate([
                 'email' => 'unique:users'
@@ -102,6 +108,5 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
     }
 }
