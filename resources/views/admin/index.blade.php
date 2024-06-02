@@ -15,19 +15,26 @@
                     @endif
 
                     <div class="row">
-                        <div class="col-md-3 text-center">
+                        
+                        <div class="col-md-2 text-center">
+                            <a href="" class="nav-link option">
+                                <img src="{{asset('public/images/employees.png')}}" alt="employees" width="100px;">
+                                <p>Employees</p>
+                            </a>
+                        </div>
+                        <div class="col-md-2 text-center">
                             <a href="" class="nav-link option">
                                 <img src="{{asset('public/images/users.png')}}" alt="users" width="100px;">
                                 <p>Customers</p>
                             </a>
                         </div>
-                        <div class="col-md-3 text-center">
+                        <div class="col-md-2 text-center">
                             <a href="" class="nav-link option">
                                 <img src="{{asset('public/images/products.png')}}" alt="products" width="100px;">
                                 <p>Products</p>
                             </a>
                         </div>
-                        <div class="col-md-3 text-center">
+                        <div class="col-md-2 text-center">
                             <a href="" class="nav-link option">
                                 <img src="{{asset('public/images/orders.png')}}" alt="orders" width="100px;">
                                 <p>Orders</p>
