@@ -11,13 +11,4 @@ class AdminController extends Controller
         return view('admin.index');
     }   
 
-
-    public function employees() {
-
-        $employees = User::where('role', '<>' , 'customer')->get();
-
-        return view('admin.employees.index',[
-            'employees' => $employees
-        ]);
-    }
 }

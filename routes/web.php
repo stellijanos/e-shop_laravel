@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -32,4 +33,5 @@ Route::delete('/account/delete', [UserController::class, 'destroy'])->name('acco
 
 
 Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
-Route::get('/admin/employees', [AdminController::class, 'employees'])->name('admin.employees.index');
+
+Route::resource('/admin/employee',EmployeeController::class);
