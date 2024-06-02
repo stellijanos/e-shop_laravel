@@ -100,13 +100,34 @@ class UserController extends Controller
         return redirect()->route('account.edit');
     }
 
+    
+     /**
+     * Show the form for deleting the specified resource.
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function delete()
+    {
+        return view('account.delete');
+    }
+
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  Request $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
+        $request->validate([
+            'password' => 'required|string|max:255'
+        ]);
+
+        if (!Hash::check($request->password, Auth::user()->password)) {
+            return redirect()->back()->withErrors(['password' => 'Password is incorrect.']);
+        }
+
+        Auth::user()->delete();
+        return redirect()->route('home');
     }
 }

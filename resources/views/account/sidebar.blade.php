@@ -9,7 +9,7 @@
             <a href="" class="nav-link">Saved Addresses</a> 
             <a href="{{route('account.edit')}}" class="nav-link">Update Account Details</a> 
             <a href="" class="nav-link">Change password</a> 
-            <a href="" class="nav-link">Delete Account</a> 
+            <a href="{{route('account.delete')}}" class="nav-link">Delete Account</a> 
             <form action="{{url('logout')}}" method="post">
                 @csrf
                 <button href="" class="nav-link">Logout</button>
