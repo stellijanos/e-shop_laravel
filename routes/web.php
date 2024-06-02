@@ -23,6 +23,6 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
-
-Route::resource('/account', UserController::class);
-
+Route::get('/account', [UserController::class, 'index'])->name('account.index');
+Route::get('/account/edit', [UserController::class, 'edit'])->name('account.edit');
+Route::put('/account/edit', [UserController::class, 'update']);
