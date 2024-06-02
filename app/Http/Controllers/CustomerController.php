@@ -17,7 +17,7 @@ class CustomerController extends Controller
     public function index()
     {
         return view('admin.customers.index',[
-            'customers' => User::where('role', '=' , 'customer')->get()
+            'customers' => User::where('role','customer')->get()
         ]);
     }
 
@@ -129,10 +129,18 @@ class CustomerController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy($id)
     {
-        //
+        $customer = User::find($id);
+        if (!$customer) {
+            abort(404);
+        }
+
+        $customer->delete();
+        
+        Session()->flash('status', 'Customer successfully deleted!');
+        return redirect('/admin/customer');
     }
 }
