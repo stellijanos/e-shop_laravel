@@ -33,8 +33,7 @@
                                 <th scope="col">Email</th>
                                 <th scope="col">Role</th>
                                 <th scope="col">Hired since</th>
-                                <th scope="col">Edit</th>
-                                <th scope="col">Delete</th>
+                                <th scole="col">Option</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -46,12 +45,7 @@
                                     <td><a href="mailto:{{$employee->email}}">{{$employee->email}}</a></td>
                                     <td>{{$employee->role}}</td>
                                     <td>{{date('d.m.Y', strtotime($employee->created_at))}}</td>
-                                    <td><a class="btn btn-warning">Edit</a></td>
-                                    <td>
-                                        <form action="">
-                                            <button type="submit" class="btn btn-danger">Delete</button>
-                                        </form>
-                                    </td>
+                                    <td><a href="{{url('admin/employee/'.$employee->id)}}" class="btn btn-primary">More details</a></td>
                                 </tr>
                             @endforeach
                         </tbody>

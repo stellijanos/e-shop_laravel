@@ -64,22 +64,39 @@ class EmployeeController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View
      */
     public function show($id)
     {
-        //
+        $employee = User::find($id);
+
+        if (!$employee) {
+            abort(404);
+        }
+
+        return view('admin.employees.show',[
+            'employee' => $employee
+        ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View
      */
     public function edit($id)
     {
-        //
+
+        $employee = User::find($id);
+
+        if (!$employee) {
+            abort(404);
+        }
+
+        return view('admin.employees.edit',[
+            'employee' => $employee
+        ]);
     }
 
     /**
@@ -91,7 +108,29 @@ class EmployeeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'role' => 'required|string|max:255',
+            'firstname' => 'required|string|max:255',
+            'lastname' => 'required|string|max:255',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|string|max:255',
+        ]);
+
+        $employee = User::find($id);
+
+        if ($employee) {
+            abort(404);
+        }
+
+        User::update([
+            'role' => $request->role,
+            'firstname' => $request->firstname,
+            'lastname' => $request->lastname,
+            'email' => $request->email
+        ]);
+
+        $request->session()->flash('status', 'Employee successfully added!');
+        return redirect('/admin/employee');
     }
 
     /**
