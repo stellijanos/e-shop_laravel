@@ -14,11 +14,10 @@ class EmployeeController extends Controller
      *
      * @return \Illuminate\Contracts\View\View
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('admin.employees.index',[
-            'employees' => User::where('role', '<>' , 'customer')->get()
-        ]);
+        $employees = User::where('role', '<>' , 'customer')->paginate(5);
+        return view('admin.employees.index',compact('employees'));
     }
 
     /**

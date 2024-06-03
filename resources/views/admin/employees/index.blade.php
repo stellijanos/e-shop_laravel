@@ -20,10 +20,9 @@
                         </div>
                     @endif
 
-                    <div class="bar text-end mb-3">
-                        <a href="{{url('admin/employee/create')}}" class="btn btn-success">+ Add new Employee</a>
+                    <div class="hstack mb-3">
+                        <a href="{{url('admin/employee/create')}}" class="btn btn-success ms-auto">+ Add new Employee</a>
                     </div>
-
                     <table class="table table-striped">
                         <thead>
                             <tr>
@@ -50,6 +49,7 @@
                             @endforeach
                         </tbody>
                     </table>
+                    {{$employees->links()}}
                 </div>
             </div>
         </div>
