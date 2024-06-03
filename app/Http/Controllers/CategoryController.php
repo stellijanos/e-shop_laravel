@@ -63,24 +63,45 @@ class CategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Category  $category
-     * @return \Illuminate\Http\Response
+     * @param  int $id
+     * @return \Illuminate\Contracts\View\View
      */
-    public function edit(Category $category)
+    public function edit($id)
     {
-        //
+        $category = Category::find($id);
+        if (!$category) {
+            abort(404);
+        }
+
+        return view('admin.category.edit',[
+            'category' => $category
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Category  $category
-     * @return \Illuminate\Http\Response
+     * @param  int $id
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255|unique:categories'
+        ]);
+
+        $category = Category::find($id);
+        if (!$category) {
+            abort(404);
+        }
+
+        $category->update([
+            'name' => $request->name
+        ]);
+
+        $request->session()->flash('status', 'Category "'.$request->name.'" successfully updated!');
+        return redirect('/admin/category');
     }
 
     /**
