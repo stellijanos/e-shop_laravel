@@ -29,6 +29,12 @@
                             </a>
                         </div>
                         <div class="col-md-2 text-center">
+                            <a href="{{url('admin/category')}}" class="nav-link option">
+                                <img src="{{asset('public/images/categories.png')}}" alt="products" width="100px;">
+                                <p>Categories</p>
+                            </a>
+                        </div>
+                        <div class="col-md-2 text-center">
                             <a href="" class="nav-link option">
                                 <img src="{{asset('public/images/products.png')}}" alt="products" width="100px;">
                                 <p>Products</p>
