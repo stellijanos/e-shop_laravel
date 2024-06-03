@@ -41,7 +41,12 @@
                                     <td>{{$category->products->count()}}</td>
                                     <td><a class="btn btn-primary" href="">View Products</a> </td>
                                     <td><a class="btn btn-warning" href="{{url('admin/category/'.$category->id.'/edit')}}">Edit</a> </td>
-                                    <td><a class="btn btn-danger" href="">Delete</a> </td>
+                                    <td>
+                                        <form action="{{url('/admin/category/'.$category->id)}}" method="post">
+                                            @csrf 
+                                            @method('DELETE')
+                                            <button class="btn btn-danger">Delete</button>
+                                        </form>
                                 </tr>
                             @endforeach
                         </tbody>

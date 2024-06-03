@@ -107,11 +107,19 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Category  $category
-     * @return \Illuminate\Http\Response
+     * @param  int $id
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(Category $category)
+    public function destroy($id)
     {
-        //
+
+        $category = Category::find($id);
+        if (!$category) {
+            abort(404);
+        }
+        $category->delete();
+
+        Session()->flash('status', 'Category "'.$category->name.'" successfully updated!');
+        return redirect('/admin/category');
     }
 }
