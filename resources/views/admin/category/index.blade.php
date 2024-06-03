@@ -38,7 +38,7 @@
                                 <tr>
                                     <td>{{$category->id}}</td>
                                     <td>{{$category->name}}</td>
-                                    <td>-</td>
+                                    <td>{{$category->products->count()}}</td>
                                     <td><a class="btn btn-primary" href="">View Products</a> </td>
                                     <td><a class="btn btn-warning" href="">Edit</a> </td>
                                     <td><a class="btn btn-danger" href="">Delete</a> </td>
