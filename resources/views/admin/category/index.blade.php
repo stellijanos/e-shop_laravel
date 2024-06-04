@@ -23,34 +23,40 @@
                     <div class="bar text-end mb-3">
                         <a href="{{url('admin/category/create')}}" class="btn btn-success">+ Add new Category</a>
                     </div>
-
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Nr. of products</th>
-                                <th scope="col" class="text-center" colspan="3">Options</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($categories as $category)
+                    @if ($categories->count() === 0)
+                        <div class="alert alert-warning" role="alert">
+                            No categories were found.
+                        </div>
+                    @else
+                        <table class="table table-striped">
+                            <thead>
                                 <tr>
-                                    <td>{{$category->id}}</td>
-                                    <td>{{$category->name}}</td>
-                                    <td>{{$category->products->count()}}</td>
-                                    <td><a class="btn btn-primary" href="">View Products</a> </td>
-                                    <td><a class="btn btn-warning" href="{{url('admin/category/'.$category->id.'/edit')}}">Edit</a> </td>
-                                    <td>
-                                        <form action="{{url('/admin/category/'.$category->id)}}" method="post">
-                                            @csrf 
-                                            @method('DELETE')
-                                            <button class="btn btn-danger">Delete</button>
-                                        </form>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Nr. of products</th>
+                                    <th scope="col" class="text-center" colspan="3">Options</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @foreach ($categories as $category)
+                                    <tr>
+                                        <td>{{$category->id}}</td>
+                                        <td>{{$category->name}}</td>
+                                        <td>{{$category->products->count()}}</td>
+                                        <td><a class="btn btn-primary" href="">View Products</a> </td>
+                                        <td><a class="btn btn-warning" href="{{url('admin/category/'.$category->id.'/edit')}}">Edit</a> </td>
+                                        <td>
+                                            <form action="{{url('/admin/category/'.$category->id)}}" method="post">
+                                                @csrf 
+                                                @method('DELETE')
+                                                <button class="btn btn-danger">Delete</button>
+                                            </form>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        {{$categories->links()}}
+                    @endif
                 </div>
             </div>
         </div>
