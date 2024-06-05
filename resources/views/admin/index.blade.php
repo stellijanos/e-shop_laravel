@@ -35,7 +35,7 @@
                             </a>
                         </div>
                         <div class="col-md-2 text-center">
-                            <a href="" class="nav-link option">
+                            <a href="{{url('admin/product')}}" class="nav-link option">
                                 <img src="{{asset('public/images/products.png')}}" alt="products" width="100px;">
                                 <p>Products</p>
                             </a>

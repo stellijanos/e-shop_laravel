@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -39,3 +40,4 @@ Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
 Route::resource('/admin/employee',EmployeeController::class);
 Route::resource('/admin/customer',CustomerController::class);
 Route::resource('/admin/category',CategoryController::class);
+Route::resource('/admin/product',ProductController::class);

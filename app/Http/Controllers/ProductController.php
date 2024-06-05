@@ -10,11 +10,12 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View
      */
     public function index()
     {
-        //
+        $products = Product::paginate(5);
+        return view('admin.products.index',compact('products'));
     }
 
     /**
