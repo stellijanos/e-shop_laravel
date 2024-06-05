@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -21,22 +22,63 @@ class ProductController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View
      */
     public function create()
     {
-        //
+        $categories = Category::all();
+
+        return view('admin.products.create', compact('categories'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
-        //
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'category' => 'required|numeric',
+            'price' => 'required|numeric',
+            'description' => 'required|string',
+            'stock' => 'required|numeric|min:0',
+        ]);
+
+
+        $category = Category::find($request->category);
+
+        if (!$category) {
+            return redirect()->back()->withErrors(['category' => 'Category does not exist.']);
+        }
+
+        $imageName = 'no-image.png';
+
+        if ($request->image) {
+            $request->validate([
+                'image' => 'nullable|file|image|mimes:jpg,jpeg,png|max:2048'
+            ]);
+
+            $imageName = date('Ymdhis').uniqid().'.'.$request->image->extension();
+            $request->image->move(public_path('images/products'), $imageName);
+        }
+
+        Product::create([
+            'name' => $request->name,
+            'price' => $request->price,
+            'description' => $request->description,
+            'stock' => $request->stock,
+            'image' => $imageName,
+            'category_id' => $request->category
+        ]);
+
+        
+        $request->session()->flash('status', 'Product successfully added!');
+        return redirect('/admin/product');
+
     }
 
     /**
