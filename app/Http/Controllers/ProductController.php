@@ -95,12 +95,28 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
+     * @param  int $id
+     * @return \Illuminate\Contracts\View\View
      */
     public function edit(Product $product)
     {
-        //
+        if (!$product) {
+            abort(404);
+        }
+
+        $categories = Category::all();
+
+        return view('admin.products.edit',compact('product', 'categories'));
+    }
+
+
+    private function removeImage($imageName) {
+
+        if ($imageName == 'no-image.png') return;
+        $imagePath = public_path('images/products/') . $imageName;
+        if (file_exists($imagePath)) {
+            unlink($imagePath);
+        }
     }
 
     /**
@@ -108,11 +124,43 @@ class ProductController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, Product $product)
     {
-        //
+        if (!$product) {
+            abort(404);
+        }
+
+        $imageName = $product->image;
+
+        if ($request->remove_image) {
+            $this->removeImage($imageName);
+            $imageName = 'no-image.png';
+        } 
+        else if ($request->image) {
+            $request->validate([
+                'image' => 'nullable|file|image|mimes:jpg,jpeg,png|max:2048'
+            ]);
+
+            $this->removeImage($imageName);
+
+            $imageName = date('Ymdhis').uniqid().'.'.$request->image->extension();
+            $request->image->move(public_path('images/products/'), $imageName);
+        }
+
+        $product->update([
+            'name' => $request->name,
+            'price' => $request->price,
+            'description' => $request->description,
+            'stock' => $request->stock,
+            'image' => $imageName,
+            'category_id' => $request->category
+        ]);
+
+        $request->session()->flash('status', 'Product #'.$product->id.' successfully updated!');
+        return redirect('/admin/product');
+
     }
 
     /**

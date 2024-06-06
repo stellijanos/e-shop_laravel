@@ -47,7 +47,7 @@
                                     <td>{{$product->price}}</td>    
                                     <td class="text-truncate" style="max-width: 150px;">{{$product->description}}</td>
                                     <td><a href="{{url('admin/product/'.$product->id)}}" class="btn btn-primary">More details</a></td>
-                                    <td>Edit</td>
+                                    <td><a href="{{url('admin/product/'.$product->id.'/edit')}}" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i></a></td>
                                     <td>Delete</td>
                                 </tr>
                             @endforeach
