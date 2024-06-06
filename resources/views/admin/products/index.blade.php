@@ -32,7 +32,7 @@
                                 <th scope="col">Category</th>
                                 <th scope="col">Price</th>
                                 <th scope="col">Description</th>
-                                <th scope="col">View More</th>
+                                <th scope="col">Details</th>
                                 <th scole="col">Edit</th>
                                 <th scole="col">Delete</th>
                             </tr>
@@ -43,12 +43,18 @@
                                     <td>{{$product->id}}</td>
                                     <td><img class="rounded" width="100px" src="{{asset('public/images/products').'/'.$product->image}}" alt="no-image"></td>
                                     <td class="text-truncate" style="max-width: 150px;">{{$product->name}}</td>
-                                    <td><a href="{{url('admin/category')}}/{{$product->category->id}}">{{$product->category->name}}</a></td>
+                                    <td class="text-truncate" style="max-width: 150px;"><a href="{{url('admin/category')}}/{{$product->category->id}}">{{$product->category->name}}</a></td>
                                     <td>{{$product->price}}</td>    
                                     <td class="text-truncate" style="max-width: 150px;">{{$product->description}}</td>
-                                    <td><a href="{{url('admin/product/'.$product->id)}}" class="btn btn-primary">More details</a></td>
+                                    <td><a href="{{url('admin/product/'.$product->id)}}" class="btn btn-primary"><i class="fa-solid fa-circle-info"></i></a></td>
                                     <td><a href="{{url('admin/product/'.$product->id.'/edit')}}" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i></a></td>
-                                    <td>Delete</td>
+                                    <td>
+                                        <form action="{{url('admin/product/'.$product->id)}}" method="post">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="btn btn-danger"><i class="fa-solid fa-trash-can"></i></button>
+                                        </form>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
