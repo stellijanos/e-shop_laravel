@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use App\Models\ShoppingSession;
+use App\Http\Controllers\Controller;
+use App\Models\ProductSpec;
 use Illuminate\Http\Request;
 
-class ShoppingSessionController extends Controller
+class ProductSpecController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +42,10 @@ class ShoppingSessionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\ShoppingSession  $shoppingSession
+     * @param  \App\Models\ProductSpec  $productSpec
      * @return \Illuminate\Http\Response
      */
-    public function show(ShoppingSession $shoppingSession)
+    public function show(ProductSpec $productSpec)
     {
         //
     }
@@ -52,10 +53,10 @@ class ShoppingSessionController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\ShoppingSession  $shoppingSession
+     * @param  \App\Models\ProductSpec  $productSpec
      * @return \Illuminate\Http\Response
      */
-    public function edit(ShoppingSession $shoppingSession)
+    public function edit(ProductSpec $productSpec)
     {
         //
     }
@@ -64,10 +65,10 @@ class ShoppingSessionController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\ShoppingSession  $shoppingSession
+     * @param  \App\Models\ProductSpec  $productSpec
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ShoppingSession $shoppingSession)
+    public function update(Request $request, ProductSpec $productSpec)
     {
         //
     }
@@ -75,10 +76,10 @@ class ShoppingSessionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\ShoppingSession  $shoppingSession
+     * @param  \App\Models\ProductSpec  $productSpec
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ShoppingSession $shoppingSession)
+    public function destroy(ProductSpec $productSpec)
     {
         //
     }
