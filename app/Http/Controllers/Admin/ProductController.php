@@ -155,6 +155,15 @@ class ProductController extends Controller
             abort(404);
         }
 
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'category' => 'required|numeric',
+            'price' => 'required|numeric',
+            'description' => 'required|string',
+            'stock' => 'required|numeric|min:0',
+            'specs' => 'required|array|min:1'
+        ]);
+
         $imageName = $product->image;
 
         if ($request->remove_image) {
@@ -178,8 +187,24 @@ class ProductController extends Controller
             'description' => $request->description,
             'stock' => $request->stock,
             'image' => $imageName,
-            'category_id' => $request->category
+            'category_id' => $request->category,
         ]);
+
+        $product->specs()->delete();
+
+        foreach ($request->specs as $spec) {
+
+            $spec = explode(';', $spec);
+
+            if (count($spec) !== 2) continue;
+
+            ProductSpec::create([
+                'product_id' => $product->id,
+                'name' => $spec[0],
+                'value' => $spec[1],
+            ]);
+        }
+
 
         $request->session()->flash('status', 'Product #'.$product->id.' successfully updated!');
         return redirect('/admin/product');

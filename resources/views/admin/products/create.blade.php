@@ -30,25 +30,28 @@
                     @endif
                     <form action="{{url('admin/product')}}" method="post" enctype="multipart/form-data">
                         @csrf
-                        <div class="mb-3">
-                            <input class="form-control w-50" type="text" id="name" name="name" placeholder="Name" required>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Name:</span>
+                            <input class="form-control w-50" type="text" id="name" name="name" placeholder="Ex. Phone" required>
                         </div>
-                        <div class=" mb-3 w-50">
+                        <div class="input-group mb-3 w-50">
+                            <span class="input-group-text">Category:</span>
                             <select name="category" id="category" class="form-select">
-                                <option value="" disabled selected>Select a category</option>
+                                <option value="" disabled selected>Choose one</option>
                                 @foreach ($categories as $category)
                                     <option value="{{$category->id}}">{{$category->name}}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="input-group mb-3 w-50">
-                            <span class="input-group-text">$</span>
-                            <input class="form-control" type="number" min="0" max="5000000" step="0.01" id="price" name="price" placeholder="Price" required>
+                            <span class="input-group-text">Price: $</span>
+                            <input class="form-control" type="number" min="0" max="5000000" step="0.01" id="price" name="price" placeholder="Ex. 10.99" required>
                         </div>
                         <div class="mb-3 w-50">
                             <textarea class="form-control" type="textarea" name="description" placeholder="Description" style="height:150px;" required></textarea>
                         </div>
-                        <div class="mb-3 w-50">
+                        <div class="input-group mb-3 w-50">
+                            <span class="input-group-text">Stock: </span>
                             <input type="number" min="0" class="form-control" id="stock" name="stock" placeholder="Nr. products on stock" required>
                         </div>
                         <div class="mb-3 w-50">
@@ -74,9 +77,5 @@
         </div>
     </div>
 </div>
-
-@section('script')
-
-@endsection
-<script src="{{asset('public/js/admin/create-product.js')}}"></script>
+<script src="{{asset('public/js/admin/product.js')}}"></script>
 @endsection

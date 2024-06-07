@@ -49,11 +49,12 @@
                             <input class="form-control" type="number" min="0" max="5000000" step="0.01" id="price" name="price" value="{{$product->price}}" placeholder="Price" required>
                         </div>
                         <div class="form-floating mb-3 w-50">
-                            <textarea class="form-control" type="textarea" name="description" value="{{$product->description}}" placeholder="Description" style="height:150px;" required></textarea>
+                            
+                            <textarea class="form-control" type="textarea" name="description" placeholder="Description" style="height:150px;" required>{{$product->description}}</textarea>
                             <label for="description">Description</label>
                         </div>
                         <div class="input-group mb-3 w-50">
-                            <span class="input-group-text">Price: $</span>
+                            <span class="input-group-text">Stock: </span>
                             <input type="number" min="0" class="form-control" id="stock" name="stock" value="{{$product->stock}}" placeholder="Nr. products on stock" required>
                         </div>
                         <div class="mb-3 w-50 text-center">
@@ -70,6 +71,19 @@
                             <label for="image">Change Image (max: 2MB; .jpg, jpeg, .png)</label>
                             <input type="file" class="form-control" id="image" name="image" accept=".jpg, .jpeg, .png">
                         </div>
+                        <div class="mb-3 w-50" id="specs">
+                            <label>Product specs</label>
+                            @foreach ($product->specs as $spec)
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">Name;Value</span>
+                                    <input type="text" class="form-control" name="specs[]" value="{{$spec->name}};{{$spec->value}}" placeholder="Ex. color;blue">
+                                    <span class="input-group-text btn btn-danger" style="cursor:pointer" onclick="removeInputGroup(this)"><i class="fa-solid fa-trash-can"></i></span>
+                                </div>
+                            @endforeach
+                        </div>
+                        <div class="button mb-5 text-center w-50">
+                            <button type="button" class="btn btn-secondary w-100" id="add-spec-btn">Add another spec</button>
+                        </div>
                         <button type="submit" class="btn btn-success w-50">Update product</button>
                     </form>
                 </div>
@@ -77,4 +91,5 @@
         </div>
     </div>
 </div>
+<script src="{{asset('public/js/admin/product.js')}}"></script>
 @endsection
