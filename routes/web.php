@@ -28,13 +28,11 @@ Auth::routes();
 Route::get('/home', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
-Route::resource('/account', App\Http\Controllers\User\UserController::class);
-
-// Route::get('/account', [App\Http\Controllers\User\UserController::class, 'index'])->name('account.index');
-// Route::get('/account/edit', [App\Http\Controllers\User\UserController::class, 'edit'])->name('account.edit');
-// Route::put('/account/edit', [App\Http\Controllers\User\UserController::class, 'update']);
-// Route::get('/account/delete', [App\Http\Controllers\User\UserController::class, 'delete'])->name('account.delete');
-// Route::delete('/account/delete', [App\Http\Controllers\User\UserController::class, 'destroy'])->name('account.delete');
+Route::get('/account', [App\Http\Controllers\User\UserController::class, 'index'])->name('account.index');
+Route::get('/account/edit', [App\Http\Controllers\User\UserController::class, 'edit'])->name('account.edit');
+Route::put('/account/edit', [App\Http\Controllers\User\UserController::class, 'update']);
+Route::get('/account/delete', [App\Http\Controllers\User\UserController::class, 'delete'])->name('account.delete');
+Route::delete('/account/delete', [App\Http\Controllers\User\UserController::class, 'destroy'])->name('account.delete');
 
 
 Route::get('/admin', [App\Http\Controllers\Admin\AdminController::class, 'index'])->name('admin.index');
