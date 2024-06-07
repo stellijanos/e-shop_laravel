@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductSpec;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -47,6 +48,7 @@ class ProductController extends Controller
             'price' => 'required|numeric',
             'description' => 'required|string',
             'stock' => 'required|numeric|min:0',
+            'specs' => 'required|array|min:1'
         ]);
 
 
@@ -67,7 +69,10 @@ class ProductController extends Controller
             $request->image->move(public_path('images/products'), $imageName);
         }
 
-        Product::create([
+
+        print_r($request->specs);
+
+        $product = Product::create([
             'name' => $request->name,
             'price' => $request->price,
             'description' => $request->description,
@@ -76,7 +81,20 @@ class ProductController extends Controller
             'category_id' => $request->category
         ]);
 
-        
+        foreach ($request->specs as $spec) {
+
+            $spec = explode(';', $spec);
+
+            if (count($spec) !== 2) continue;
+
+            ProductSpec::create([
+                'product_id' => $product->id,
+                'name' => $spec[0],
+                'value' => $spec[1],
+            ]);
+        }
+
+
         $request->session()->flash('status', 'Product successfully added!');
         return redirect('/admin/product');
 

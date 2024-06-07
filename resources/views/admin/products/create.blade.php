@@ -55,9 +55,18 @@
                             <label for="image">Image (max: 2MB; .jpg, jpeg, .png)</label>
                             <input type="file" class="form-control" id="image" name="image" accept=".jpg, .jpeg, .png">
                         </div>
-                        
-                       
-                       
+
+                        <div class="mb-3 w-50" id="specs">
+                            <label>Product specs</label>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">Name;Value</span>
+                                <input type="text" class="form-control" name="specs[]" placeholder="Ex. color;blue">
+                                <span class="input-group-text btn btn-danger" style="cursor:pointer" onclick="removeInputGroup(this)"><i class="fa-solid fa-trash-can"></i></span>
+                            </div>
+                        </div>
+                        <div class="button mb-5 text-center w-50">
+                            <button type="button" class="btn btn-secondary w-100" id="add-spec-btn">Add another spec</button>
+                        </div>
                         <button type="submit" class="btn btn-success w-50">Create product</button>
                     </form>                   
                 </div>
@@ -65,4 +74,9 @@
         </div>
     </div>
 </div>
+
+@section('script')
+
+@endsection
+<script src="{{asset('public/js/admin/create-product.js')}}"></script>
 @endsection

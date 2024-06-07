@@ -10,6 +10,8 @@ class ProductSpec extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+    
     protected $fillable = [
         'product_id',
         'name',
