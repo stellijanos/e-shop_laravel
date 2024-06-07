@@ -41,6 +41,12 @@
                             <p>Price: ${{$product->price}}</p>
                             <p>Description: "{{$product->description}}"</p>
                             <p>Stock: {{$product->stock}}</p>
+                            <p>Specs: ({{$product->specs->count()}})</p>
+                            <ul>
+                                @foreach ($product->specs as $spec )
+                                    <li>{{$spec->name}}: {{$spec->value}}</li>
+                                @endforeach
+                            </ul>
 
                             <div class="row">
                                 <div class="col-sm-6">
