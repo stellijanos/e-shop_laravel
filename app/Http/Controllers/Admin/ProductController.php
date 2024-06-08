@@ -223,6 +223,7 @@ class ProductController extends Controller
             abort(404);
         }
         $product->delete();
+        $this->removeImage($product->image);
 
         Session()->flash('status', 'Product #'.$product->id.' successfully deleted!');
         return redirect('/admin/product');
