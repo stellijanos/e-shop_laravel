@@ -14,6 +14,7 @@ class ShoppingCartItem extends Model
 
     protected $table = 'shopping_session_products';
 
+    public $timestamps = false;
 
     protected $fillable = [
         'user_id',

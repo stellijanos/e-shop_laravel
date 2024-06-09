@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\ShoppingCartItem;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -159,13 +160,14 @@ class UserController extends Controller
 
         $cartItem = $user->shoppingCart()->where('product_id', $product->id)->first();
 
-        return response()->json($cartItem);
-
-        // if (!$cartItem) {
-        //     $user->shoppingCart()->attach($product, ['quantity' => 1]);
-        // } else {
-        //     $user->shoppingCart()->where('product_id', $product->id)->increment('quantity');
-        // }
-        // return response()->json(['response' => 'added']);
+        if ($cartItem) {
+            $user->shoppingCart()->where('product_id', $product->id)->increment('quantity');
+        } else {
+            $cartItem = new ShoppingCartItem();
+            $cartItem->product_id = $product->id;
+            $cartItem->user_id = $user->id;
+            $cartItem->save();
+        }
+        return response()->json(['response' => 'added']);
     }
 }
