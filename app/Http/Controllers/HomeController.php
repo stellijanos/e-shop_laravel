@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -18,6 +19,7 @@ class HomeController extends Controller
     //     $this->middleware('auth');
     // }
 
+
     /**
      * Show the application dashboard.
      *
@@ -27,6 +29,14 @@ class HomeController extends Controller
     {
 
         $products = Product::paginate(24);
-        return view('home', compact('products'));
+        $favourites = Auth::user()->favourites->pluck('id')->toArray();
+        return view('home.index', compact('products', 'favourites'));
+    }
+
+
+    public function products() {
+        $products = Product::paginate(24);
+        $favourites = Auth::user()->favourites->pluck('id')->toArray();
+        return view('home.products', compact('products', 'favourites'));
     }
 }

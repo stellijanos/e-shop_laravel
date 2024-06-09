@@ -24,12 +24,14 @@ Auth::routes();
 Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
-Route::get('/account', [App\Http\Controllers\User\UserController::class, 'index'])->name('account.index');
-Route::get('/account/edit', [App\Http\Controllers\User\UserController::class, 'edit'])->name('account.edit');
-Route::put('/account/edit', [App\Http\Controllers\User\UserController::class, 'update']);
-Route::get('/account/delete', [App\Http\Controllers\User\UserController::class, 'delete'])->name('account.delete');
-Route::delete('/account/delete', [App\Http\Controllers\User\UserController::class, 'destroy'])->name('account.delete');
-
+Route::prefix('account')->group(function() {
+    Route::get('/', [App\Http\Controllers\User\UserController::class, 'index'])->name('account.index');
+    Route::get('/edit', [App\Http\Controllers\User\UserController::class, 'edit'])->name('account.edit');
+    Route::put('/edit', [App\Http\Controllers\User\UserController::class, 'update']);
+    Route::get('/delete', [App\Http\Controllers\User\UserController::class, 'delete'])->name('account.delete');
+    Route::delete('/delete', [App\Http\Controllers\User\UserController::class, 'destroy'])->name('account.delete');
+    Route::post('/favourite/{product}',[App\Http\Controllers\User\UserController::class, 'favourite']);
+});
 
 Route::get('/admin', [App\Http\Controllers\Admin\AdminController::class, 'index'])->name('admin.index');
 

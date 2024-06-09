@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -130,5 +131,23 @@ class UserController extends Controller
 
         Auth::user()->delete();
         return redirect()->route('home');
+    }
+
+
+    public function favourite(Product $product) {
+        if (!$product) {
+            return response()->json(['response' => 'not-found']);
+        }
+
+        $user = Auth::user();
+
+        if ($user->favourites()->where('product_id', $product->id)->exists()) {
+            $user->favourites()->detach($product);
+            return response()->json(['response' => 'removed']);
+        } else {
+            $user->favourites()->attach($product);
+            return response()->json(['response' => 'added']);
+        }
+
     }
 }
