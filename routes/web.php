@@ -31,6 +31,7 @@ Route::prefix('account')->group(function() {
     Route::get('/delete', [App\Http\Controllers\User\UserController::class, 'delete'])->name('account.delete');
     Route::delete('/delete', [App\Http\Controllers\User\UserController::class, 'destroy'])->name('account.delete');
     Route::post('/favourite/{product}',[App\Http\Controllers\User\UserController::class, 'favourite']);
+    Route::post('/add-to-cart/{product}',[App\Http\Controllers\User\UserController::class, 'addToCart']);
 });
 
 Route::get('/admin', [App\Http\Controllers\Admin\AdminController::class, 'index'])->name('admin.index');

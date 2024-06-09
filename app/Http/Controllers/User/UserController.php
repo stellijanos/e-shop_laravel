@@ -148,6 +148,24 @@ class UserController extends Controller
             $user->favourites()->attach($product);
             return response()->json(['response' => 'added']);
         }
+    }
 
+    public function addToCart(Product $product) {
+        if (!$product) {
+            return response()->json(['response' => 'not-found']);
+        }
+
+        $user = Auth::user();
+
+        $cartItem = $user->shoppingCart()->where('product_id', $product->id)->first();
+
+        return response()->json($cartItem);
+
+        // if (!$cartItem) {
+        //     $user->shoppingCart()->attach($product, ['quantity' => 1]);
+        // } else {
+        //     $user->shoppingCart()->where('product_id', $product->id)->increment('quantity');
+        // }
+        // return response()->json(['response' => 'added']);
     }
 }

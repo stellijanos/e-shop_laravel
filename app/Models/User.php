@@ -65,7 +65,7 @@ class User extends Authenticatable
     
 
     public function shoppingCart(): HasMany {
-        return $this->hasMany(Product::class, 'shopping_session_products')->withPivot('quantity');
+        return $this->hasMany(ShoppingCartItem::class);
     }
    
 }
