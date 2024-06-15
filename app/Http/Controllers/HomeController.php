@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\ProductSpec;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -53,7 +54,33 @@ class HomeController extends Controller
         ]);
         $favourites = Auth::user()->favourites->pluck('id')->toArray();
 
-        return view('home.index', compact('products', 'favourites', 'search', 'sort_by', 'per_page', 'per_page_values'));
+
+
+        // handling filter part
+        $specs = ProductSpec::all();
+        $filters = [];
+        foreach ($specs as $spec) {
+            $name = $spec->name;
+            $value = $spec->value;
+        
+            if (!isset($filters[$name])) {
+                $filters[$name] = [];
+            }
+        
+            if (!in_array($value, $filters[$name])) {
+                $filters[$name][] = $value;
+            }
+        }
+
+        return view('home.index', compact(
+            'products', 
+            'favourites', 
+            'search', 
+            'sort_by', 
+            'per_page', 
+            'per_page_values',
+            'filters'
+        ));
     }
 
 }
