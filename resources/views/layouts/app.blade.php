@@ -53,10 +53,10 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
-                        <div class="input-group">
-                            <input type="search" class="form-control" style="width:25vw;" name="search_string" id="search-string" placeholder="Search items...">
+                        <form class="input-group" action="{{route('home')}}" method="get">
+                            <input type="search" class="form-control" style="width:25vw;" value="{{$search}}" name="search" id="search-string" placeholder="Search items...">
                             <button class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></button>
-                        </div>
+                        </form>
                     </ul>
 
                     <!-- Right Side Of Navbar -->

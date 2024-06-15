@@ -5,6 +5,7 @@
     }
 </style>
 <form class="row mb-3" action="{{route('home')}}" method="get">
+    <input type="hidden" name="search" value="{{$search}}">
     <div class="col-3">
         <div class=" input-group">
             <label class="input-group-text" for="sort-by">Sort by: </label>
