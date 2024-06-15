@@ -50,5 +50,23 @@
         });
 
     }
+
+    function getProducts(submit) {
+        const orderBy = submit.value;
+        console.log(orderBy);
+
+        const productList = document.getElementById('product-list');
+
+        axios.post(`{{url('/')}}/${orderBy}`)
+        .then(response => {
+            productList.innerHTML = response.data;
+            
+        })
+        .catch(error => {
+            console.log(error);
+        }//
+        );
+    }
+
 </script>
 @endsection

@@ -32,7 +32,6 @@
         }
 
         footer {
-            position: absolute;
             bottom: 0;
             width: 100%;
             height: 2.5rem;
@@ -83,8 +82,8 @@
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
 
-                                    @if(Auth::user()->role === 'customer')
-
+                                    @if(Auth::user()->role === 'admin')
+                                        <a href="{{url('/admin')}}" class="dropdown-item">ADMIN Panel</a>
                                     @endif
 
                                     <a href="{{url('/account')}}" class="dropdown-item">My Account</a>
@@ -115,6 +114,6 @@
             @yield('content')
         </main>
     </div>
-    <footer class="text-center mb-0">&copy; Stelli Janos. All rights reserved.</footer>
+    <footer class="text-center">&copy; Stelli Janos. All rights reserved.</footer>
 </body>
 </html>

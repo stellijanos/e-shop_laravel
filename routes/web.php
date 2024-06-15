@@ -21,8 +21,8 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
+Route::get('/{sort_by?}', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::post('/{sort_by}',[\App\Http\Controllers\HomeController::class, 'products']);
 
 Route::prefix('account')->group(function() {
     Route::get('/', [App\Http\Controllers\User\UserController::class, 'index'])->name('account.index');
@@ -35,6 +35,8 @@ Route::prefix('account')->group(function() {
 });
 
 Route::get('/admin', [App\Http\Controllers\Admin\AdminController::class, 'index'])->name('admin.index');
+
+
 
 Route::resource('/admin/employee',App\Http\Controllers\Admin\EmployeeController::class);
 Route::resource('/admin/customer',App\Http\Controllers\Admin\CustomerController::class);

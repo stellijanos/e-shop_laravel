@@ -1,7 +1,19 @@
-
-<div class="row justify-content-flex-start">
-    @foreach ($products as $product )
-        <div class="bg-body-secondary text-light-emphasis rounded text-center shadow pt-3" style="width:150px">
+<style>
+    div.product-item:hover, div.product-item:active {
+        transform:scale(1.03);
+        cursor:pointer;
+    }
+</style>
+<div class="row mb-3">
+    <select name="sort_by" id="" class="form-select w-25" onchange="getProducts(this)">
+        <option value="_">Sort By</option>
+        <option value="price-asc" {{($sort_by ?? '') === "price-asc" ? 'selected' : ''}}>Price (Ascending)</option>
+        <option value="price-desc" {{($sort_by ?? '' ) === "price-desc" ? 'selected' : ''}}>Price (Descending)</option>
+    </select>
+</div>
+<div class="row justify-content-flex-start gap-5">
+    @foreach ($products as $product)
+        <div class="product-item bg-body-secondary text-light-emphasis rounded text-center shadow pt-3" style="width:150px">
             <img class="rounded" src="{{asset('public/images/products/'.$product->image)}}" style="width:120px; height:120px" alt="{{$product->name}}-image">
             <figcaption>
                 <p class="text-truncate fs-3 fw-bold m-0" style="max-width: 150px;">{{$product->name}}</p>

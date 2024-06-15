@@ -25,7 +25,7 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index($sort_by = '')
     {
 
         $products = Product::paginate(24);
@@ -34,9 +34,16 @@ class HomeController extends Controller
     }
 
 
-    public function products() {
-        $products = Product::paginate(24);
+    public function products($sort_by) {
+        $sort_by_array = explode('-', $sort_by);
+        $sort_by_keys = ['price'];
+        $sort_by_values = ['asc', 'desc'];
+
+        $key = (in_array($sort_by_array[0], $sort_by_keys)) ? $sort_by_array[0] : 'price';
+        $value = (in_array($sort_by_array[1], $sort_by_values)) ? $sort_by_array[1] : 'asc';
+
+        $products = Product::orderBy($key, $value)->paginate(24);
         $favourites = Auth::user()->favourites->pluck('id')->toArray();
-        return view('home.products', compact('products', 'favourites'));
+        return view('home.products', compact('products', 'favourites', 'sort_by'));
     }
 }
