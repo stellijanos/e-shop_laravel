@@ -4,13 +4,26 @@
         cursor:pointer;
     }
 </style>
-<div class="row mb-3">
-    <select name="sort_by" id="" class="form-select w-25" onchange="getProducts(this)">
-        <option value="_">Sort By</option>
-        <option value="price-asc" {{($sort_by ?? '') === "price-asc" ? 'selected' : ''}}>Price (Ascending)</option>
-        <option value="price-desc" {{($sort_by ?? '' ) === "price-desc" ? 'selected' : ''}}>Price (Descending)</option>
-    </select>
-</div>
+<form class="row mb-3" action="{{route('home')}}" method="get">
+    <div class="col-2">
+        <select name="sort_by" id="" class="form-select" onchange="this.form.submit()">
+            <option value="_">Sort By (Default)</option>
+            <option value="price-asc" {{$sort_by=== "price-asc" ? 'selected' : ''}}>Price (Ascending)</option>
+            <option value="price-desc" {{$sort_by === "price-desc" ? 'selected' : ''}}>Price (Descending)</option>
+        </select>
+    </div>
+    <div class="col-4">
+        <div class=" input-group">
+            <label class="input-group-text" for="show-per-page">Show per page: </label>
+            <select class="form-select" style="width:50px!important" name="per_page" id="show-per-page" onchange="this.form.submit()">
+                <option value="2" {{$per_page === '2' ? 'selected' : ''}}>24 (Default)</option>
+                @foreach ($per_page_values as $page_value)
+                    <option value="{{$page_value}}" {{$per_page === $page_value ? 'selected' : ''}}>{{$page_value}}</option>
+                @endforeach
+            </select>
+        </div>
+    </div>
+</form>
 <div class="row justify-content-flex-start gap-5">
     @foreach ($products as $product)
         <div class="product-item bg-body-secondary text-light-emphasis rounded text-center shadow pt-3" style="width:150px">

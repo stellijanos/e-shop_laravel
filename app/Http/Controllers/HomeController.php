@@ -25,25 +25,26 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index($sort_by = '')
+    public function index(Request $request)
     {
+        $sort_by = $request->input('sort_by', 'price-asc');
+        $per_page = (int) $request->input('per_page', 6);
 
-        $products = Product::paginate(24);
-        $favourites = Auth::user()->favourites->pluck('id')->toArray();
-        return view('home.index', compact('products', 'favourites'));
-    }
+        $per_page_values = [2, 4, 6, 8];
+        $per_page = in_array($per_page, $per_page_values) ? $per_page : 6;
 
-
-    public function products($sort_by) {
+        $sort_by_values = ['price-asc', 'price-desc'];
+        $sort_by = in_array($sort_by, $sort_by_values) ? $sort_by :$sort_by_values[0];
+    
         $sort_by_array = explode('-', $sort_by);
-        $sort_by_keys = ['price'];
-        $sort_by_values = ['asc', 'desc'];
 
-        $key = (in_array($sort_by_array[0], $sort_by_keys)) ? $sort_by_array[0] : 'price';
-        $value = (in_array($sort_by_array[1], $sort_by_values)) ? $sort_by_array[1] : 'asc';
+        $key =  $sort_by_array[0];
+        $value = $sort_by_array[1];
 
-        $products = Product::orderBy($key, $value)->paginate(24);
+        $products = Product::orderBy($key, $value)->paginate($per_page)->appends($request->except('page'));;
         $favourites = Auth::user()->favourites->pluck('id')->toArray();
-        return view('home.products', compact('products', 'favourites', 'sort_by'));
+
+        return view('home.index', compact('products', 'favourites', 'sort_by', 'per_page', 'per_page_values'));
     }
+
 }

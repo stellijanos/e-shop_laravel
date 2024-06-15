@@ -51,13 +51,13 @@
 
     }
 
-    function getProducts(submit) {
+    function sortProducts(submit) {
         const orderBy = submit.value;
         console.log(orderBy);
 
         const productList = document.getElementById('product-list');
 
-        axios.post(`{{url('/')}}/${orderBy}`)
+        axios.post(`{{url('/sort')}}/${orderBy}`)
         .then(response => {
             productList.innerHTML = response.data;
             
@@ -66,6 +66,22 @@
             console.log(error);
         }//
         );
+    }
+
+
+    function showPerPage(submit) {
+        const perPage = submit.value;
+        console.log(perPage);
+
+        productList = document.getElementById('product-list');
+
+        axios.post(`{{url('/per-page')}}/${perPage}`)
+        .then(response => {
+            productList.innerHTML = response.data;
+        })
+        .catch(error => {
+            console.log(error);
+        });
     }
 
 </script>

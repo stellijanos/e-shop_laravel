@@ -21,8 +21,7 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::get('/{sort_by?}', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::post('/{sort_by}',[\App\Http\Controllers\HomeController::class, 'products']);
+Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::prefix('account')->group(function() {
     Route::get('/', [App\Http\Controllers\User\UserController::class, 'index'])->name('account.index');
