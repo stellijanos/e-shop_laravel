@@ -4,7 +4,7 @@
         cursor:pointer;
     }
 </style>
-<form class="row mb-3" action="{{route('home')}}" method="get">
+<div class="row mb-3">
     <input type="hidden" name="search" value="{{$search}}">
     <div class="col-3">
         <div class=" input-group">
@@ -26,7 +26,7 @@
             </select>
         </div>
     </div>
-</form>
+</div>
 
 <div class="d-flex flex-row justify-content-start flex-wrap gap-5 mb-5">
     @foreach ($products as $product)

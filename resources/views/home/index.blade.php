@@ -8,27 +8,32 @@
         transform: scale(1.2);
     }
 
-    div.input-group, input[type="checkbox"] + label {
+    input[type="checkbox"], input[type="checkbox"]:hover + label {
         cursor: pointer;
         user-select: none;
     }
 
+
 </style>
-<div class="d-flex flex-direction-row">
-    <div class="col-2 accordion" style="padding:0 30px 0 10px; width:250px; " id="accordionPanelsStayOpenExample">
+<form class="d-flex flex-direction-row" action="{{route('home')}}" method="get">
+    <div class="col-2 accordion" style="padding:0 30px 0 10px; width:250px; " id="accordionPanelsStayOpenExample" id="filters">
         @foreach ($filters as $filter => $values)
+            @php 
+
+                $index_1 = $loop->index;
+            @endphp
             <div class="accordion-item">
                 <h2 class="accordion-header">
                     <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse-{{$loop->index}}" aria-expanded="true" aria-controls="panelsStayOpen-collapse-{{$loop->index}}">
-                        {{$filter}}
+                        {{ucfirst($filter)}}
                     </button>
                 </h2>
-                <div id="panelsStayOpen-collapse-{{$loop->index}}" class="accordion-collapse collapse show">
+                <div id="paneivtayOpen-collapse-{{$loop->index}}" class="accordion-collapse collapse show">
                     <div class="accordion-body">
-                        @foreach($values as $name) 
-                            <div class="input-group">
-                                <input type="checkbox" class="mx-2" name="{{$filter}}" id="{{$name}}" value="{{$name}}">
-                                <label for="{{$name}}">{{$name}}</label>
+                        @foreach($values as $value => $checked) 
+                            <div>
+                                <input type="checkbox" class="mx-2 form-check-input" name="{{$filter}}[]" id="{{$value}}-{{$index_1}}-{{$loop->index}}" value="{{$value}}" {{$checked}} onchange="this.form.submit()">
+                                <label for="{{$value}}-{{$index_1}}-{{$loop->index}}">{{$value}}</label>
                             </div>
                         @endforeach
                     </div>
@@ -39,7 +44,7 @@
     <div class="col-10 row align-self-start" id="product-list">
         @include('home.products')
     </div>
-</div>
+</form>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
 

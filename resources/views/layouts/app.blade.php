@@ -52,12 +52,16 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav me-auto">
-                        <form class="input-group" action="{{route('home')}}" method="get">
-                            <input type="search" class="form-control" style="width:25vw;" value="{{$search}}" name="search" id="search-string" placeholder="Search items...">
-                            <button class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></button>
-                        </form>
-                    </ul>
+
+                    @if(!str_contains(url()->current(),url('/admin')))
+                        <ul class="navbar-nav me-auto">
+                            <form class="input-group" action="{{route('home')}}" method="get">
+                                <input type="search" class="form-control" style="width:25vw;" value="{{$search}}" name="search" id="search-string" placeholder="Search items...">
+                                <button class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></button>
+                            </form>
+                            
+                        </ul>
+                    @endif
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
@@ -98,12 +102,14 @@
                                     </form>
                                 </div>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href=""><i class="fa-solid fa-heart"></i> Favourites</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href=""><i class="fa-solid fa-cart-shopping"></i> Shopping Cart</a>
-                            </li>
+                            @if(!str_contains(url()->current(),url('/admin')))
+                                <li class="nav-item">
+                                    <a class="nav-link" href=""><i class="fa-solid fa-heart"></i> Favourites</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href=""><i class="fa-solid fa-cart-shopping"></i> Shopping Cart</a>
+                                </li>
+                            @endif
                         @endguest
                     </ul>
                 </div>
