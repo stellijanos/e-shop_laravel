@@ -8,27 +8,35 @@
         transform: scale(1.2);
     }
 
-    input[type="checkbox"] + label {
-        cursor:pointer;
+    div.input-group, input[type="checkbox"] + label {
+        cursor: pointer;
         user-select: none;
     }
 
 </style>
 <div class="d-flex flex-direction-row">
-    <div class="col-2 shadow rounded" style="padding:0 30px 30px; width:200px; margin-right:30px" id="filters">
-        <p class="fs-2 text-center fw-bold mb-0 pb-0">Filters</p>
-        
+    <div class="col-2 accordion" style="padding:0 30px 0 10px; width:250px; " id="accordionPanelsStayOpenExample">
         @foreach ($filters as $filter => $values)
-            {{$filter}}
-            @foreach($values as $name) 
-                <div class="input-group">
-                    <input type="checkbox" class="mx-2" name="{{$filter}}" id="{{$name}}" value="{{$name}}">
-                    <label for="{{$name}}">{{$name}}</label>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse-{{$loop->index}}" aria-expanded="true" aria-controls="panelsStayOpen-collapse-{{$loop->index}}">
+                        {{$filter}}
+                    </button>
+                </h2>
+                <div id="panelsStayOpen-collapse-{{$loop->index}}" class="accordion-collapse collapse show">
+                    <div class="accordion-body">
+                        @foreach($values as $name) 
+                            <div class="input-group">
+                                <input type="checkbox" class="mx-2" name="{{$filter}}" id="{{$name}}" value="{{$name}}">
+                                <label for="{{$name}}">{{$name}}</label>
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
-            @endforeach
+            </div>
         @endforeach
     </div>
-    <div class="col-10 row" id="product-list">
+    <div class="col-10 row align-self-start" id="product-list">
         @include('home.products')
     </div>
 </div>
