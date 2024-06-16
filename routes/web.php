@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
  
 Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/favourites', [App\Http\Controllers\HomeController::class, 'favourites'])->name('favourites');
 
 Route::prefix('account')->group(function() {
     Route::get('/', [App\Http\Controllers\User\UserController::class, 'index'])->name('account.index');

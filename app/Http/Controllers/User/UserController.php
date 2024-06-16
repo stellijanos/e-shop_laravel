@@ -151,6 +151,12 @@ class UserController extends Controller
         }
     }
 
+
+    public function updateShowFavourites(Product $product) {
+        
+    }
+
+
     public function addToCart(Product $product) {
         if (!$product) {
             return response()->json(['response' => 'not-found']);

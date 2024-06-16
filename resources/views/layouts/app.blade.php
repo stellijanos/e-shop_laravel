@@ -56,7 +56,7 @@
                     @if(!str_contains(url()->current(),url('/admin')))
                         <ul class="navbar-nav me-auto">
                             <form class="input-group" action="{{route('home')}}" method="get">
-                                <input type="search" class="form-control" style="width:25vw;" value="{{$search}}" name="search" id="search-string" placeholder="Search items...">
+                                <input type="search" class="form-control" style="width:25vw;" value="{{$search ?? ''}}" name="search" id="search-string" placeholder="Search items...">
                                 <button class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></button>
                             </form>
                             
@@ -102,9 +102,9 @@
                                     </form>
                                 </div>
                             </li>
-                            @if(!str_contains(url()->current(),url('/admin')))
+                            @if(!str_contains(url()->current(), url('/admin')))
                                 <li class="nav-item">
-                                    <a class="nav-link" href=""><i class="fa-solid fa-heart"></i> Favourites</a>
+                                    <a class="nav-link" href="{{route('favourites')}}"><i class="fa-solid fa-heart"></i> Favourites</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href=""><i class="fa-solid fa-cart-shopping"></i> Shopping Cart</a>
