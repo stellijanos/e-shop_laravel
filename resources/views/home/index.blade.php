@@ -8,21 +8,16 @@
         transform: scale(1.2);
     }
 
-    .vertical-separator {
-        border-left: 1px solid #fff; 
-        height: 100%; 
-    }
-
     input[type="checkbox"] + label {
         cursor:pointer;
         user-select: none;
     }
 
 </style>
-<div class="row w-100">
-    <div class="col-2 shadow" style="padding-left:30px; width:250px" id="filters">
-        <p class="fs-2 text-center fw-bold">Filters</p>
-        <hr>
+<div class="d-flex flex-direction-row">
+    <div class="col-2 shadow rounded" style="padding:0 30px 30px; width:200px; margin-right:30px" id="filters">
+        <p class="fs-2 text-center fw-bold mb-0 pb-0">Filters</p>
+        
         @foreach ($filters as $filter => $values)
             {{$filter}}
             @foreach($values as $name) 
@@ -33,8 +28,7 @@
             @endforeach
         @endforeach
     </div>
-    <div class="col-1 vertical-separator"></div>
-    <div class="col-9" id="product-list">
+    <div class="col-10 row" id="product-list">
         @include('home.products')
     </div>
 </div>
