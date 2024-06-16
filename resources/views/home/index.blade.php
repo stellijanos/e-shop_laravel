@@ -13,22 +13,20 @@
         user-select: none;
     }
 
-
 </style>
 <form class="d-flex flex-direction-row" action="{{route('home')}}" method="get">
     <div class="col-2 accordion" style="padding:0 30px 0 10px; width:250px; " id="accordionPanelsStayOpenExample" id="filters">
         @foreach ($filters as $filter => $values)
             @php 
-
                 $index_1 = $loop->index;
             @endphp
             <div class="accordion-item">
                 <h2 class="accordion-header">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse-{{$loop->index}}" aria-expanded="true" aria-controls="panelsStayOpen-collapse-{{$loop->index}}">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse-{{$index_1}}" aria-expanded="true" aria-controls="panelsStayOpen-collapse-{{$index_1}}">
                         {{ucfirst($filter)}}
                     </button>
                 </h2>
-                <div id="paneivtayOpen-collapse-{{$loop->index}}" class="accordion-collapse collapse show">
+                <div id="panelsStayOpen-collapse-{{$index_1}}" class="accordion-collapse collapse show">
                     <div class="accordion-body">
                         @foreach($values as $value => $checked) 
                             <div>
