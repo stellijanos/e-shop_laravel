@@ -21,8 +21,10 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
  
-Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/favourites', [App\Http\Controllers\HomeController::class, 'favourites'])->name('favourites');
+Route::get('/', [\App\Http\Controllers\User\HomeController::class, 'index'])->name('home');
+Route::get('/favourites', [App\Http\Controllers\User\HomeController::class, 'favourites'])->name('favourites');
+Route::get('/product/{product}',[App\Http\Controllers\User\ProductController::class, 'show'])->name('product');
+
 
 Route::prefix('account')->group(function() {
     Route::get('/', [App\Http\Controllers\User\UserController::class, 'index'])->name('account.index');

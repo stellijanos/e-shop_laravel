@@ -9,6 +9,8 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
+    <link rel="shortcut icon" href="{{asset('public/images/icons/shopping.png')}}" type="image/x-icon">
+
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
@@ -43,8 +45,11 @@
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
-                    </a>
+                    <div class="d-flex align-items-center">
+                        <img src="{{asset('public/images/icons/shopping-cart.png')}}" style="width:20px; height:20px; margin-top:-5px">
+                        <span> {{ config('app.name', 'Laravel') }}</span>
+                    </div>
+                </a>
                 <div class="vr" style="margin-right:10px"></div>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>

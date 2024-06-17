@@ -1,19 +1,6 @@
 @extends('layouts.app')
 @section('content')
-<style>
-    i {
-        cursor:pointer;
-    }
-    i:active {
-        transform: scale(1.2);
-    }
-
-    input[type="checkbox"], input[type="checkbox"]:hover + label {
-        cursor: pointer;
-        user-select: none;
-    }
-
-</style>
+@include('product.css')
 <form class="d-flex flex-direction-row" action="{{route('home')}}" method="get">
     <div class="col-2 accordion" style="padding:0 30px 0 10px; width:250px; " id="accordionPanelsStayOpenExample" id="filters">
         @foreach ($filters as $filter => $values)
@@ -43,5 +30,5 @@
         @include('home.products')
     </div>
 </form>
-@include('home.product-handling')
+@include('product.js-handling')
 @endsection
