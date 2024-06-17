@@ -23,9 +23,8 @@
 </form>
 <div class="d-flex flex-row justify-content-start flex-wrap gap-5 mb-5" id="product-list">
     @foreach ($products as $product)
-        <a href="{{ route('product', ['product' => $product->id]) }}">
-
-            <div class="product-item bg-body-secondary text-light-emphasis rounded text-center shadow pt-3" style="width:150px">
+        <div class="product-item bg-body-secondary text-light-emphasis rounded text-center shadow pt-3" style="width:150px">
+            <a href="{{ route('product', ['product' => $product->id]) }}"></a>    
                 <img class="rounded" src="{{asset('public/images/products/'.$product->image)}}" style="width:120px; height:120px" alt="{{$product->name}}-image">
                 <figcaption>
                     <p class="text-truncate fs-3 fw-bold m-0" style="max-width: 150px;">{{$product->name}}</p>
@@ -37,8 +36,8 @@
                         <a class="col-4 text-center" data-product-id="{{$product->id}}"onclick="addToCart(this)"><i class="fa-solid fa-cart-plus fa-2x"></i></a>
                         </div>
                 </figcaption>
-            </div>
-        </a>
+            </a>
+        </div>
     @endforeach
 </div>
 <div class="text-center">

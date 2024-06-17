@@ -2,7 +2,8 @@
 @section('content')
 @include('product.css')
 
-<div class="container align-self-start">
+
+<div class="container ">
     @if($products->count() === 0 )
         @include('home.no-products')
     @else   
