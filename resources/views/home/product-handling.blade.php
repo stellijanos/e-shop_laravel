@@ -2,11 +2,6 @@
 
 <script>
 
-
-
-
-
-
     function favourite(button) {
 
         return new Promise((resolve, reject)=> {
@@ -48,34 +43,6 @@
         })
         .catch(error => {});
 
-    }
-
-    function sortProducts(submit) {
-        const orderBy = submit.value;
-
-        const productList = document.getElementById('product-list');
-
-        axios.post(`{{url('/sort')}}/${orderBy}`)
-        .then(response => {
-            productList.innerHTML = response.data;
-            
-        })
-        .catch(error => {}
-        );
-    }
-
-
-    function showPerPage(submit) {
-        const perPage = submit.value;
-
-        productList = document.getElementById('product-list');
-
-        axios.post(`{{url('/per-page')}}/${perPage}`)
-        .then(response => {
-            productList.innerHTML = response.data;
-        })
-        .catch(error => {
-        });
     }
 
 </script>
