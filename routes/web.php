@@ -25,7 +25,7 @@ Route::get('/', [\App\Http\Controllers\User\HomeController::class, 'index'])->na
 Route::get('/favourites', [App\Http\Controllers\User\HomeController::class, 'favourites'])->name('favourites');
 Route::get('/cart', [App\Http\Controllers\User\HomeController::class, 'cart'])->name('cart');
 Route::get('/product/{product}',[App\Http\Controllers\User\ProductController::class, 'show'])->name('product');
-
+Route::post('/user/cart/{product}/quantity/{quantity}',[App\Http\Controllers\User\UserController::class, 'changeQuantity']);
 
 Route::prefix('account')->group(function() {
     Route::get('/', [App\Http\Controllers\User\UserController::class, 'index'])->name('account.index');

@@ -11,7 +11,6 @@
         gap:1rem;
     }
 
-
     div.card > img {
         width:150px;
         height:150px;
@@ -32,10 +31,38 @@
 </style>
 
 <div id="cart">
-    @if($cart->count() === 0 )
-        @include('home.no-products')
-    @else   
-        @include('home.cart.products')
-    @endif
+    @include('home.cart.products')
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+
+
+// $(document).ready(function() {
+    const token = $('meta[name="csrf-token"]').attr('content');
+
+    function changeQuantity(button) {
+        const productId = $(button).data('product-id');
+        const quantity = $(button).data('quantity');
+        const cart = $('#cart');
+
+        $.ajax({
+            url: `{{url('/user/cart')}}/${productId}/quantity/${quantity}`,
+            type: 'POST',
+            data: {
+                _token: token
+            },
+            success: function(response) {
+                cart.html(response);
+            },
+            error: function(xhr) {
+                cart.html(xhr.responseText);
+            }
+        });
+    }
+
+// });
+
+
+</script>
 @endsection

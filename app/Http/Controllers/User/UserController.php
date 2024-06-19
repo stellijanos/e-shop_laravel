@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -156,7 +157,6 @@ class UserController extends Controller
         
     }
 
-
     public function addToCart(Product $product) {
         if (!$product) {
             return response()->json(['response' => 'not-found']);
@@ -175,5 +175,21 @@ class UserController extends Controller
             $cartItem->save();
         }
         return response()->json(['response' => 'added']);
+    }
+
+
+    public function changeQuantity(Product $product, int $quantity) {
+        if (!$product) {
+            return response()->json('not-found');
+        }
+        $user = Auth::user();
+
+        $cartItem = $user->shoppingCart()->where('product_id', $product->id)->first();
+        if ($cartItem) {
+            $user->shoppingCart()->where('product_id', $product->id)->update(['quantity' => $quantity]);
+        }
+
+        $cart = Auth::user()->shoppingCart()->with('product')->get();
+        return view('home.cart.products', compact('cart'));
     }
 }
