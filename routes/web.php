@@ -23,6 +23,7 @@ Auth::routes();
  
 Route::get('/', [\App\Http\Controllers\User\HomeController::class, 'index'])->name('home');
 Route::get('/favourites', [App\Http\Controllers\User\HomeController::class, 'favourites'])->name('favourites');
+Route::get('/cart', [App\Http\Controllers\User\HomeController::class, 'cart'])->name('cart');
 Route::get('/product/{product}',[App\Http\Controllers\User\ProductController::class, 'show'])->name('product');
 
 

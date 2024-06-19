@@ -49,9 +49,9 @@
 
 
 </head>
-<body>
+<body class="bg-secondary-subtle">
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-md navbar-light bg-transparent shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     <div class="d-flex align-items-center">
@@ -121,7 +121,7 @@
                                     <a class="nav-link" href="{{route('favourites')}}"><i class="fa-solid fa-heart"></i> Favourites</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href=""><i class="fa-solid fa-cart-shopping"></i> Shopping Cart</a>
+                                    <a class="nav-link" href="{{route('cart')}}"><i class="fa-solid fa-cart-shopping"></i> Shopping Cart</a>
                                 </li>
                             @endif
                         @endguest
