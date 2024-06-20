@@ -182,10 +182,25 @@ class UserController extends Controller
         if (!$product) {
             return response()->json('not-found');
         }
+
+        if (!$quantity < 0) {
+            return response()->json('invalid-quantity');
+        }
+
         $user = Auth::user();
 
         $cartItem = $user->shoppingCart()->where('product_id', $product->id)->first();
-        if ($cartItem) {
+        if (!$cartItem) {
+            return response()->json('not-found');
+        }
+        
+        if ($quantity > $cartItem->product->stock) {
+            return response()->json('invalid-quantity');
+        }
+
+        if ($quantity === 0) {
+            $user->shoppingCart()->where('product_id', $product->id)->delete();
+        } else {
             $user->shoppingCart()->where('product_id', $product->id)->update(['quantity' => $quantity]);
         }
 

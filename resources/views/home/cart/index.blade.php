@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 
-
+@if($cart->count() !== 0 )
 <style>
     #cart {
         display:flex;
@@ -29,40 +29,42 @@
     }
 
 </style>
+@endif
 
 <div id="cart">
     @include('home.cart.products')
 </div>
 
+@if($cart->count() !== 0 )
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 
+const token = $('meta[name="csrf-token"]').attr('content');
 
-// $(document).ready(function() {
-    const token = $('meta[name="csrf-token"]').attr('content');
+function changeQuantity(button) {
+    const productId = $(button).data('product-id');
+    const quantity = $(button).data('quantity');
+    const cart = $('#cart');
 
-    function changeQuantity(button) {
-        const productId = $(button).data('product-id');
-        const quantity = $(button).data('quantity');
-        const cart = $('#cart');
-
-        $.ajax({
-            url: `{{url('/user/cart')}}/${productId}/quantity/${quantity}`,
-            type: 'POST',
-            data: {
-                _token: token
-            },
-            success: function(response) {
-                cart.html(response);
-            },
-            error: function(xhr) {
-                cart.html(xhr.responseText);
-            }
-        });
-    }
-
-// });
+    $.ajax({
+        url: `{{url('/user/cart')}}/${productId}/quantity/${quantity}`,
+        type: 'POST',
+        data: {
+            _token: token
+        },
+        success: function(response) {
+            cart.html(response);
+        },
+        error: function(xhr) {
+            cart.html(xhr.responseText);
+        }
+    });
+}
 
 
 </script>
+
+@endif
+
 @endsection

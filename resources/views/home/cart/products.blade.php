@@ -22,10 +22,13 @@
                         <p class="text-truncate" style="max-width:80%">{{$item->product->description}}</p>
 
                         <div class="quantity d-flex flex-direction-row align-items-baseline">
-                            <button class="btn bg-secondary-subtle rounded-circle" data-product-id="{{$item->product->id}}" {{$item->quantity === 1 ? 'disabled' : ''}} data-quantity="{{$item->quantity-1}}" onclick="changeQuantity(this)"><i class="fa-solid fa-minus"></i></button>
+                            <button class="btn bg-secondary-subtle rounded-circle" data-product-id="{{$item->product->id}}" {{$item->quantity === 1 ? 'disabled style="user-select:disabled;"' : ''}} data-quantity="{{$item->quantity-1}}" onclick="changeQuantity(this)"><i class="fa-solid fa-minus"></i></button>
                             <p style="width:40px!important" class="text-center">{{$item->quantity}}</p>
                             <button class="btn bg-secondary-subtle rounded-circle" data-product-id="{{$item->product->id}}" {{$item->quantity === $item->product->stock ? 'disabled' : ''}} data-quantity="{{$item->quantity+1}}" onclick="changeQuantity(this)"><i class="fa-solid fa-plus"></i></button>
                         </div>
+                    </div>
+                    <div class="text-end">
+                        <p class="text-end text-decoration-underline" style="cursor:pointer" data-product-id="{{$item->product->id}}" data-quantity="0" onclick="changeQuantity(this)">remote item</p>
                     </div>
                 </div>
             </div>
