@@ -41,7 +41,10 @@ class HomeController extends Controller
             
         ] + $this->productService->serializeFilters($applied_filters));
 
-        $favourites = Auth::user()->favourites->pluck('id')->toArray();
+        $favourites = [];
+        if (Auth::check()) {
+            $favourites = Auth::user()->favourites->pluck('id')->toArray();
+        }
 
         return view('home.index', compact(
             'products', 

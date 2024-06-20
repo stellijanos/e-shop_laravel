@@ -30,5 +30,8 @@
         @include('home.products')
     </div>
 </form>
-@include('product.js-handling')
+
+@auth
+    @include('product.js-handling')
+@endauth
 @endsection

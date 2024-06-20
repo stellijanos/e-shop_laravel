@@ -14,10 +14,11 @@ class ProductController extends Controller
             abort(404);
         }
 
-        $favourite_products_ids = Auth::user()->favourites()->pluck('id')->toArray();
-
-        $isFavourite = in_array($product->id, $favourite_products_ids);
-
+        $isFavourite = false;
+        if (Auth::check()) {
+            $favourite_products_ids = Auth::user()->favourites()->pluck('id')->toArray();
+            $isFavourite = in_array($product->id, $favourite_products_ids);
+        }
         return view('product.show', compact('product', 'isFavourite'));
     }
 }

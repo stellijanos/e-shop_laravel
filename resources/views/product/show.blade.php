@@ -37,5 +37,7 @@
     </div>
 </div>
 
-@include('product.js-handling')
+@auth
+    @include('product.js-handling')
+@endauth
 @endsection
