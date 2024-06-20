@@ -27,8 +27,9 @@
                             <button class="btn bg-secondary-subtle rounded-circle" data-product-id="{{$item->product->id}}" {{$item->quantity === $item->product->stock ? 'disabled' : ''}} data-quantity="{{$item->quantity+1}}" onclick="changeQuantity(this)"><i class="fa-solid fa-plus"></i></button>
                         </div>
                     </div>
-                    <div class="text-end">
-                        <p class="text-end text-decoration-underline" style="cursor:pointer" data-product-id="{{$item->product->id}}" data-quantity="0" onclick="changeQuantity(this)">remote item</p>
+                    <div class="summary-info">
+                        <span>({{$item->product->stock}} available left on stock)</span>
+                        <span class="text-end text-decoration-underline mx-3" style="cursor:pointer" data-product-id="{{$item->product->id}}" data-quantity="0" onclick="changeQuantity(this)">remote item</span>
                     </div>
                 </div>
             </div>
