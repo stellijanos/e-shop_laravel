@@ -27,7 +27,13 @@
         @endforeach
     </div>
     <div class="col-10 row align-self-start" id="product-list">
-        @include('home.products')
+        @if($products->count() === 0)
+            <div style="margin-left:-100px">
+                @include('home.no-products')
+            </div>
+        @else
+            @include('home.products')
+        @endif 
     </div>
 </form>
 
