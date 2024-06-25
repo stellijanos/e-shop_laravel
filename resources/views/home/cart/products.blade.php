@@ -12,7 +12,7 @@
                 $total_cost += $item->quantity * $item->product->price;
             @endphp
             <div class="card" style="display:flex; flex-direction:row; width:600px !important">
-                <img src="{{asset('public/images/products/'.$item->product->image)}}" class="card-img-top img-thumbnail" alt="{{$item->product->name}}">
+                <img src="{{asset('images/products/'.$item->product->image)}}" class="card-img-top img-thumbnail" alt="{{$item->product->name}}">
                 <div class="card-body">
                     <div class="summary-info">
                         <a href="{{url('/product/'.$item->product->id)}}" class="text-dark"><h5 class="card-title fw-bold">{{$item->product->name}}</h5></a>

@@ -48,7 +48,7 @@
                                     @foreach ($products as $product)
                                         <tr>
                                             <td>{{$product->id}}</td>
-                                            <td><img class="rounded" width="100px" src="{{asset('public/images/products').'/'.$product->image}}" alt="no-image"></td>
+                                            <td><img class="rounded" width="100px" src="{{asset('images/products').'/'.$product->image}}" alt="no-image"></td>
                                             <td class="text-truncate" style="max-width: 150px;">{{$product->name}}</td>
                                             <td class="text-truncate" style="max-width: 150px;"><a href="{{url('admin/category')}}/{{$product->category->id}}">{{$product->category->name}}</a></td>
                                             <td>{{$product->price}}</td>    

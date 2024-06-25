@@ -9,7 +9,7 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <link rel="shortcut icon" href="{{asset('public/images/icons/shopping.png')}}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{asset('images/icons/shopping.png')}}" type="image/x-icon">
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
@@ -55,7 +55,7 @@
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     <div class="d-flex align-items-center">
-                        <img src="{{asset('public/images/icons/shopping-cart.png')}}" style="width:20px; height:20px; margin-top:-5px">
+                        <img src="{{asset('images/icons/shopping-cart.png')}}" style="width:20px; height:20px; margin-top:-5px">
                         <span> {{ config('app.name', 'Laravel') }}</span>
                     </div>
                 </a>

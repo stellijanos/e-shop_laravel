@@ -32,7 +32,7 @@
                     <div class="details mx-3 mb-3 row">
                         
                         <div class="image col-lg-6 mx-3" style="width:300px"> 
-                            <img src="{{asset('public/images/products')}}/{{$product->image}}" alt="{{$product->name}}-image" style="width:300px">
+                            <img src="{{asset('images/products')}}/{{$product->image}}" alt="{{$product->name}}-image" style="width:300px">
                         </div>
                         <div class="col-lg-6 mt-3">
                             <p>Product #{{$product->id}}</p>

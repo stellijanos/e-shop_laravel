@@ -18,37 +18,37 @@
                         
                         <div class="col-md-2 text-center">
                             <a href="{{url('admin/employee')}}" class="nav-link option">
-                                <img src="{{asset('public/images/employees.png')}}" alt="employees" width="100px;">
+                                <img src="{{asset('images/employees.png')}}" alt="employees" width="100px;">
                                 <p>Employees</p>
                             </a>
                         </div>
                         <div class="col-md-2 text-center">
                             <a href="{{url('admin/customer')}}" class="nav-link option">
-                                <img src="{{asset('public/images/users.png')}}" alt="users" width="100px;">
+                                <img src="{{asset('images/users.png')}}" alt="users" width="100px;">
                                 <p>Customers</p>
                             </a>
                         </div>
                         <div class="col-md-2 text-center">
                             <a href="{{url('admin/category')}}" class="nav-link option">
-                                <img src="{{asset('public/images/categories.png')}}" alt="products" width="100px;">
+                                <img src="{{asset('images/categories.png')}}" alt="products" width="100px;">
                                 <p>Categories</p>
                             </a>
                         </div>
                         <div class="col-md-2 text-center">
                             <a href="{{url('admin/product')}}" class="nav-link option">
-                                <img src="{{asset('public/images/products.png')}}" alt="products" width="100px;">
+                                <img src="{{asset('images/products.png')}}" alt="products" width="100px;">
                                 <p>Products</p>
                             </a>
                         </div>
                         <div class="col-md-2 text-center">
                             <a href="" class="nav-link option">
-                                <img src="{{asset('public/images/orders.png')}}" alt="orders" width="100px;">
+                                <img src="{{asset('images/orders.png')}}" alt="orders" width="100px;">
                                 <p>Orders</p>
                             </a>
                         </div>
                         <div class="col-md-2 text-center">
                             <a href="" class="nav-link option">
-                                <img src="{{asset('public/images/reports.png')}}" alt="reports" width="100px;">
+                                <img src="{{asset('images/reports.png')}}" alt="reports" width="100px;">
                                 <p>Reports</p>
                             </a>
                         </div>

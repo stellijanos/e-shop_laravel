@@ -77,5 +77,5 @@
         </div>
     </div>
 </div>
-<script src="{{asset('public/js/admin/product.js')}}"></script>
+<script src="{{asset('js/admin/product.js')}}"></script>
 @endsection

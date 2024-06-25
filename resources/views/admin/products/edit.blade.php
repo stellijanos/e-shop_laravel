@@ -58,7 +58,7 @@
                             <input type="number" min="0" class="form-control" id="stock" name="stock" value="{{$product->stock}}" placeholder="Nr. products on stock" required>
                         </div>
                         <div class="mb-3 w-50 text-center">
-                            <img src="{{asset('public/images/products')}}/{{$product->image}}" class="rounded" width="300px" alt="{{$product->name}}-image">
+                            <img src="{{asset('images/products')}}/{{$product->image}}" class="rounded" width="300px" alt="{{$product->name}}-image">
                             
                             @if($product->image !== 'no-image.png')
                                 <figcaption class="text-center mt-3">
@@ -91,5 +91,5 @@
         </div>
     </div>
 </div>
-<script src="{{asset('public/js/admin/product.js')}}"></script>
+<script src="{{asset('js/admin/product.js')}}"></script>
 @endsection
