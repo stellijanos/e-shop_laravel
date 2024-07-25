@@ -24,6 +24,7 @@ class User extends Authenticatable
         'firstname',
         'lastname',
         'email',
+        'phone',
         'password',
     ];
 
@@ -47,25 +48,30 @@ class User extends Authenticatable
     ];
 
 
-    public function addresses(): HasMany {
+    public function addresses(): HasMany
+    {
         return $this->hasMany(Address::class);
     }
 
-    public function orders(): HasMany {
+    public function orders(): HasMany
+    {
         return $this->hasMany(Order::class);
     }
 
-    public function reviews(): HasMany {
+    public function reviews(): HasMany
+    {
         return $this->hasMany(Review::class);
     }
 
-    public function favourites(): BelongsToMany {
+    public function favourites(): BelongsToMany
+    {
         return $this->belongsToMany(Product::class, 'favourites', 'user_id', 'product_id');
     }
-    
 
-    public function shoppingCart(): HasMany {
+
+    public function shoppingCart(): HasMany
+    {
         return $this->hasMany(ShoppingCartItem::class);
     }
-   
+
 }

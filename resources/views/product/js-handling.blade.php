@@ -4,22 +4,22 @@
 
     function favourite(button) {
 
-        return new Promise((resolve, reject)=> {
+        return new Promise((resolve, reject) => {
             const productId = button.getAttribute('data-product-id');
 
             axios.post(`{{url('/account/favourite')}}/${productId}`)
-            .then(response => {
-                reloadFavourites();
-                let responseText = response.data.response;
-                if (responseText === "added") {
-                    button.innerHTML = '<i class="fa-solid fa-heart fa-2x" style="color:red;"></i>';
-                } else if (responseText === "removed") {
-                    button.innerHTML = '<i class="fa-regular fa-heart fa-2x" ></i>'
-                }
-            })
-            .catch(error => {
-                //
-            });
+                .then(response => {
+                    reloadFavourites();
+                    let responseText = response.data.response;
+                    if (responseText === "added") {
+                        button.innerHTML = '<i class="fa-solid fa-heart fa-2x" style="color:red;"></i>';
+                    } else if (responseText === "removed") {
+                        button.innerHTML = '<i class="fa-regular fa-heart fa-2x" ></i>'
+                    }
+                })
+                .catch(error => {
+                    //
+                });
         });
     }
 
@@ -35,13 +35,13 @@
         button.innerHTML = '<i class="fa-solid fa-check fa-2x"></i>';
 
         axios.post(`{{url('/account/add-to-cart')}}/${productId}`)
-        .then(response => {
-            let responseText = response.data.response;
-            if(responseText === "added") {
-                button.innerHTML = '<i class="fa-solid fa-cart-plus fa-2x"></i>';
-            }
-        })
-        .catch(error => {});
+            .then(response => {
+                let responseText = response.data.response;
+                if (responseText === "added") {
+                    button.innerHTML = '<i class="fa-solid fa-cart-plus fa-2x"></i>';
+                }
+            })
+            .catch(error => { });
 
     }
 

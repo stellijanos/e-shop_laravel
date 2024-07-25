@@ -4,17 +4,18 @@
 
 <style>
     #product {
-        display:flex;
-        flex-direction:row;
-        flex-wrap:wrap;
-        gap:2rem;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 2rem;
     }
 </style>
 @php
     $favouriteIcon = $isFavourite ? '<i class="fa-solid fa-heart fa-2x" style="color:red;"></i>' : '<i class="fa-regular fa-heart fa-2x" ></i>'; 
 @endphp
 <div class="container" id="product">
-    <img class="rounded img-fluid" src="{{asset('images/products/'.$product->image)}}" alt="{{$product->name}}-image" style="max-width:500px">
+    <img class="rounded img-fluid" src="{{asset('images/products/' . $product->image)}}" alt="{{$product->name}}-image"
+        style="max-width:500px">
     <div class="card" style="width:500px">
         <div class="card-body" style="padding-left:30px;">
             <p class="fs-1 fw-bold m-0">{{$product->name}}</p>
@@ -24,7 +25,7 @@
                 <button class="btn btn-white" data-product-id="{{$product->id}}" onclick="favourite(this)">
                     <?=$favouriteIcon?>
                 </button>
-                <button class="btn btn-white" data-product-id="{{$product->id}}"onclick="addToCart(this)">
+                <button class="btn btn-white" data-product-id="{{$product->id}}" onclick="addToCart(this)">
                     <i class="fa-solid fa-cart-plus fa-2x"></i>
                 </button>
             </div>

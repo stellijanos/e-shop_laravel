@@ -40,6 +40,10 @@
                             <label for="email">Email</label>
                         </div>
                         <div class="form-floating mb-3 w-50">
+                            <input class="form-control" type="text" id="phone" autocomplete="username" name="phone" value="{{auth()->user()->phone}}" placeholder="Email">
+                            <label for="phone">Phone</label>
+                        </div>
+                        <div class="form-floating mb-3 w-50">
                             <input class="form-control" type="password" id="password" autocomplete="current-password" name="password" placeholder="Firstname">
                             <label for="password">Password</label>
                         </div>
