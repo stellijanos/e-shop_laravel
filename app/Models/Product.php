@@ -47,4 +47,9 @@ class Product extends Model
         return $this->belongsToMany(User::class, 'shopping_session_products')->withPivot('quantity');
     }
 
+
+    public static function categories(array $ids) {
+        return count($ids) ? self::whereIn('category_id',$ids) : self::query();
+    }
+
 }

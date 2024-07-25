@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductSpec;
 use App\Services\ProductService;
@@ -14,7 +15,8 @@ class HomeController extends Controller
 
     private $productService;
 
-    public function __construct(ProductService $productService) {
+    public function __construct(ProductService $productService)
+    {
         $this->productService = $productService;
     }
 
@@ -26,51 +28,92 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        $sort_by = $request->input('sort_by', 'price-asc');
-        $per_page = (int) $request->input('per_page', 6);
-        $search = $request->input('search', '');
 
-        [$filters, $applied_filters] = $this->productService->getAllFilters($request->all());
-        $per_page = $this->productService->getPerPage($per_page);
-        $query = $this->productService->getProducts($sort_by, $applied_filters);
+        // $categories = collect($request->input('categories', []))->pluck();
 
-        $products = $query->paginate($per_page)->appends([
-            'sort_by' => $sort_by,
-            'per_page' => $per_page,
-            'search' => $search,
-            
-        ] + $this->productService->serializeFilters($applied_filters));
+        $checked_categories = $request->input('categories', []);
 
+        print_r($checked_categories);
+
+
+        $products = Product::categories($checked_categories)->paginate(5);
         $favourites = [];
         if (Auth::check()) {
             $favourites = Auth::user()->favourites->pluck('id')->toArray();
         }
 
-        return view('home.index', compact(
-            'products', 
-            'favourites', 
-            'search', 
-            'sort_by', 
-            'per_page',
-            'filters',
-            'applied_filters'
-        ) + [
-            'per_page_values' => $this->productService->PER_PAGE_VALUES,
-            // 'sort_by_values' => $this->SORT_BY_VALUES
-        ]);
+        $categories = Category::orderBy('name')->get()->pluck('name', 'id')->toArray();
+
+        print_r($categories);
+
+        $filters['category'] = $categories;
+
+        return view(
+            'home.index-new',
+            compact(
+                'products',
+                'favourites',
+                'filters',
+                'checked_categories'
+            )
+        );
     }
 
 
-    public function favourites(Request $request) {
+
+    // 
+    // public function index(Request $request) {
+    // {
+    //     $sort_by = $request->input('sort_by', 'price-asc');
+    //     $per_page = (int) $request->input('per_page', 6);
+    //     $search = $request->input('search', '');
+    //     $categories = $request->input('cateogory', '');
+
+    //     [$filters, $applied_filters] = $this->productService->getAllFilters($request->all());
+    //     $per_page = $this->productService->getPerPage($per_page);
+    //     $query = $this->productService->getProducts($sort_by, $applied_filters);
+
+    //     $products = $query->paginate($per_page)->appends([
+    //         'sort_by' => $sort_by,
+    //         'per_page' => $per_page,
+    //         'search' => $search,
+    //         'categories' => $categories
+
+    //     ] + $this->productService->serializeFilters($applied_filters));
+
+    //     $favourites = [];
+    //     if (Auth::check()) {
+    //         $favourites = Auth::user()->favourites->pluck('id')->toArray();
+    //     }
+
+
+
+    //     return view('home.index', compact(
+    //         'products',
+    //         'favourites',
+    //         'search',
+    //         'sort_by',
+    //         'per_page',
+    //         'filters',
+    //         'applied_filters',
+    //     ) + [
+    //         'per_page_values' => $this->productService->PER_PAGE_VALUES,
+    //         // 'sort_by_values' => $this->SORT_BY_VALUES
+    //     ]);
+    // }
+
+
+    public function favourites(Request $request)
+    {
 
         $sort_by = $request->input('sort_by', 'price-asc');
         $per_page = (int) $request->input('per_page', 6);
         $per_page = $this->productService->getPerPage($per_page);
 
-        [$order_key, $order_value] =  $this->productService->getOrderBy($sort_by);
+        [$order_key, $order_value] = $this->productService->getOrderBy($sort_by);
 
-        $query =  Auth::user()->favourites()->orderBy($order_key, $order_value);
-    
+        $query = Auth::user()->favourites()->orderBy($order_key, $order_value);
+
         $products = $query->paginate($per_page)->appends([
             'sort_by' => $sort_by,
             'per_page' => $per_page
@@ -78,8 +121,8 @@ class HomeController extends Controller
 
         return view('home.favourites.index', compact(
             'products',
-            'sort_by', 
-            'per_page', 
+            'sort_by',
+            'per_page',
         ) + [
             'per_page_values' => $this->productService->PER_PAGE_VALUES,
             // 'sort_by_values' => $this->SORT_BY_VALUES
@@ -88,7 +131,8 @@ class HomeController extends Controller
 
 
 
-    public function cart() {
+    public function cart()
+    {
         $cart = Auth::user()->shoppingCart()->with('product')->get();
         return view('home.cart.index', compact('cart'));
     }
