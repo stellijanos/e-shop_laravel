@@ -29,7 +29,7 @@ class HomeController extends Controller
     public function index(Request $request)
     {
 
-
+        // get all the filters from the request
         $appliedFilters = $request->all();
 
         // get all the product specs grouped by name
@@ -40,7 +40,6 @@ class HomeController extends Controller
 
         // sort all the specs by key
         ksort($productSpecs);
-
 
         // get the applied filters that also exist
         $appliedFilters = array_intersect_key($appliedFilters, $productSpecs);
@@ -55,7 +54,7 @@ class HomeController extends Controller
         $checked_categories = Category::whereIn('name', $category_filter)->get();
 
         // create array from the id's of those categories
-        $checked_category_ids = $checked_categories->pluck('id')->toArray(); 
+        $checked_category_ids = $checked_categories->pluck('id')->toArray();
 
         // create array from the name of those categories
         $checked_category_names = $checked_categories->pluck('name')->toArray();

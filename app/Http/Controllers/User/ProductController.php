@@ -13,7 +13,7 @@ class ProductController extends Controller
         if (!$product) {
             abort(404);
         }
-
+        $product = $product->load('reviews');
         $isFavourite = false;
         if (Auth::check()) {
             $favourite_products_ids = Auth::user()->favourites()->pluck('id')->toArray();
