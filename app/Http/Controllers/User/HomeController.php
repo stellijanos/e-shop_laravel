@@ -29,32 +29,57 @@ class HomeController extends Controller
     public function index(Request $request)
     {
 
-        // $categories = collect($request->input('categories', []))->pluck();
-
-        $checked_categories = $request->input('categories', []);
-
-        print_r($checked_categories);
+        // print_r($request->all());
 
 
-        $products = Product::categories($checked_categories)->paginate(5);
-        $favourites = [];
-        if (Auth::check()) {
-            $favourites = Auth::user()->favourites->pluck('id')->toArray();
-        }
+        $appliedFilters = $request->all();
 
-        $categories = Category::orderBy('name')->get()->pluck('name', 'id')->toArray();
+        // get all the product specs grouped by name
+        $productSpecs = ProductSpec::getAllSpecsGroupedByName();
 
-        print_r($categories);
+        // add the name of all categories ordered by name as spec
+        $productSpecs['category'] = Category::orderBy('name')->get()->pluck('name')->toArray();
 
-        $filters['category'] = $categories;
+        // sort all the specs by key
+        ksort($productSpecs);
+
+        // print_r($productSpecs);
+
+        // get the applied filters that also exist
+        $appliedFilters = array_intersect_key($appliedFilters, $productSpecs);
+
+
+        // print_r($appliedFilters);
+        echo 'FILTERS:=> ';
+        print_r($appliedFilters);
+
+        $category_filter = $appliedFilters['category'] ?? [];
+        unset($appliedFilters['category']);
+        $checked_categories = Category::whereIn('name', $category_filter)->get();
+
+        $checked_category_ids = $checked_categories->pluck('id')->toArray();
+        $checked_category_names = $checked_categories->pluck('name')->toArray();
+
+
+
+        $products = Product::categories($checked_category_ids)->filter($appliedFilters)->paginate(5);
+
+        $favourites = Auth::check() ? Auth::user()->favourites->pluck('id')->toArray() : [];
+
+        $appliedFilters['category'] = $category_filter;
+
+
+        echo "checked category names=>";
+        print_r($checked_category_names);
 
         return view(
             'home.index-new',
             compact(
                 'products',
                 'favourites',
-                'filters',
-                'checked_categories'
+                'productSpecs',
+                'checked_category_names',
+                'appliedFilters'
             )
         );
     }
@@ -136,6 +161,5 @@ class HomeController extends Controller
         $cart = Auth::user()->shoppingCart()->with('product')->get();
         return view('home.cart.index', compact('cart'));
     }
-
 
 }

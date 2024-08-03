@@ -21,4 +21,14 @@ class ProductSpec extends Model
     public function product(): BelongsTo {
         return $this->belongsTo(Product::class);
     }
+
+
+    public static function getAllSpecsGroupedByName() {
+        return self::select(['name', 'value'])
+        ->get()
+        ->groupBy('name')
+        ->map(function ($items) {
+            return $items->pluck('value')->unique();
+        })->toArray();
+    }
 }
