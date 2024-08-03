@@ -16,13 +16,14 @@ class ProductController extends Controller
         }
         $product = $product->load('reviews.user');
         $isFavourite = false;
-        $wasReviewed = $product->wasReviewedBy(Auth::user()->id);
+        $wasReviewed = false;
 
         // dd($product);
 
         if (Auth::check()) {
             $favourite_products_ids = Auth::user()->favourites()->pluck('id')->toArray();
             $isFavourite = in_array($product->id, $favourite_products_ids);
+            $wasReviewed = $product->wasReviewedBy(Auth::user()->id);
         }
         return view('product.show', compact('product', 'isFavourite', 'wasReviewed'));
     }
