@@ -29,8 +29,6 @@ class HomeController extends Controller
     public function index(Request $request)
     {
 
-        // print_r($request->all());
-
 
         $appliedFilters = $request->all();
 
@@ -43,34 +41,34 @@ class HomeController extends Controller
         // sort all the specs by key
         ksort($productSpecs);
 
-        // print_r($productSpecs);
 
         // get the applied filters that also exist
         $appliedFilters = array_intersect_key($appliedFilters, $productSpecs);
 
-
-        // print_r($appliedFilters);
-        echo 'FILTERS:=> ';
-        print_r($appliedFilters);
-
+        // get filtered category names
         $category_filter = $appliedFilters['category'] ?? [];
+
+        // unset it from the applied filters to be able to query in product_spec table
         unset($appliedFilters['category']);
+
+        // get the checked categories as collection
         $checked_categories = Category::whereIn('name', $category_filter)->get();
 
-        $checked_category_ids = $checked_categories->pluck('id')->toArray();
+        // create array from the id's of those categories
+        $checked_category_ids = $checked_categories->pluck('id')->toArray(); 
+
+        // create array from the name of those categories
         $checked_category_names = $checked_categories->pluck('name')->toArray();
 
-
-
+        // get the product applied with selected categories and filters
         $products = Product::categories($checked_category_ids)->filter($appliedFilters)->paginate(5);
 
+        // get favourite product id's
         $favourites = Auth::check() ? Auth::user()->favourites->pluck('id')->toArray() : [];
 
+        // set category filter back to applied filters in order to be visible on the frontend which filter was applied
         $appliedFilters['category'] = $category_filter;
 
-
-        echo "checked category names=>";
-        print_r($checked_category_names);
 
         return view(
             'home.index-new',
@@ -89,7 +87,7 @@ class HomeController extends Controller
     // 
     // public function index(Request $request) {
     // {
-    //     $sort_by = $request->input('sort_by', 'price-asc');
+    //     $sort_by = $request->input('sort_by', 'cce-asc');
     //     $per_page = (int) $request->input('per_page', 6);
     //     $search = $request->input('search', '');
     //     $categories = $request->input('cateogory', '');

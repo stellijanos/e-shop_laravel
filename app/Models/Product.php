@@ -64,7 +64,6 @@ class Product extends Model
 
     public function scopeFilter(Builder $query, array $filters)
     {
-        print_r($filters);
 
         foreach ($filters as $filter => $values) {
             $query->whereHas('specs', function (Builder $query) use ($filter, $values) {
