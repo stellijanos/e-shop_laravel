@@ -37,36 +37,27 @@
         </div>
     </div>
     <div class="card" style="width:100%">
-        <p class="fs-2 fw-bold m-0 px-5">Reviews ({{$product->reviews->count()}})</p>
-        <hr>
+        <div class="card-header d-flex justify-content-between">
+            <p class="fs-2 fw-bold m-0 px-5">Reviews ({{$product->reviews->count()}})</p>
+            @auth
+                @if(!$wasReviewed)
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#add-review-modal">
+                        Add a review
+                    </button>
+                @endif
+            @endauth
+        </div>
 
         @auth
-            <p class="fs-3 fw-bold m-0 px-5">Add a review</p>
-            <form action="">
-                <div class="d-flex flex-direction-row w-100">
-                    <div class="mb-3 w-75">
-
-                        <textarea name="description" class="form-control w-100" style="height:200px"
-                            id="description">Description</textarea>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="rating">Choose rating (between 1-5)</label>
-                        <select class="form-select w-10" id="rating" name=rating>
-                            <option value="1" selected>1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                        </select>
-                        <button type="submit" class="btn btn-success mb-3 w-100">Add review</button>
-                    </div>
-                </div>
-            </form>
+            @if(!$wasReviewed)
+                @include('product._add-review-modal')
+            @endif
         @endauth
         @foreach($product->reviews as $review)        
             <hr>
-            {{$review->name}}
+            <p>{{$review->user->firstname}} {{$review->user->lastname}} on {{(new DateTime($review->created_at))->format('Y.m.d')}}</p>
+            Rating: {{$review->rating}}
+            Description: {{$review->description}}
         @endforeach
     </div>
 </div>

@@ -17,10 +17,13 @@ class Review extends Model
         'description'
     ];
 
-    public function user(): BelongsTo {
-        return $this->belongsTo(User::class);
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class)->select(['id','firstname', 'lastname']);
     }
-    public function product(): BelongsTo {
+    public function product(): BelongsTo
+    {
         return $this->belongsTo(Product::class);
     }
+
 }

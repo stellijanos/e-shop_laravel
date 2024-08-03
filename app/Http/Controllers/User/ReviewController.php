@@ -1,8 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
+use App\Http\Controllers\Controller;
+use App\Models\Product;
+use App\Models\Review;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ReviewController extends Controller
 {
@@ -16,15 +21,6 @@ class ReviewController extends Controller
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -32,10 +28,34 @@ class ReviewController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function create(Request $request, Product $product)
     {
-        //
+
+        if (!$product)
+            abort(404, 'Product not found!');
+
+        $wasReviewed = $product->wasReviewedBy(Auth::user()->id);
+
+        // dd($wasReviewed);
+
+        if ($wasReviewed)
+            return redirect()->route('product', ['product' => $product->id]);
+
+        $request->validate([
+            'rating' => 'required|numeric|min:1|max:5',
+            'description' => 'max:1000'
+        ]);
+
+        Review::create([
+            'product_id' => $product->id,
+            'user_id' => Auth::user()->id,
+            'rating' => $request->rating,
+            'description' => $request->description ?? ''
+        ]);
+
+        return redirect()->route('product', ['product' => $product->id]);
     }
+
 
     /**
      * Display the specified resource.

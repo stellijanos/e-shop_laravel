@@ -74,4 +74,9 @@ class Product extends Model
         return $query;
     }
 
+    // other functions
+    public function wasReviewedBy($userId) {
+        return $this->reviews()->where('user_id', $userId)->where('product_id', $this->id)->exists();
+    }
+
 }

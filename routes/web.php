@@ -20,28 +20,37 @@ use Illuminate\Support\Facades\Route;
 */
 
 Auth::routes();
- 
+
 Route::get('/', [\App\Http\Controllers\User\HomeController::class, 'index'])->name('home');
 Route::get('/favourites', [App\Http\Controllers\User\HomeController::class, 'favourites'])->name('favourites');
 Route::get('/cart', [App\Http\Controllers\User\HomeController::class, 'cart'])->name('cart');
-Route::get('/product/{product}',[App\Http\Controllers\User\ProductController::class, 'show'])->name('product');
-Route::post('/user/cart/{product}/quantity/{quantity}',[App\Http\Controllers\User\UserController::class, 'changeQuantity']);
+Route::get('/product/{product}', [App\Http\Controllers\User\ProductController::class, 'show'])->name('product');
+Route::post('/user/cart/{product}/quantity/{quantity}', [App\Http\Controllers\User\UserController::class, 'changeQuantity']);
 
-Route::prefix('account')->group(function() {
+Route::prefix('account')->group(function () {
     Route::get('/', [App\Http\Controllers\User\UserController::class, 'index'])->name('account.index');
     Route::get('/edit', [App\Http\Controllers\User\UserController::class, 'edit'])->name('account.edit');
     Route::put('/edit', [App\Http\Controllers\User\UserController::class, 'update']);
     Route::get('/delete', [App\Http\Controllers\User\UserController::class, 'delete'])->name('account.delete');
     Route::delete('/delete', [App\Http\Controllers\User\UserController::class, 'destroy'])->name('account.delete');
-    Route::post('/favourite/{product}',[App\Http\Controllers\User\UserController::class, 'favourite']);
-    Route::post('/add-to-cart/{product}',[App\Http\Controllers\User\UserController::class, 'addToCart']);
+    Route::post('/favourite/{product}', [App\Http\Controllers\User\UserController::class, 'favourite']);
+    Route::post('/add-to-cart/{product}', [App\Http\Controllers\User\UserController::class, 'addToCart']);
 });
 
 Route::get('/admin', [App\Http\Controllers\Admin\AdminController::class, 'index'])->name('admin.index');
 
 
 
-Route::resource('/admin/employee',App\Http\Controllers\Admin\EmployeeController::class);
-Route::resource('/admin/customer',App\Http\Controllers\Admin\CustomerController::class);
-Route::resource('/admin/category',App\Http\Controllers\Admin\CategoryController::class);
-Route::resource('/admin/product',App\Http\Controllers\Admin\ProductController::class);
+Route::resource('/admin/employee', App\Http\Controllers\Admin\EmployeeController::class);
+Route::resource('/admin/customer', App\Http\Controllers\Admin\CustomerController::class);
+Route::resource('/admin/category', App\Http\Controllers\Admin\CategoryController::class);
+Route::resource('/admin/product', App\Http\Controllers\Admin\ProductController::class);
+// Route::resource('/reviews', App\Http\Controllers\User\ReviewController::class);
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Route::post('/product/{product}/reviews', [App\Http\Controllers\User\ReviewController::class, 'create'])->name('products.reviews.create');
+
+
+Route::any('{any}', function () {
+    abort(404, 'The requested page was not found!');
+})->where('any', '.*');
