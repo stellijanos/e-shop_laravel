@@ -106,8 +106,8 @@ class UserController extends Controller
         return redirect()->route('account.edit');
     }
 
-    
-     /**
+
+    /**
      * Show the form for deleting the specified resource.
      *
      * @return \Illuminate\Contracts\View\View
@@ -138,49 +138,33 @@ class UserController extends Controller
     }
 
 
-    public function favourite(Product $product) {
+    public function favourite(Product $product)
+    {
         if (!$product) {
             return response()->json(['response' => 'not-found']);
         }
-
-        $user = Auth::user();
-
-        if ($user->favourites()->where('product_id', $product->id)->exists()) {
-            $user->favourites()->detach($product);
-            return response()->json(['response' => 'removed']);
-        } else {
-            $user->favourites()->attach($product);
-            return response()->json(['response' => 'added']);
-        }
+        $response = Auth::user()->addFavourite($product);
+        response()->json(['response' => $response]);
     }
 
 
-    public function updateShowFavourites(Product $product) {
-        
+    public function updateShowFavourites(Product $product)
+    {
+
     }
 
-    public function addToCart(Product $product) {
+    public function addToCart(Product $product)
+    {
         if (!$product) {
             return response()->json(['response' => 'not-found']);
         }
-
-        $user = Auth::user();
-
-        $cartItem = $user->shoppingCart()->where('product_id', $product->id)->first();
-
-        if ($cartItem) {
-            $user->shoppingCart()->where('product_id', $product->id)->increment('quantity');
-        } else {
-            $cartItem = new ShoppingCartItem();
-            $cartItem->product_id = $product->id;
-            $cartItem->user_id = $user->id;
-            $cartItem->save();
-        }
+        Auth::user()->addToCart($product);
         return response()->json(['response' => 'added']);
     }
 
 
-    public function changeQuantity(Product $product, int $quantity) {
+    public function changeQuantity(Product $product, int $quantity)
+    {
         if (!$product) {
             return response()->json('not-found');
         }
@@ -189,21 +173,10 @@ class UserController extends Controller
             return response()->json('invalid-quantity');
         }
 
-        $user = Auth::user();
+        $response = Auth::user()->setCartProductQuantity($product, $quantity);
 
-        $cartItem = $user->shoppingCart()->where('product_id', $product->id)->first();
-        if (!$cartItem) {
-            return response()->json('not-found');
-        }
-        
-        if ($quantity > $cartItem->product->stock) {
-            return response()->json('invalid-quantity');
-        }
-
-        if ($quantity === 0) {
-            $user->shoppingCart()->where('product_id', $product->id)->delete();
-        } else {
-            $user->shoppingCart()->where('product_id', $product->id)->update(['quantity' => $quantity]);
+        if ($response !== "success") {
+            return response()->json($response);
         }
 
         $cart = Auth::user()->shoppingCart()->with('product')->get();
