@@ -3,34 +3,27 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a class="text-dark" href="{{route('admin.index')}}">Dashboard</a></li>
-                            <li class="breadcrumb-item"><a class="text-dark" href="{{url('admin/employee')}}">Employees</a></li>
+                            <li class="breadcrumb-item"><a class="text-dark"
+                                    href="{{route('employee.dashboard')}}">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a class="text-dark"
+                                    href="{{route('employees.index')}}">Employees</a></li>
                             <li class="breadcrumb-item active" aria-current="page">Create</li>
                         </ol>
                     </nav>
                 </div>
                 <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+                    <div class="alert alert-success" role="alert">
+                    </div>
+                    <div class="alert alert-danger" role="alert">
+                    </div>
 
-                    @if($errors->any())
-                        <div class="alert alert-danger w-50" role="alert">
-                            @foreach ($errors->all() as $error )
-                                <li>{{$error}}</li>
-                            @endforeach
-                        </div>
-                    @endif
-                    <form action="{{url('admin/employee/'.$employee->id)}}" method="post">
+                    <form id="update-employee">
                         @csrf
-                        @method('PUT')
                         <div class="form-floating mb-3 w-50">
                             <select name="role" id="role" class="form-select">
                                 <option value="admin">Admin</option>
@@ -48,23 +41,28 @@
                             <label for="role">Select role</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input class="form-control w-50" type="text" id="firstname" name="firstname" value="{{$employee->firstname}}" placeholder="Firstname">
+                            <input class="form-control w-50" type="text" id="firstname" name="firstname"
+                                value="{{$employee->firstname}}" placeholder="Firstname">
                             <label for="firstname">Firstname</label>
                         </div>
                         <div class="form-floating mb-3 w-50">
-                            <input class="form-control" type="text" id="lastname" name="lastname" value="{{$employee->lastname}}" placeholder="Lastname">
+                            <input class="form-control" type="text" id="lastname" name="lastname"
+                                value="{{$employee->lastname}}" placeholder="Lastname">
                             <label for="lastname">Lastname</label>
                         </div>
                         <div class="form-floating mb-3 w-50">
-                            <input class="form-control" type="email" id="email" name="email" value="{{$employee->email}}" placeholder="Email">
+                            <input class="form-control" type="email" id="email" name="email"
+                                value="{{$employee->email}}" placeholder="Email">
                             <label for="email">Email</label>
                         </div>
                         <div class="form-floating mb-3 w-50">
-                            <input class="form-control" type="text" id="phone" name="phone" value="{{$employee->phone}}" placeholder="Phone">
+                            <input class="form-control" type="text" id="phone" name="phone" value="{{$employee->phone}}"
+                                placeholder="Phone">
                             <label for="phone">Phone</label>
                         </div>
                         <div class="form-floating mb-3 w-50">
-                            <input class="form-control" type="password" id="password" name="password" placeholder="Password">
+                            <input class="form-control" type="password" id="password" name="password"
+                                placeholder="Password">
                             <label for="password">Password</label>
                         </div>
                         <button type="submit" class="btn btn-success w-50">Update employee</button>
@@ -74,4 +72,39 @@
         </div>
     </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+
+    $('.alert').hide();
+
+    function customAlert(message) {
+        return $('<div>', {
+            class: 'custom-alert',
+            style: 'z-index:99999',
+            html: '<p>' + message + '</p><button id="closeAlert">OK</button>'
+        });
+    }
+
+    $('#update-employee').on('submit', function (e) {
+        e.preventDefault();
+
+        $('.alert').hide();
+
+        $.ajax({
+            url: '{{route('employees.update', $employee->id)}}',
+            type: 'PUT',
+            data: $(this).serialize(),
+            success: function (res) {
+                $('.alert-success').show();
+                $('.alert-success').html(res.message);
+            },
+            error: function (err) {
+                $('.alert-danger').show();
+                $('.alert-danger').html(err.responseJSON.message);
+                console.log(err.responseJSON);
+            }
+        })
+    });
+</script>
 @endsection

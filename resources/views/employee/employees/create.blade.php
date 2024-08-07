@@ -3,13 +3,15 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a class="text-dark" href="{{route('admin.index')}}">Dashboard</a></li>
-                            <li class="breadcrumb-item"><a class="text-dark" href="{{url('admin/employee')}}">Employees</a></li>
+                            <li class="breadcrumb-item"><a class="text-dark"
+                                    href="{{route('employee.dashboard')}}">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a class="text-dark"
+                                    href="{{route('employees.show')}}">Employees</a></li>
                             <li class="breadcrumb-item active" aria-current="page">Create</li>
                         </ol>
                     </nav>
@@ -23,12 +25,12 @@
 
                     @if($errors->any())
                         <div class="alert alert-danger w-50" role="alert">
-                            @foreach ($errors->all() as $error )
+                            @foreach ($errors->all() as $error)
                                 <li>{{$error}}</li>
                             @endforeach
                         </div>
                     @endif
-                    <form action="{{url('admin/employee')}}" method="post">
+                    <form action="{{route('employees.create')}}" method="post">
                         @csrf
                         <div class="form-floating mb-3 w-50">
                             <select name="role" id="role" class="form-select">
@@ -47,11 +49,13 @@
                             <label for="role">Select role</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input class="form-control w-50" type="text" id="firstname" name="firstname" placeholder="Firstname">
+                            <input class="form-control w-50" type="text" id="firstname" name="firstname"
+                                placeholder="Firstname">
                             <label for="firstname">Firstname</label>
                         </div>
                         <div class="form-floating mb-3 w-50">
-                            <input class="form-control" type="text" id="lastname" name="lastname" placeholder="Lastname">
+                            <input class="form-control" type="text" id="lastname" name="lastname"
+                                placeholder="Lastname">
                             <label for="lastname">Lastname</label>
                         </div>
                         <div class="form-floating mb-3 w-50">
@@ -63,15 +67,17 @@
                             <label for="phone">Phone</label>
                         </div>
                         <div class="form-floating mb-3 w-50">
-                            <input class="form-control" type="password" id="password" name="password" placeholder="Password">
+                            <input class="form-control" type="password" id="password" name="password"
+                                placeholder="Password">
                             <label for="password">Password</label>
                         </div>
                         <div class="form-floating mb-3 w-50">
-                            <input class="form-control" type="password" id="confirm-password" name="confirm_password" placeholder="Confirm Password">
+                            <input class="form-control" type="password" id="confirm-password" name="confirm_password"
+                                placeholder="Confirm Password">
                             <label for="confirm-password">Confirm Password</label>
                         </div>
                         <button type="submit" class="btn btn-success w-50">Create employee</button>
-                    </form>                   
+                    </form>
                 </div>
             </div>
         </div>

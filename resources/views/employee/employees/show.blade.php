@@ -1,16 +1,17 @@
-
 @extends('layouts.app')
 
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a class="text-dark" href="{{route('admin.index')}}">Dashboard</a></li>
-                            <li class="breadcrumb-item"><a class="text-dark" href="{{url('admin/employee')}}">Employees</a></li>
+                            <li class="breadcrumb-item"><a class="text-dark"
+                                    href="{{route('employee.dashboard')}}">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a class="text-dark"
+                                    href="{{route('employees.index')}}">Employees</a></li>
                             <li class="breadcrumb-item active" aria-current="page">Details</li>
                         </ol>
                     </nav>
@@ -24,7 +25,7 @@
 
                     @if($errors->any())
                         <div class="alert alert-danger w-50" role="alert">
-                            @foreach ($errors->all() as $error )
+                            @foreach ($errors->all() as $error)
                                 <li>{{$error}}</li>
                             @endforeach
                         </div>
@@ -35,22 +36,22 @@
                         <p>Firstname: {{$employee->firstname}}</p>
                         <p>Lastname: {{$employee->lastname}}</p>
                         <p>Email: {{$employee->email}}</p>
-                        <p>Hired since: {{date('d.m.Y',strtotime($employee->created_at))}}</p>
+                        <p>Hired since: {{date('d.m.Y', strtotime($employee->created_at))}}</p>
 
                         <p>Address</p>
                     </div>
 
                     <div class="row">
                         <div class="mb-3">
-                            <a href="{{url('admin/employee/'.$employee->id.'/edit')}}" class="btn btn-warning w-25">Edit</a>
+                            <a href="{{route('employees.edit', $employee->id)}}" class="btn btn-warning w-25">Edit</a>
                         </div>
-                        <form action="{{url('admin/employee/'.$employee->id)}}" method="post">
-                            @csrf 
+                        <form action="{{route('employees.update', $employee->id)}}" method="post">
+                            @csrf
                             @method('DELETE')
                             <button class="btn btn-danger w-25">Delete</button>
                         </form>
                     </div>
-                                    
+
                 </div>
             </div>
         </div>

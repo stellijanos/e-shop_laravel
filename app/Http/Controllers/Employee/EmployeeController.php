@@ -7,14 +7,14 @@ use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class EmployeeController extends Controller
 {
 
-
     public function dashboard()
     {
-        return view('employee.index');
+        return view('employee.dashboard');
     }
 
 
@@ -26,7 +26,7 @@ class EmployeeController extends Controller
     public function index(Request $request)
     {
         $employees = Employee::getAllEmployees();
-        return view('admin.employees.index', compact('employees'));
+        return view('employee.employees.index', compact('employees'));
     }
 
     /**
@@ -68,7 +68,7 @@ class EmployeeController extends Controller
         ]);
 
         $request->session()->flash('status', 'Employee successfully added!');
-        return redirect('/employee/employees');
+        return redirect()->route('employees.index');
     }
 
     /**
@@ -101,36 +101,62 @@ class EmployeeController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\RedirectResponse
+     * @param  \Illuminate\Http\Request $request
+     * @param  Employee $employee
+     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Employee $employee)
     {
-        $request->validate([
+        if (!$employee) {
+            return response()->json(['status' => 'fail', 'message' => 'Employee not found!']);
+        }
+
+        $rules = [
             'role' => 'required|string|max:255',
             'firstname' => 'required|string|max:255',
             'lastname' => 'required|string|max:255',
-            'email' => 'required|email',
             'password' => 'required|string|max:255',
-        ]);
-
-
-        if (!Hash::check($request->password, Auth::user()->password)) {
-            return redirect()->back()->withErrors(['password' => 'Password is incorrect.']);
-        }
-
-
-        $employee = Employee::find($id);
-        if (!$employee) {
-            abort(404);
-        }
-
+        ];
 
         if ($request->email !== $employee->email) {
-            $request->validate([
-                'email' => 'unique:users'
-            ]);
+            $rules['email'] = 'email|unique:users';
+        }
+
+        if ($request->phone !== $employee->phone) {
+            $rules['email'] = 'string|max:15|unique:users';
+        }
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+
+            $errors = $validator->errors()->toArray();
+
+            $allErrors = [];
+
+            // Iterate through each field and its messages
+            foreach ($errors as $field => $messages) {
+                foreach ($messages as $message) {
+                    // Append each message to the array
+                    $allErrors[] = $message;
+                }
+            }
+
+            // Combine all error messages into a single string
+            $errorString = implode('. ', $allErrors);
+
+            return response()->json([
+                'status' => 'fail',
+                'message' => $errorString,
+            ], 422);
+        }
+
+
+        if (!Auth::user()->correctPassword($request->password)) {
+            return response()->json([
+                'status' => 'fail',
+                'message' => 'Incorrect password!'
+            ], 401);
         }
 
 
@@ -141,27 +167,25 @@ class EmployeeController extends Controller
             'email' => $request->email
         ]);
 
-
-        $request->session()->flash('status', 'Employee successfully updated!');
-        return redirect('/employee/employees/' . $id);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Employee successfully updated!'
+        ], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  Employee $employee
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy($id)
+    public function destroy(Employee $employee)
     {
-        $employee = Employee::find($id);
-        if (!$employee) {
-            abort(404);
-        }
+        $employee || abort(404);
 
         $employee->delete();
 
         Session()->flash('status', 'Employee successfully deleted!');
-        return redirect('/employee/employees');
+        return redirect()->route('employees.index');
     }
 }

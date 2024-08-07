@@ -3,12 +3,13 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-10">
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a class="nav-link" href="{{route('admin.index')}}">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a class="nav-link"
+                                    href="{{route('employee.dashboard')}}">Dashboard</a></li>
                             <li class="breadcrumb-item active" aria-current="page">Employees</li>
                         </ol>
                     </nav>
@@ -21,7 +22,7 @@
                     @endif
 
                     <div class="hstack mb-3">
-                        <a href="{{url('admin/employee/create')}}" class="btn btn-success ms-auto">+ Add new Employee</a>
+                        <a href="{{route('employees.store')}}" class="btn btn-success ms-auto">+ Add new Employee</a>
                     </div>
                     <table class="table table-striped">
                         <thead>
@@ -44,7 +45,8 @@
                                     <td><a href="mailto:{{$employee->email}}">{{$employee->email}}</a></td>
                                     <td>{{$employee->role}}</td>
                                     <td>{{date('d.m.Y', strtotime($employee->created_at))}}</td>
-                                    <td><a href="{{url('admin/employee/'.$employee->id)}}" class="btn btn-primary">More details</a></td>
+                                    <td><a href="{{route('employees.show', [$employee->id])}}" class="btn btn-primary">More
+                                            details</a></td>
                                 </tr>
                             @endforeach
                         </tbody>

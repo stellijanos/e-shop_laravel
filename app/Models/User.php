@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -68,6 +69,10 @@ class User extends Authenticatable
 
     public function isCustomer() {
         return $this->role === 'customer';
+    }
+
+    public function correctPassword($password) {
+        return Hash::check($password, $this->password);
     }
 
 }
