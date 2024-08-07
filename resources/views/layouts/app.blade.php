@@ -100,8 +100,8 @@
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
 
-                                    @if(Auth::user()->role === 'admin')
-                                        <a href="{{url('/admin')}}" class="dropdown-item">ADMIN Panel</a>
+                                    @if(Auth::user()->isEmployee())
+                                        <a href="{{url('/employee')}}" class="dropdown-item">ADMIN Panel</a>
                                     @endif
 
                                     <a href="{{url('/account')}}" class="dropdown-item">My Account</a>
@@ -116,7 +116,7 @@
                                     </form>
                                 </div>
                             </li>
-                            @if(!str_contains(url()->current(), url('/admin')))
+                            @if(auth()->user()->isCustomer())
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{route('favourites')}}"><i class="fa-solid fa-heart"></i> Favourites</a>
                                 </li>

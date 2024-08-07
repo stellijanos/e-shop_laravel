@@ -19,7 +19,7 @@ class CustomerAuth
     {
 
         if (!Auth::guard('customer')->check()) {
-            return redirect()->route('employees');
+            return redirect()->route('employee');
         }
 
         return $next($request);

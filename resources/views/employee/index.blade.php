@@ -17,25 +17,25 @@
                     <div class="row">
                         
                         <div class="col-md-2 text-center">
-                            <a href="{{url('admin/employee')}}" class="nav-link option">
+                            <a href="{{route('employees.index')}}" class="nav-link option">
                                 <img src="{{asset('images/employees.png')}}" alt="employees" width="100px;">
                                 <p>Employees</p>
                             </a>
                         </div>
                         <div class="col-md-2 text-center">
-                            <a href="{{url('admin/customer')}}" class="nav-link option">
+                            <a href="{{route('employees.customers')}}" class="nav-link option">
                                 <img src="{{asset('images/users.png')}}" alt="users" width="100px;">
                                 <p>Customers</p>
                             </a>
                         </div>
                         <div class="col-md-2 text-center">
-                            <a href="{{url('admin/category')}}" class="nav-link option">
+                            <a href="{{route('employees.categories')}}" class="nav-link option">
                                 <img src="{{asset('images/categories.png')}}" alt="products" width="100px;">
                                 <p>Categories</p>
                             </a>
                         </div>
                         <div class="col-md-2 text-center">
-                            <a href="{{url('admin/product')}}" class="nav-link option">
+                            <a href="{{route('employees.products')}}" class="nav-link option">
                                 <img src="{{asset('images/products.png')}}" alt="products" width="100px;">
                                 <p>Products</p>
                             </a>

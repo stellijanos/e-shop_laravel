@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Employee;
 
 use App\Http\Controllers\Controller;
-use App\Models\Review;
+use App\Models\OrderItem;
 use Illuminate\Http\Request;
 
-class ReviewController extends Controller
+class OrderItemController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -42,10 +42,10 @@ class ReviewController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Review  $review
+     * @param  \App\Models\OrderItem  $orderItem
      * @return \Illuminate\Http\Response
      */
-    public function show(Review $review)
+    public function show(OrderItem $orderItem)
     {
         //
     }
@@ -53,10 +53,10 @@ class ReviewController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Review  $review
+     * @param  \App\Models\OrderItem  $orderItem
      * @return \Illuminate\Http\Response
      */
-    public function edit(Review $review)
+    public function edit(OrderItem $orderItem)
     {
         //
     }
@@ -65,10 +65,10 @@ class ReviewController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Review  $review
+     * @param  \App\Models\OrderItem  $orderItem
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Review $review)
+    public function update(Request $request, OrderItem $orderItem)
     {
         //
     }
@@ -76,10 +76,10 @@ class ReviewController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Review  $review
+     * @param  \App\Models\OrderItem  $orderItem
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Review $review)
+    public function destroy(OrderItem $orderItem)
     {
         //
     }

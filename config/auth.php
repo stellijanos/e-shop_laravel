@@ -41,14 +41,14 @@ return [
             'provider' => 'users',
         ],
 
-        'emplozee' => [
+        'employee' => [
             'driver' => 'session',
-            'provider' => 'employees',
+            'provider' => 'users',
         ],
 
         'customer' => [
             'driver' => 'session',
-            'provider' => 'customers',
+            'provider' => 'users',
         ],
     ],
 

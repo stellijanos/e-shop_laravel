@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Employee;
 
 use App\Http\Controllers\Controller;
-use App\Models\Order;
+use App\Models\ProductSpec;
 use Illuminate\Http\Request;
 
-class OrderController extends Controller
+class ProductSpecController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -42,10 +42,10 @@ class OrderController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Order  $order
+     * @param  \App\Models\ProductSpec  $productSpec
      * @return \Illuminate\Http\Response
      */
-    public function show(Order $order)
+    public function show(ProductSpec $productSpec)
     {
         //
     }
@@ -53,10 +53,10 @@ class OrderController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Order  $order
+     * @param  \App\Models\ProductSpec  $productSpec
      * @return \Illuminate\Http\Response
      */
-    public function edit(Order $order)
+    public function edit(ProductSpec $productSpec)
     {
         //
     }
@@ -65,10 +65,10 @@ class OrderController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Order  $order
+     * @param  \App\Models\ProductSpec  $productSpec
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Order $order)
+    public function update(Request $request, ProductSpec $productSpec)
     {
         //
     }
@@ -76,10 +76,10 @@ class OrderController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Order  $order
+     * @param  \App\Models\ProductSpec  $productSpec
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Order $order)
+    public function destroy(ProductSpec $productSpec)
     {
         //
     }
