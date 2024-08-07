@@ -18,7 +18,9 @@ class EmployeeAuth
     public function handle(Request $request, Closure $next)
     {
         if (!Auth::guard('employee')->check()) {
-            return redirect()->route('FASZ');
+            
+            return redirect()->route('home');
+
         }
 
         return $next($request);
