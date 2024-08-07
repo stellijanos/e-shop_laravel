@@ -23,7 +23,7 @@ class ShoppingCartItem extends Model
     ];
 
     public function user():BelongsTo {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Customer::class);
     }
 
     public function product():BelongsTo {

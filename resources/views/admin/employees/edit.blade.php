@@ -56,8 +56,12 @@
                             <label for="lastname">Lastname</label>
                         </div>
                         <div class="form-floating mb-3 w-50">
-                            <input class="form-control" type="text" id="email" name="email" value="{{$employee->email}}" placeholder="Email">
+                            <input class="form-control" type="email" id="email" name="email" value="{{$employee->email}}" placeholder="Email">
                             <label for="email">Email</label>
+                        </div>
+                        <div class="form-floating mb-3 w-50">
+                            <input class="form-control" type="text" id="phone" name="phone" value="{{$employee->phone}}" placeholder="Phone">
+                            <label for="phone">Phone</label>
                         </div>
                         <div class="form-floating mb-3 w-50">
                             <input class="form-control" type="password" id="password" name="password" placeholder="Password">

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -17,8 +17,8 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        return view('admin.customers.index',[
-            'customers' => User::where('role','customer')->paginate(5)
+        return view('admin.customers.index', [
+            'customers' => Customer::getAllCustomers()->paginate(5)
         ]);
     }
 
@@ -46,16 +46,16 @@ class CustomerController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  User $customer
+     * @param  Customer $customer
      * @return \Illuminate\Contracts\View\View
      */
-    public function show(User $customer)
+    public function show(Customer $customer)
     {
         if (!$customer) {
             abort(404);
         }
 
-        return view('admin.customers.show',[
+        return view('admin.customers.show', [
             'customer' => $customer
         ]);
     }
@@ -63,16 +63,16 @@ class CustomerController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  User $customer
+     * @param  Customer $customer
      * @return \Illuminate\Contracts\View\View
      */
-    public function edit(User $customer)
+    public function edit(Customer $customer)
     {
         if (!$customer) {
             abort(404);
         }
 
-        return view('admin.customers.edit',[
+        return view('admin.customers.edit', [
             'customer' => $customer
         ]);
     }
@@ -81,10 +81,10 @@ class CustomerController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  User $customer
+     * @param  Customer $customer
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, User $customer)
+    public function update(Request $request, Customer $customer)
     {
         if (!$customer) {
             abort(404);
@@ -97,7 +97,7 @@ class CustomerController extends Controller
             'password' => 'required|string|max:255',
         ]);
 
-       
+
         if (!Hash::check($request->password, Auth::user()->password)) {
             return redirect()->back()->withErrors(['password' => 'Password is incorrect.']);
         }
@@ -109,7 +109,7 @@ class CustomerController extends Controller
             ]);
         }
 
-        
+
         $customer->update([
             'firstname' => $request->firstname,
             'lastname' => $request->lastname,
@@ -118,23 +118,23 @@ class CustomerController extends Controller
 
 
         $request->session()->flash('status', 'Customer successfully updated!');
-        return redirect('/admin/customer/'.$customer->id);
+        return redirect('/admin/customer/' . $customer->id);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  User $customer
+     * @param  Customer $customer
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(User $customer)
+    public function destroy(Customer $customer)
     {
         if (!$customer) {
             abort(404);
         }
 
         $customer->delete();
-        
+
         Session()->flash('status', 'Customer successfully deleted!');
         return redirect('/admin/customer');
     }

@@ -18,7 +18,7 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::paginate(5);
-        return view('admin.products.index',compact('products'));
+        return view('admin.products.index', compact('products'));
     }
 
     /**
@@ -65,7 +65,7 @@ class ProductController extends Controller
                 'image' => 'nullable|file|image|mimes:jpg,jpeg,png|max:2048'
             ]);
 
-            $imageName = date('Ymdhis').uniqid().'.'.$request->image->extension();
+            $imageName = date('Ymdhis') . uniqid() . '.' . $request->image->extension();
             $request->image->move(public_path('images/products'), $imageName);
         }
 
@@ -85,7 +85,8 @@ class ProductController extends Controller
 
             $spec = explode(';', $spec);
 
-            if (count($spec) !== 2) continue;
+            if (count($spec) !== 2)
+                continue;
 
             ProductSpec::create([
                 'product_id' => $product->id,
@@ -108,9 +109,8 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        if (!$product) {
-            abort(404);
-        }
+
+        $product || abort(404);
 
         return view('admin.products.show', compact('product'));
     }
@@ -123,24 +123,14 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        if (!$product) {
-            abort(404);
-        }
+        $product || abort(404);
 
         $categories = Category::all();
 
-        return view('admin.products.edit',compact('product', 'categories'));
+        return view('admin.products.edit', compact('product', 'categories'));
     }
 
 
-    private function removeImage($imageName) {
-
-        if ($imageName == 'no-image.png') return;
-        $imagePath = public_path('images/products/') . $imageName;
-        if (file_exists($imagePath)) {
-            unlink($imagePath);
-        }
-    }
 
     /**
      * Update the specified resource in storage.
@@ -151,9 +141,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        if (!$product) {
-            abort(404);
-        }
+        $product || abort(404);
 
         $request->validate([
             'name' => 'required|string|max:255',
@@ -169,15 +157,14 @@ class ProductController extends Controller
         if ($request->remove_image) {
             $this->removeImage($imageName);
             $imageName = 'no-image.png';
-        } 
-        else if ($request->image) {
+        } else if ($request->image) {
             $request->validate([
                 'image' => 'nullable|file|image|mimes:jpg,jpeg,png|max:2048'
             ]);
 
             $this->removeImage($imageName);
 
-            $imageName = date('Ymdhis').uniqid().'.'.$request->image->extension();
+            $imageName = date('Ymdhis') . uniqid() . '.' . $request->image->extension();
             $request->image->move(public_path('images/products/'), $imageName);
         }
 
@@ -196,7 +183,8 @@ class ProductController extends Controller
 
             $spec = explode(';', $spec);
 
-            if (count($spec) !== 2) continue;
+            if (count($spec) !== 2)
+                continue;
 
             ProductSpec::create([
                 'product_id' => $product->id,
@@ -206,7 +194,7 @@ class ProductController extends Controller
         }
 
 
-        $request->session()->flash('status', 'Product #'.$product->id.' successfully updated!');
+        $request->session()->flash('status', 'Product #' . $product->id . ' successfully updated!');
         return redirect('/admin/product');
 
     }
@@ -219,13 +207,11 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        if (!$product) {
-            abort(404);
-        }
-        $product->delete();
-        $this->removeImage($product->image);
-
-        Session()->flash('status', 'Product #'.$product->id.' successfully deleted!');
+        $product || abort(404);
+    
+        $product->remove();
+        
+        Session()->flash('status', 'Product #' . $product->id . ' successfully deleted!');
         return redirect('/admin/product');
     }
 }

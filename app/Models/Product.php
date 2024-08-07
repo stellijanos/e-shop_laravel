@@ -44,14 +44,14 @@ class Product extends Model
         return $this->hasMany(ProductSpec::class);
     }
 
-    public function usersFavourited(): BelongsToMany
+    public function customersFavourited(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'favourites', 'product_id', 'user_id');
+        return $this->belongsToMany(Customer::class, 'favourites', 'product_id', 'user_id');
     }
 
     public function shoppingSessions(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'shopping_session_products')->withPivot('quantity');
+        return $this->belongsToMany(Customer::class, 'shopping_session_products')->withPivot('quantity');
     }
 
 
@@ -75,8 +75,26 @@ class Product extends Model
     }
 
     // other functions
-    public function wasReviewedBy($userId) {
-        return $this->reviews()->where('user_id', $userId)->where('product_id', $this->id)->exists();
+    public function wasReviewedBy(int $customerId)
+    {
+        return $this->reviews()->where('user_id', $customerId)->where('product_id', $this->id)->exists();
+    }
+
+    public function remove()
+    {
+        $this->delete();
+        $this->removeImage($this->image);
+    }
+
+    private function removeImage($imageName)
+    {
+
+        if ($imageName == 'no-image.png')
+            return;
+        $imagePath = public_path('images/products/') . $imageName;
+        if (file_exists($imagePath)) {
+            unlink($imagePath);
+        }
     }
 
 }

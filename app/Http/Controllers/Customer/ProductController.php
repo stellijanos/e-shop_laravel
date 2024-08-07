@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\User;
+namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
@@ -17,8 +17,6 @@ class ProductController extends Controller
         $product = $product->load('reviews.user');
         $isFavourite = false;
         $wasReviewed = false;
-
-        // dd($product);
 
         if (Auth::check()) {
             $favourite_products_ids = Auth::user()->favourites()->pluck('id')->toArray();

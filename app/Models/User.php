@@ -15,6 +15,10 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+
+    protected $table = 'users';
+
+
     /**
      * The attributes that are mass assignable.
      *
@@ -56,74 +60,14 @@ class User extends Authenticatable
         return $this->hasMany(Address::class);
     }
 
-    public function orders(): HasMany
-    {
-        return $this->hasMany(Order::class);
+    // other functionalities
+
+    public function isEmployee() {
+        return $this->role !== 'employee';
     }
 
-    public function reviews(): HasMany
-    {
-        return $this->hasMany(Review::class);
-    }
-
-    public function favourites(): BelongsToMany
-    {
-        return $this->belongsToMany(Product::class, 'favourites', 'user_id', 'product_id');
-    }
-
-
-    public function shoppingCart(): HasMany
-    {
-        return $this->hasMany(ShoppingCartItem::class);
-    }
-
-
-
-    public function addFavourite($product) {
-        if ($this->favourites()->where('product_id', $product->id)->exists()) {
-            $this->favourites()->detach($product);
-            return "removed";
-        } else {
-            $this->favourites()->attach($product);
-            return "added";
-        }
-    }
-
-
-    public function addToCart(Product $product) {
-
-        $cartItem = $this->shoppingCart()->where('product_id', $product->id)->first();
-
-        if ($cartItem) {
-            $this->shoppingCart()->where('product_id', $product->id)->increment('quantity');
-        } else {
-            $cartItem = new ShoppingCartItem();
-            $cartItem->product_id = $product->id;
-            $cartItem->user_id = $this->id;
-            $cartItem->save();
-        }
-        return true;
-    }
-
-
-    public function setCartProductQuantity(Product $product, int $quantity) {
-
-        $cartItem = $this->shoppingCart()->where('product_id', $product->id)->first();
-        if (!$cartItem) {
-            return "not-found"; 
-        }
-        
-        if ($quantity > $cartItem->product->stock) {
-            return "invalid-quantity";
-        }
-
-        if ($quantity === 0) {
-            $this->shoppingCart()->where('product_id', $product->id)->delete();
-        } else {
-            $this->shoppingCart()->where('product_id', $product->id)->update(['quantity' => $quantity]);
-        }
-
-        return "success";
+    public function isCustomer() {
+        return $this->role === 'customer';
     }
 
 }

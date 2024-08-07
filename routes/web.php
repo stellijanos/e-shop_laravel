@@ -21,23 +21,28 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::get('/', [\App\Http\Controllers\User\HomeController::class, 'index'])->name('home');
-Route::get('/favourites', [App\Http\Controllers\User\HomeController::class, 'favourites'])->name('favourites');
-Route::get('/cart', [App\Http\Controllers\User\HomeController::class, 'cart'])->name('cart');
-Route::get('/product/{product}', [App\Http\Controllers\User\ProductController::class, 'show'])->name('product');
-Route::post('/user/cart/{product}/quantity/{quantity}', [App\Http\Controllers\User\UserController::class, 'changeQuantity']);
+Route::get('/', [\App\Http\Controllers\Customer\HomeController::class, 'index'])->name('home');
+Route::get('/favourites', [App\Http\Controllers\Customer\HomeController::class, 'favourites'])->name('favourites');
+Route::get('/cart', [App\Http\Controllers\Customer\HomeController::class, 'cart'])->name('cart');
+Route::get('/product/{product}', [App\Http\Controllers\Customer\ProductController::class, 'show'])->name('product');
+Route::post('/user/cart/{product}/quantity/{quantity}', [App\Http\Controllers\Customer\CustomerController::class, 'changeQuantity']);
 
 Route::prefix('account')->group(function () {
-    Route::get('/', [App\Http\Controllers\User\UserController::class, 'index'])->name('account.index');
-    Route::get('/edit', [App\Http\Controllers\User\UserController::class, 'edit'])->name('account.edit');
-    Route::put('/edit', [App\Http\Controllers\User\UserController::class, 'update']);
-    Route::get('/delete', [App\Http\Controllers\User\UserController::class, 'delete'])->name('account.delete');
-    Route::delete('/delete', [App\Http\Controllers\User\UserController::class, 'destroy'])->name('account.delete');
-    Route::post('/favourite/{product}', [App\Http\Controllers\User\UserController::class, 'favourite']);
-    Route::post('/add-to-cart/{product}', [App\Http\Controllers\User\UserController::class, 'addToCart']);
+    Route::get('/', [App\Http\Controllers\Customer\CustomerController::class, 'index'])->name('account.index');
+    Route::get('/edit', [App\Http\Controllers\Customer\CustomerController::class, 'edit'])->name('account.edit');
+    Route::put('/edit', [App\Http\Controllers\Customer\CustomerController::class, 'update']);
+    Route::get('/delete', [App\Http\Controllers\Customer\CustomerController::class, 'delete'])->name('account.delete');
+    Route::delete('/delete', [App\Http\Controllers\Customer\CustomerController::class, 'destroy'])->name('account.delete');
+    Route::post('/favourite/{product}', [App\Http\Controllers\Customer\CustomerController::class, 'favourite']);
+    Route::post('/add-to-cart/{product}', [App\Http\Controllers\Customer\CustomerController::class, 'addToCart']);
 });
 
 Route::get('/admin', [App\Http\Controllers\Admin\AdminController::class, 'index'])->name('admin.index');
+
+
+Route::get('/employees', function () {
+    echo 'Janos legyen!';
+})->name('employees');
 
 
 
@@ -48,7 +53,7 @@ Route::resource('/admin/product', App\Http\Controllers\Admin\ProductController::
 // Route::resource('/reviews', App\Http\Controllers\User\ReviewController::class);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Route::post('/product/{product}/reviews', [App\Http\Controllers\User\ReviewController::class, 'create'])->name('products.reviews.create');
+Route::post('/product/{product}/reviews', [App\Http\Controllers\Customer\ReviewController::class, 'create'])->name('products.reviews.create');
 
 
 Route::any('{any}', function () {
