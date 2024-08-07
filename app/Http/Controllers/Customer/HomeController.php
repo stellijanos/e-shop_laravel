@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\User;
+namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
@@ -63,7 +63,7 @@ class HomeController extends Controller
         $products = Product::categories($checked_category_ids)->filter($appliedFilters)->paginate(5);
 
         // get favourite product id's
-        $favourites = Auth::check() ? Auth::user()->favourites->pluck('id')->toArray() : [];
+        $favourites = Auth::guard('customer')->check() ? Auth::guard('customer')->user()->favourites()->pluck('id')->toArray() : [];
 
         // set category filter back to applied filters in order to be visible on the frontend which filter was applied
         $appliedFilters['category'] = $category_filter;

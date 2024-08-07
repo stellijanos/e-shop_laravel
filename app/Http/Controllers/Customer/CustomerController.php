@@ -1,18 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\User;
+namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
-use App\Models\ShoppingCartItem;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
-class UserController extends Controller
+class CustomerController extends Controller
 {
-
     /**
      * Display a listing of the resource.
      *
@@ -144,7 +141,8 @@ class UserController extends Controller
             return response()->json(['response' => 'not-found']);
         }
         $response = Auth::user()->addFavourite($product);
-        response()->json(['response' => $response]);
+
+        return response()->json(['response' => $response]);
     }
 
 

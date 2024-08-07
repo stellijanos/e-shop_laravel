@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -17,8 +17,8 @@ class EmployeeController extends Controller
      */
     public function index(Request $request)
     {
-        $employees = User::where('role', '<>' , 'customer')->paginate(5);
-        return view('admin.employees.index',compact('employees'));
+        $employees = Employee::getAllEmployees();
+        return view('admin.employees.index', compact('employees'));
     }
 
     /**
@@ -44,15 +44,17 @@ class EmployeeController extends Controller
             'firstname' => 'required|string|max:255',
             'lastname' => 'required|string|max:255',
             'email' => 'required|email|unique:users',
+            'phone' => 'required|string|unique:users',
             'password' => 'required|string|max:255',
             'confirm_password' => 'required|string|same:password'
         ]);
 
 
-        User::create([
+        Employee::create([
             'role' => $request->role,
             'firstname' => $request->firstname,
             'lastname' => $request->lastname,
+            'phone' => $request->phone,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
@@ -69,13 +71,13 @@ class EmployeeController extends Controller
      */
     public function show($id)
     {
-        $employee = User::find($id);
+        $employee = Employee::find($id);
 
         if (!$employee) {
             abort(404);
         }
 
-        return view('admin.employees.show',[
+        return view('admin.employees.show', [
             'employee' => $employee
         ]);
     }
@@ -89,12 +91,12 @@ class EmployeeController extends Controller
     public function edit($id)
     {
 
-        $employee = User::find($id);
+        $employee = Employee::find($id);
         if (!$employee) {
             abort(404);
         }
 
-        return view('admin.employees.edit',[
+        return view('admin.employees.edit', [
             'employee' => $employee
         ]);
     }
@@ -122,7 +124,7 @@ class EmployeeController extends Controller
         }
 
 
-        $employee = User::find($id);
+        $employee = Employee::find($id);
         if (!$employee) {
             abort(404);
         }
@@ -134,7 +136,7 @@ class EmployeeController extends Controller
             ]);
         }
 
-        
+
         $employee->update([
             'role' => $request->role,
             'firstname' => $request->firstname,
@@ -144,7 +146,7 @@ class EmployeeController extends Controller
 
 
         $request->session()->flash('status', 'Employee successfully updated!');
-        return redirect('/admin/employee/'.$id);
+        return redirect('/admin/employee/' . $id);
     }
 
     /**
@@ -155,13 +157,13 @@ class EmployeeController extends Controller
      */
     public function destroy($id)
     {
-        $employee = User::find($id);
+        $employee = Employee::find($id);
         if (!$employee) {
             abort(404);
         }
 
         $employee->delete();
-        
+
         Session()->flash('status', 'Employee successfully deleted!');
         return redirect('/admin/employee');
     }

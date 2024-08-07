@@ -17,9 +17,9 @@ class Review extends Model
         'description'
     ];
 
-    public function user(): BelongsTo
+    public function customer(): BelongsTo
     {
-        return $this->belongsTo(User::class)->select(['id','firstname', 'lastname']);
+        return $this->belongsTo(Customer::class)->select(['id','firstname', 'lastname']);
     }
     public function product(): BelongsTo
     {

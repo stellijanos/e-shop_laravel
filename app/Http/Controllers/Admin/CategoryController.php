@@ -15,7 +15,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return view('admin.category.index',[
+        return view('admin.category.index', [
             'categories' => Category::paginate(5)
         ]);
     }
@@ -46,7 +46,7 @@ class CategoryController extends Controller
             'name' => $request->name
         ]);
 
-        $request->session()->flash('status', 'Category "'.$request->name.'" successfully created!');
+        $request->session()->flash('status', 'Category "' . $request->name . '" successfully created!');
         return redirect('/admin/category');
     }
 
@@ -74,7 +74,7 @@ class CategoryController extends Controller
             abort(404);
         }
 
-        return view('admin.category.edit',[
+        return view('admin.category.edit', [
             'category' => $category
         ]);
     }
@@ -101,7 +101,7 @@ class CategoryController extends Controller
             'name' => $request->name
         ]);
 
-        $request->session()->flash('status', 'Category "'.$request->name.'" successfully updated!');
+        $request->session()->flash('status', 'Category "' . $request->name . '" successfully updated!');
         return redirect('/admin/category');
     }
 
@@ -120,7 +120,7 @@ class CategoryController extends Controller
         }
         $category->delete();
 
-        Session()->flash('status', 'Category "'.$category->name.'" successfully updated!');
+        Session()->flash('status', 'Category "' . $category->name . '" successfully updated!');
         return redirect('/admin/category');
     }
 }
