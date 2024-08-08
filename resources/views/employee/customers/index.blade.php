@@ -1,58 +1,53 @@
 @extends('layouts.app')
-
 @section('content')
+@include('employee.style')
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-10">
-            <div class="card">
-                <div class="card-header">
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a class="nav-link" href="{{route('admin.index')}}">Dashboard</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Customers</li>
-                        </ol>
-                    </nav>
+    <div class="card">
+        <div class="card-header">
+            @include('employee.includes.breadcrumb', [
+    'current' => 'Customers'
+])
+        </div>
+        <div class="card-body">
+            @if (session('status'))
+                <div class="alert alert-success" role="alert">
+                    {{ session('status') }}
                 </div>
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+            @endif
 
-                    @if ($customers->count() === 0)
-                        <div class="alert alert-warning" role="alert">
-                            No customers were found.
-                        </div>
-                    @else
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Firstname</th>
-                                    <th scope="col">Lastname</th>
-                                    <th scope="col">Email</th>
-                                    <th scope="col">Customer since</th>
-                                    <th scole="col">Option</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($customers as $customer)
-                                    <tr>
-                                        <td>{{$customer->id}}</td>
-                                        <td>{{$customer->firstname}}</td>
-                                        <td>{{$customer->lastname}}</td>
-                                        <td><a href="mailto:{{$customer->email}}">{{$customer->email}}</a></td>
-                                        <td>{{date('d.m.Y', strtotime($customer->created_at))}}</td>
-                                        <td><a href="{{url('admin/customer/'.$customer->id)}}" class="btn btn-primary">More details</a></td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                        {{$customers->links()}}
-                    @endif
+            @if ($customers->count() === 0)
+                <div class="alert alert-warning" role="alert">
+                    No customers were found.
                 </div>
-            </div>
+            @else
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Firstname</th>
+                            <th scope="col">Lastname</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Customer since</th>
+                            <th scole="col">Option</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($customers as $customer)
+                            <tr>
+                                <td>{{$customer->id}}</td>
+                                <td>{{$customer->firstname}}</td>
+                                <td>{{$customer->lastname}}</td>
+                                <td><a href="mailto:{{$customer->email}}">{{$customer->email}}</a></td>
+                                <td>{{date('d.m.Y', strtotime($customer->created_at))}}</td>
+                                <td><a href="{{route('customers.show', $customer->id)}}" class="btn btn-primary">More
+                                        details</a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                {{$customers->links()}}
+            @endif
         </div>
     </div>
 </div>

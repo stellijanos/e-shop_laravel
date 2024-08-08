@@ -44,9 +44,9 @@ Auth::routes();
 Route::prefix('/employee')->group(function () {
     Route::get('/', [App\Http\Controllers\Employee\EmployeeController::class, 'dashboard'])->name('employee.dashboard');
     Route::resource('/employees', App\Http\Controllers\Employee\EmployeeController::class);
-
-
     Route::resource('/customers', App\Http\Controllers\Employee\CustomerController::class);
+
+
     Route::resource('/categories', App\Http\Controllers\Employee\CategoryController::class);
     Route::resource('/products', App\Http\Controllers\Employee\ProductController::class);
     Route::resource('/orders', App\Http\Controllers\Employee\OrderController::class);

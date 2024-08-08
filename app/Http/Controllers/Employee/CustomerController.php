@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class CustomerController extends Controller
 {
@@ -17,7 +17,7 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        return view('admin.customers.index', [
+        return view('employee.customers.index', [
             'customers' => Customer::getAllCustomers()->paginate(5)
         ]);
     }
@@ -55,7 +55,7 @@ class CustomerController extends Controller
             abort(404);
         }
 
-        return view('admin.customers.show', [
+        return view('employee.customers.show', [
             'customer' => $customer
         ]);
     }
@@ -72,7 +72,7 @@ class CustomerController extends Controller
             abort(404);
         }
 
-        return view('admin.customers.edit', [
+        return view('employee.customers.edit', [
             'customer' => $customer
         ]);
     }
@@ -87,38 +87,69 @@ class CustomerController extends Controller
     public function update(Request $request, Customer $customer)
     {
         if (!$customer) {
-            abort(404);
+            return response()->json(['status' => 'fail', 'message' => 'Customer not found!']);
         }
 
-        $request->validate([
+        $rules = [
+            'role' => 'required|string|max:255',
             'firstname' => 'required|string|max:255',
             'lastname' => 'required|string|max:255',
-            'email' => 'required|email',
             'password' => 'required|string|max:255',
-        ]);
+        ];
 
+        if ($request->email !== $customer->email) {
+            $rules['email'] = 'email|unique:users';
+        }
 
-        if (!Hash::check($request->password, Auth::user()->password)) {
-            return redirect()->back()->withErrors(['password' => 'Password is incorrect.']);
+        if ($request->phone !== $customer->phone) {
+            $rules['email'] = 'string|max:15|unique:users';
+        }
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+
+            $errors = $validator->errors()->toArray();
+
+            $allErrors = [];
+
+            // Iterate through each field and its messages
+            foreach ($errors as $field => $messages) {
+                foreach ($messages as $message) {
+                    // Append each message to the array
+                    $allErrors[] = $message;
+                }
+            }
+
+            // Combine all error messages into a single string
+            $errorString = implode('. ', $allErrors);
+
+            return response()->json([
+                'status' => 'fail',
+                'message' => $errorString,
+            ], 422);
         }
 
 
-        if ($request->email !== $customer->email) {
-            $request->validate([
-                'email' => 'unique:users'
-            ]);
+        if (!Auth::user()->correctPassword($request->password)) {
+            return response()->json([
+                'status' => 'fail',
+                'message' => 'Incorrect password!'
+            ], 401);
         }
 
 
         $customer->update([
+            'role' => $request->role,
             'firstname' => $request->firstname,
             'lastname' => $request->lastname,
             'email' => $request->email
         ]);
 
-
-        $request->session()->flash('status', 'Customer successfully updated!');
-        return redirect('/admin/customer/' . $customer->id);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Employee successfully updated!'
+        ], 200);
     }
 
     /**
@@ -136,6 +167,6 @@ class CustomerController extends Controller
         $customer->delete();
 
         Session()->flash('status', 'Customer successfully deleted!');
-        return redirect('/admin/customer');
+        return redirect()->route('customers.index');
     }
 }
