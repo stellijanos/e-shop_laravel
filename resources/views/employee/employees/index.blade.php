@@ -12,11 +12,7 @@
 ])
         </div>
         <div class="card-body">
-            @if (session('status'))
-                <div class="alert alert-success" role="alert">
-                    {{ session('status') }}
-                </div>
-            @endif
+            @include('employee.includes.alerts')
 
             <div class="hstack mb-3">
                 <a href="{{route('employees.create')}}" class="btn btn-success ms-auto">+ Add new Employee</a>

@@ -4,25 +4,13 @@
 <div class="container">
     <div class="card">
         <div class="card-header">
-            @include('employee.includes.breadcrumb',[
-                'current' => 'Details',
-                'group' => 'customers'
-                ])
+            @include('employee.includes.breadcrumb', [
+    'current' => 'Details',
+    'group' => 'customers'
+])
         </div>
         <div class="card-body">
-            @if (session('status'))
-                <div class="alert alert-success" role="alert">
-                    {{ session('status') }}
-                </div>
-            @endif
-
-            @if($errors->any())
-                <div class="alert alert-danger w-50" role="alert">
-                    @foreach ($errors->all() as $error)
-                        <li>{{$error}}</li>
-                    @endforeach
-                </div>
-            @endif
+            @include('employee.includes.alerts')
             <div class="details mx-3">
                 <p>Customer #{{$customer->id}}</p>
                 <p>Position: {{$customer->role}}</p>

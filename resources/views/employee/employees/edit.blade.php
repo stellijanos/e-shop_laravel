@@ -11,10 +11,8 @@
 ])
         </div>
         <div class="card-body">
-            <div class="alert alert-success" role="alert">
-            </div>
-            <div class="alert alert-danger" role="alert">
-            </div>
+            <div class="alert alert-success" role="alert"></div>
+            <div class="alert alert-danger" role="alert"></div>
 
             <form id="update-employee">
                 @csrf
