@@ -59,6 +59,9 @@ Route::prefix('/employee')->group(function () {
 Route::post('/product/{product}/reviews', [App\Http\Controllers\Customer\ReviewController::class, 'create'])->name('products.reviews.create');
 
 
+Route::get('/home', function() {
+    return redirect()->route('home');
+});
 Route::any('{any}', function () {
     abort(404, 'The requested page was not found!');
 })->where('any', '.*');

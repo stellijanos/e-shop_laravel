@@ -2,15 +2,16 @@
 
 @section('content')
 
-<style>
-    .option {
-        width:150px;
-    }
-</style>
+@include('employee.style')
 <div class="container">
     <div class="card">
-        <div class="card-header">{{ __('Dashboard') }}</div>
-
+        <div class="card-header">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">Dashboard</li>
+                </ol>
+            </nav>
+        </div>
         <div class="card-body">
             @if (session('status'))
                 <div class="alert alert-success" role="alert">
