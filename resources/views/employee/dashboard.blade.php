@@ -6,11 +6,7 @@
 <div class="container">
     <div class="card">
         <div class="card-header">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item">Dashboard</li>
-                </ol>
-            </nav>
+            @include('employee.includes.breadcrumb')
         </div>
         <div class="card-body">
             @if (session('status'))

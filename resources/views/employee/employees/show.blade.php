@@ -5,15 +5,10 @@
 <div class="container">
     <div class="card">
         <div class="card-header">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a class="nav-link" href="{{route('employee.dashboard')}}">Dashboard</a>
-                    </li>
-                    <li class="breadcrumb-item"><a class="nav-link" href="{{route('employees.index')}}">Employees</a>
-                    </li>
-                    <li class="breadcrumb-item active" aria-current="page">Details</li>
-                </ol>
-            </nav>
+            @include('employee.includes.breadcrumb', [
+    'current' => 'Details',
+    'group' => 'employees',
+])
         </div>
         <div class="card-body">
             @if (session('status'))
