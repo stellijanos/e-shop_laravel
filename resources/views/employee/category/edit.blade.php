@@ -1,46 +1,30 @@
 @extends('layouts.app')
-
 @section('content')
+@include('employee.style')
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a class="text-dark" href="{{route('admin.index')}}">Dashboard</a></li>
-                            <li class="breadcrumb-item"><a class="text-dark" href="{{url('admin/category')}}">Categories</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Edit</li>
-                        </ol>
-                    </nav>
+    <div class="card">
+        <div class="card-header">
+            @include('employee.includes.breadcrumb', [
+    'current' => 'Edit',
+    'group' => 'categories',
+    'id' => $category->id,
+])
+        </div>
+        <div class="card-body">
+            <div id="alert" class="top-middle"></div>
+            <form id="update-form" action="{{route('categories.update', $category->id)}}">
+                @csrf
+                <div class="form-floating mb-3">
+                    <input class="form-control w-50" type="text" id="name" name="name" value="{{$category->name}}"
+                        placeholder="Name">
+                    <label for="name">Name</label>
                 </div>
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
 
-                    @if($errors->any())
-                        <div class="alert alert-danger w-50" role="alert">
-                            @foreach ($errors->all() as $error )
-                                <li>{{$error}}</li>
-                            @endforeach
-                        </div>
-                    @endif
-                    <form action="{{url('admin/category/'.$category->id)}}" method="post">
-                        @csrf
-                        @method('PUT')
-                        <div class="form-floating mb-3">
-                            <input class="form-control w-50" type="text" id="name" name="name" value="{{$category->name}}" placeholder="Name">
-                            <label for="name">Name</label>
-                        </div>
-       
-                        <button type="submit" class="btn btn-success w-50">Update category</button>
-                    </form>                   
-                </div>
-            </div>
+                <button type="submit" id="update-btn" data-id="{{$category->id}}" class="btn btn-success w-50">Update
+                    category</button>
+            </form>
         </div>
     </div>
 </div>
+@include('employee.scripts.update-form')
 @endsection

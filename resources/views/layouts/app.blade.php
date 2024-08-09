@@ -67,7 +67,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
 
-                    @if(!str_contains(url()->current(),url('/admin')))
+                    @if(Auth::user()->isCustomer())
                         <ul class="navbar-nav me-auto">
                             <form class="input-group" action="{{route('home')}}" method="get">
                                 <input type="search" class="form-control" style="width:25vw;" value="{{$search ?? ''}}" name="search" id="search-string" placeholder="Search items...">

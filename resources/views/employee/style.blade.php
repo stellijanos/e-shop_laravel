@@ -19,8 +19,17 @@
 
     .breadcrumb-item {
         /* width:100px !important; */
-        white-space:nowrap;
-        display:inline-block;
-        padding:0 10px;
+        white-space: nowrap;
+        display: inline-block;
+        padding: 0 10px;
+    }
+
+
+    .top-middle {
+        position: fixed;
+        top: 0;
+        left: 50%;
+        z-index: 9999;
+        transform: translateX(-50%);
     }
 </style>

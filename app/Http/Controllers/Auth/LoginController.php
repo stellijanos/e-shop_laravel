@@ -46,7 +46,7 @@ class LoginController extends Controller
         } 
         
         if($user->isEmployee()) {
-            return redirect()->route('employees');
+            return redirect()->route('employee.dashboard');
         } 
 
         return redirect()->intended($this->redirectPath());
