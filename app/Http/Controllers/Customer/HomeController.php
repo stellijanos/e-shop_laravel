@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\Customer;
 use App\Models\Product;
 use App\Models\ProductSpec;
 use App\Services\ProductService;
@@ -62,8 +63,10 @@ class HomeController extends Controller
         // get the product applied with selected categories and filters
         $products = Product::categories($checked_category_ids)->filter($appliedFilters)->paginate(5);
 
+        $customer = Customer::getCustomer(Auth::user()->id);
+
         // get favourite product id's
-        $favourites = Auth::guard('customer')->check() ? Auth::guard('customer')->user()->favourites()->pluck('id')->toArray() : [];
+        $favourites = !$customer ? [] : $customer->favourites()->pluck('id')->toArray();
 
         // set category filter back to applied filters in order to be visible on the frontend which filter was applied
         $appliedFilters['category'] = $category_filter;
@@ -134,7 +137,10 @@ class HomeController extends Controller
 
         [$order_key, $order_value] = $this->productService->getOrderBy($sort_by);
 
-        $query = Auth::user()->favourites()->orderBy($order_key, $order_value);
+
+        $customer = Customer::getCustomer(Auth::user()->id);
+
+        $query = $customer->favourites()->orderBy($order_key, $order_value);
 
         $products = $query->paginate($per_page)->appends([
             'sort_by' => $sort_by,

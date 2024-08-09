@@ -55,7 +55,8 @@
         @endauth
         @foreach($product->reviews as $review)        
             <hr>
-            <p>{{$review->user->firstname}} {{$review->user->lastname}} on {{(new DateTime($review->created_at))->format('Y.m.d')}}</p>
+            <p>{{$review->customer->firstname}} {{$review->customer->lastname}} on
+                {{(new DateTime($review->created_at))->format('Y.m.d')}}</p>
             Rating: {{$review->rating}}
             Description: {{$review->description}}
         @endforeach

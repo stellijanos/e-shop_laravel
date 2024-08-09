@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
+use App\Models\Customer;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,15 +15,18 @@ class ProductController extends Controller
         if (!$product) {
             abort(404);
         }
-        $product = $product->load('reviews.user');
+        $product = $product->load('reviews.customer');
         $isFavourite = false;
         $wasReviewed = false;
 
-        if (Auth::check()) {
-            $favourite_products_ids = Auth::user()->favourites()->pluck('id')->toArray();
+        $customer = Customer::getCustomer(Auth::user()->id);
+
+        if ($customer) {
+            $favourite_products_ids = $customer->favourites()->pluck('id')->toArray();
             $isFavourite = in_array($product->id, $favourite_products_ids);
-            $wasReviewed = $product->wasReviewedBy(Auth::user()->id);
+            $wasReviewed = $product->wasReviewedBy($customer->id);
         }
+
         return view('product.show', compact('product', 'isFavourite', 'wasReviewed'));
     }
 }

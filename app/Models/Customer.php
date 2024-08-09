@@ -26,7 +26,7 @@ class Customer extends User
 
     public function shoppingCart(): HasMany
     {
-        return $this->hasMany(ShoppingCartItem::class);
+        return $this->hasMany(ShoppingCartItem::class, 'user_id', 'id');
     }
 
 
@@ -51,18 +51,21 @@ class Customer extends User
 
         if ($cartItem) {
             $this->shoppingCart()->where('product_id', $product->id)->increment('quantity');
-        } else {
-            $cartItem = new ShoppingCartItem();
-            $cartItem->product_id = $product->id;
-            $cartItem->user_id = $this->id;
-            $cartItem->save();
+            return "added";
         }
-        return true;
+        $cartItem = new ShoppingCartItem();
+        $cartItem->product_id = $product->id;
+        $cartItem->user_id = $this->id;
+        $cartItem->save();
+        return "added";
     }
 
 
     public function setCartProductQuantity(Product $product, int $quantity)
     {
+        if (!$quantity < 0) {
+            return 'invalid-quantity';
+        }
 
         $cartItem = $this->shoppingCart()->where('product_id', $product->id)->first();
         if (!$cartItem) {
@@ -83,7 +86,13 @@ class Customer extends User
     }
 
 
-    public function scopeGetAllCustomers($query) {
+    public function scopeGetAllCustomers($query)
+    {
         return $query->where('role', 'customer');
+    }
+
+    public function scopeGetCustomer($query, int $id)
+    {
+        return $query->where('id', $id)->where('role', 'customer')->first();
     }
 }

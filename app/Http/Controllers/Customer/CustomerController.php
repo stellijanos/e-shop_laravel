@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
+use App\Models\Customer;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -138,26 +139,54 @@ class CustomerController extends Controller
     public function favourite(Product $product)
     {
         if (!$product) {
-            return response()->json(['response' => 'not-found']);
+            return response()->json([
+                'status' => 'fail',
+                'message' => 'Product not found!'
+            ], 404);
         }
-        $response = Auth::user()->addFavourite($product);
 
-        return response()->json(['response' => $response]);
+        $customer = Customer::getCustomer(Auth::user()->id);
+
+        if (!$customer) {
+            return response()->json([
+                'status' => 'fail',
+                'message' => 'You are not logged in!'
+            ], 401);
+        }
+
+        $response = $customer->addFavourite($product);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => $response
+        ]);
+
     }
 
-
-    public function updateShowFavourites(Product $product)
-    {
-
-    }
 
     public function addToCart(Product $product)
     {
         if (!$product) {
-            return response()->json(['response' => 'not-found']);
+            return response()->json([
+                'status' => 'fail',
+                'message' => 'Product not found!'
+            ], 404);
         }
-        Auth::user()->addToCart($product);
-        return response()->json(['response' => 'added']);
+
+        $customer = Customer::getCustomer(Auth::user()->id);
+
+        if (!$customer) {
+            return response()->json([
+                'status' => 'fail',
+                'message' => 'You are not logged in!'
+            ], 401);
+        }
+
+        $response = $customer->addToCart($product);
+        return response()->json([
+            'status' => 'success',
+            'message' => $response
+        ]);
     }
 
 
@@ -167,17 +196,19 @@ class CustomerController extends Controller
             return response()->json('not-found');
         }
 
-        if (!$quantity < 0) {
-            return response()->json('invalid-quantity');
+        $customer = Customer::getCustomer(Auth::user()->id);
+
+        if (!$customer) {
+            return response()->json('customer-not-found');
         }
 
-        $response = Auth::user()->setCartProductQuantity($product, $quantity);
+        $response = $customer->setCartProductQuantity($product, $quantity);
 
         if ($response !== "success") {
             return response()->json($response);
         }
 
-        $cart = Auth::user()->shoppingCart()->with('product')->get();
+        $cart = $customer->shoppingCart()->with('product')->get();
         return view('home.cart.products', compact('cart'));
     }
 }

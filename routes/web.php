@@ -19,24 +19,26 @@ Auth::routes();
 
 // Route::middleware('auth.customer')->group(function() {
 
-    Route::get('/', [\App\Http\Controllers\Customer\HomeController::class, 'index'])->name('home');
-    Route::get('/favourites', [App\Http\Controllers\Customer\HomeController::class, 'favourites'])->name('favourites');
-    Route::get('/cart', [App\Http\Controllers\Customer\HomeController::class, 'cart'])->name('cart');
-    Route::get('/product/{product}', [App\Http\Controllers\Customer\ProductController::class, 'show'])->name('product');
-    Route::post('/user/cart/{product}/quantity/{quantity}', [App\Http\Controllers\Customer\CustomerController::class, 'changeQuantity']);
+Route::get('/', [\App\Http\Controllers\Customer\HomeController::class, 'index'])->name('home');
+Route::get('/favourites', [App\Http\Controllers\Customer\HomeController::class, 'favourites'])->name('favourites');
+Route::get('/cart', [App\Http\Controllers\Customer\HomeController::class, 'cart'])->name('cart');
+Route::get('/product/{product}', [App\Http\Controllers\Customer\ProductController::class, 'show'])->name('product');
 
-    Route::prefix('account')->group(function () {
-        Route::get('/', [App\Http\Controllers\Customer\CustomerController::class, 'index'])->name('account.index');
-        Route::get('/edit', [App\Http\Controllers\Customer\CustomerController::class, 'edit'])->name('account.edit');
-        Route::put('/edit', [App\Http\Controllers\Customer\CustomerController::class, 'update']);
-        Route::get('/delete', [App\Http\Controllers\Customer\CustomerController::class, 'delete'])->name('account.delete');
-        Route::delete('/delete', [App\Http\Controllers\Customer\CustomerController::class, 'destroy'])->name('account.delete');
-        Route::post('/favourite/{product}', [App\Http\Controllers\Customer\CustomerController::class, 'favourite']);
-        Route::post('/add-to-cart/{product}', [App\Http\Controllers\Customer\CustomerController::class, 'addToCart']);
-    });
+// Route::post('/user/cart/{product}/quantity/{quantity}', [App\Http\Controllers\Customer\CustomerController::class, 'changeQuantity']);
+
+
+
+Route::post('user/favourites/{product}', [App\Http\Controllers\Customer\CustomerController::class, 'favourite'])->name('user.add-to-favourites');
+Route::post('/user/cart/{product}/quantity/{quantity}', [App\Http\Controllers\Customer\CustomerController::class, 'addToCart'])->name('user.add-to-cart');
+
+Route::prefix('account')->group(function () {
+    Route::get('/', [App\Http\Controllers\Customer\CustomerController::class, 'index'])->name('account.index');
+    Route::get('/edit', [App\Http\Controllers\Customer\CustomerController::class, 'edit'])->name('account.edit');
+    Route::put('/edit', [App\Http\Controllers\Customer\CustomerController::class, 'update']);
+    Route::get('/delete', [App\Http\Controllers\Customer\CustomerController::class, 'delete'])->name('account.delete');
+    Route::delete('/delete', [App\Http\Controllers\Customer\CustomerController::class, 'destroy'])->name('account.delete');
+});
 // });
-
-
 
 
 
@@ -59,7 +61,7 @@ Route::prefix('/employee')->group(function () {
 Route::post('/product/{product}/reviews', [App\Http\Controllers\Customer\ReviewController::class, 'create'])->name('products.reviews.create');
 
 
-Route::get('/home', function() {
+Route::get('/home', function () {
     return redirect()->route('home');
 });
 Route::any('{any}', function () {

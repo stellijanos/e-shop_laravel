@@ -1,25 +1,59 @@
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 
-    function favourite(button) {
+    const cartIcons = document.querySelectorAll('.add-to-cart');
+    cartIcons.forEach(function (el) {
+        el.addEventListener('click', function () {
+            addToCart(el);
+        });
+    });
 
-        return new Promise((resolve, reject) => {
-            const productId = button.getAttribute('data-product-id');
+    const favouriteIcons = document.querySelectorAll('.add-to-favourites');
+    favouriteIcons.forEach(function (el) {
+        el.addEventListener('click', function () {
+            addToFavourites(el)
+        });
+    });
 
-            axios.post(`{{url('/account/favourite')}}/${productId}`)
-                .then(response => {
-                    reloadFavourites();
-                    let responseText = response.data.response;
-                    if (responseText === "added") {
-                        button.innerHTML = '<i class="fa-solid fa-heart fa-2x" style="color:red;"></i>';
-                    } else if (responseText === "removed") {
-                        button.innerHTML = '<i class="fa-regular fa-heart fa-2x" ></i>'
-                    }
-                })
-                .catch(error => {
-                    //
-                });
+    function addToCart(el) {
+        const productId = el.getAttribute('data-product-id');
+        const quantity = 1;
+        el.innerHTML = '<i class="fa-solid fa-check fa-2x"></i>';
+
+        $.ajax({
+            url: `${window.location.origin}/user/cart/${productId}/quantity/${quantity}'}`,
+            method: 'post',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function (res) {
+                if (res.status !== 'success') alertFail(res.message);
+                if (res.message === 'added') el.innerHTML = '<i class="fa-solid fa-cart-plus fa-2x"></i>'
+            },
+            error: function (err) {
+                alertFail(err);
+            }
+        });
+    }
+
+    function addToFavourites(el) {
+        const productId = el.getAttribute('data-product-id');
+
+        $.ajax({
+            url: `${window.location.origin}/user/favourites/${productId}`,
+            type: 'post',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function (res) {
+                reloadFavourites();
+                if (res.status !== 'success') return alertFail(res.message);
+                if (res.message === 'added') return el.innerHTML = '<i class="fa-solid fa-heart fa-2x" style="color:red;"></i>';
+                if (res.message === 'removed') return el.innerHTML = '<i class="fa-regular fa-heart fa-2x" ></i>';
+            },
+            error: function (err) {
+                alertFail(err.message);
+            }
         });
     }
 
@@ -29,20 +63,12 @@
         }
     }
 
+    function alertFail(message) {
+        console.log(message);
+    }
 
-    function addToCart(button) {
-        const productId = button.getAttribute('data-product-id');
-        button.innerHTML = '<i class="fa-solid fa-check fa-2x"></i>';
-
-        axios.post(`{{url('/account/add-to-cart')}}/${productId}`)
-            .then(response => {
-                let responseText = response.data.response;
-                if (responseText === "added") {
-                    button.innerHTML = '<i class="fa-solid fa-cart-plus fa-2x"></i>';
-                }
-            })
-            .catch(error => { });
-
+    function alertSuccess(message) {
+        console.log(message);
     }
 
 </script>
