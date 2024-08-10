@@ -7,6 +7,8 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductSpec;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
@@ -18,7 +20,7 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::paginate(5);
-        return view('admin.products.index', compact('products'));
+        return view('employee.products.index', compact('products'));
     }
 
     /**
@@ -30,7 +32,7 @@ class ProductController extends Controller
     {
         $categories = Category::all();
 
-        return view('admin.products.create', compact('categories'));
+        return view('employee.products.create', compact('categories'));
     }
 
     /**
@@ -97,7 +99,7 @@ class ProductController extends Controller
 
 
         $request->session()->flash('status', 'Product successfully added!');
-        return redirect('/admin/product');
+        return redirect('/employee/product');
 
     }
 
@@ -112,7 +114,7 @@ class ProductController extends Controller
 
         $product || abort(404);
 
-        return view('admin.products.show', compact('product'));
+        return view('employee.products.show', compact('product'));
     }
 
     /**
@@ -127,7 +129,7 @@ class ProductController extends Controller
 
         $categories = Category::all();
 
-        return view('admin.products.edit', compact('product', 'categories'));
+        return view('employee.products.edit', compact('product', 'categories'));
     }
 
 
@@ -141,31 +143,52 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        $product || abort(404);
 
-        $request->validate([
+        // dd($request->image);    
+
+        if (!$product) {
+            return response()->json(['status' => 'fail', 'message' => 'Product not found!']);
+        }
+
+        $rules = [
             'name' => 'required|string|max:255',
             'category' => 'required|numeric',
             'price' => 'required|numeric',
             'description' => 'required|string',
             'stock' => 'required|numeric|min:0',
             'specs' => 'required|array|min:1'
-        ]);
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+
+            return response()->json([
+                'status' => 'fail',
+                'message' => json_encode($validator->errors()->toArray()),
+            ], 422);
+        }
 
         $imageName = $product->image;
-
         if ($request->remove_image) {
-            $this->removeImage($imageName);
-            $imageName = 'no-image.png';
+
+            $imageName = $product->setDefaultImage();
+
         } else if ($request->image) {
-            $request->validate([
+            $rule = [
                 'image' => 'nullable|file|image|mimes:jpg,jpeg,png|max:2048'
-            ]);
+            ];
 
-            $this->removeImage($imageName);
+            $validator = Validator::make($request->only('image'), $rule);
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => 'fail',
+                    'message' => json_encode($validator->errors()->toArray()),
+                ], 422);
+            }
 
-            $imageName = date('Ymdhis') . uniqid() . '.' . $request->image->extension();
-            $request->image->move(public_path('images/products/'), $imageName);
+            $imageName = $product->changeImage($request->image);
+
         }
 
         $product->update([
@@ -177,25 +200,20 @@ class ProductController extends Controller
             'category_id' => $request->category,
         ]);
 
-        $product->specs()->delete();
-
-        foreach ($request->specs as $spec) {
-
-            $spec = explode(';', $spec);
-
-            if (count($spec) !== 2)
-                continue;
-
-            ProductSpec::create([
-                'product_id' => $product->id,
-                'name' => $spec[0],
-                'value' => $spec[1],
-            ]);
-        }
+        $product->addSpecs($request->specs);
 
 
-        $request->session()->flash('status', 'Product #' . $product->id . ' successfully updated!');
-        return redirect('/admin/product');
+
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Products successfully updated!',
+            'data' => [
+                'image' => $imageName
+            ]
+        ], 200);
+
+        // //////////////////////////////////################### 
 
     }
 
@@ -208,10 +226,10 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         $product || abort(404);
-    
+
         $product->remove();
-        
+
         Session()->flash('status', 'Product #' . $product->id . ' successfully deleted!');
-        return redirect('/admin/product');
+        return redirect('/employee/product');
     }
 }

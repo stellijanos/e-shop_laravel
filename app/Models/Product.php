@@ -82,12 +82,13 @@ class Product extends Model
 
     public function remove()
     {
+        $this->removeImage();
         $this->delete();
-        $this->removeImage($this->image);
     }
 
-    private function removeImage($imageName)
+    public function removeImage()
     {
+        $imageName = $this->image;
 
         if ($imageName == 'no-image.png')
             return;
@@ -96,5 +97,49 @@ class Product extends Model
             unlink($imagePath);
         }
     }
+
+    public function setDefaultImage()
+    {
+        $this->removeImage();
+        $this->image = 'no-image.png';
+
+        return $this->image;
+    }
+
+
+
+    public function changeImage($image) {
+        $this->removeImage();
+
+        $imageName = date('Ymdhis') . uniqid() . '.' . $image->extension();
+        $image->move(public_path('images/products/'), $imageName);
+
+        return $imageName;
+    }
+
+
+
+    public function addSpecs($specs)
+    {
+        $this->specs()->delete();
+
+        foreach ($specs as $spec) {
+
+            $spec = explode(';', $spec);
+
+            if (count($spec) !== 2)
+                continue;
+
+            ProductSpec::create([
+                'product_id' => $this->id,
+                'name' => $spec[0],
+                'value' => $spec[1],
+            ]);
+        }
+    }
+
+
+
+
 
 }

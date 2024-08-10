@@ -14,7 +14,7 @@
         <div class="card-body overflow-x-auto" style="height:70vh">
             <div id="alert" class="top-middle"></div>
             <form id="update-form" action="{{route('employees.update', $employee->id)}}">
-                @csrf
+                @method('PUT')
                 <div class="form-floating mb-3 w-50">
                     <select name="role" id="role" class="form-select">
                         <option value="admin">Admin</option>
@@ -61,5 +61,4 @@
         </div>
     </div>
 </div>
-@include('employee.scripts.update-form')
 @endsection

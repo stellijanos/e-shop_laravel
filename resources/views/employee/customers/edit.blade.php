@@ -13,7 +13,7 @@
         <div class="card-body">
             <div id="alert" class="top-middle"></div>
             <form id="update-form" action="{{route('customers.update', $customer->id)}}">
-                @csrf
+                @method('PUT')
                 <div class="form-floating mb-3">
                     <input class="form-control w-50" type="text" id="firstname" name="firstname"
                         value="{{$customer->firstname}}" placeholder="Firstname">
@@ -39,5 +39,4 @@
         </div>
     </div>
 </div>
-@include('employee.scripts.update-form')
 @endsection

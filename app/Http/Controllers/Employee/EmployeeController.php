@@ -107,6 +107,7 @@ class EmployeeController extends Controller
      */
     public function update(Request $request, Employee $employee)
     {
+
         if (!$employee) {
             return response()->json(['status' => 'fail', 'message' => 'Employee not found!']);
         }

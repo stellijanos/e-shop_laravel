@@ -4,8 +4,8 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-import './bootstrap';
-import { createApp } from 'vue';
+import "./bootstrap";
+import { createApp } from "vue";
 
 /**
  * Next, we will create a fresh Vue application instance. You may then begin
@@ -15,8 +15,8 @@ import { createApp } from 'vue';
 
 const app = createApp({});
 
-import ExampleComponent from './components/ExampleComponent.vue';
-app.component('example-component', ExampleComponent);
+import ExampleComponent from "./components/ExampleComponent.vue";
+app.component("example-component", ExampleComponent);
 
 /**
  * The following block of code may be used to automatically register your
@@ -37,3 +37,29 @@ app.component('example-component', ExampleComponent);
  */
 
 // app.mount('#app');
+
+const currentPath = window.location.pathname;
+
+
+if (currentPath.includes("/products/create")) {
+    import("./employee/product").then((module) => {
+        module.default();
+    });
+}
+
+if (currentPath.match(/^\/employee\/.*\/edit/)) {
+    import("./employee/employee").then((module) => {
+        module.updateForm();
+    });
+
+    if (currentPath.includes("/products")) {
+        import("./employee/product").then((module) => {
+            module.default();
+        });
+    }
+
+}
+
+// if (currentPath === '/employee')
+
+console.log("janos from app.js");
