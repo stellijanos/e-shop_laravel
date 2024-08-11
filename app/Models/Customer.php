@@ -30,60 +30,9 @@ class Customer extends User
     }
 
 
+
+
     // other functionalities
-
-    public function addFavourite($product)
-    {
-        if ($this->favourites()->where('product_id', $product->id)->exists()) {
-            $this->favourites()->detach($product);
-            return "removed";
-        }
-
-        $this->favourites()->attach($product);
-        return "added";
-
-    }
-
-    public function addToCart(Product $product)
-    {
-
-        $cartItem = $this->shoppingCart()->where('product_id', $product->id)->first();
-
-        if ($cartItem) {
-            $this->shoppingCart()->where('product_id', $product->id)->increment('quantity');
-            return "added";
-        }
-        $cartItem = new ShoppingCartItem();
-        $cartItem->product_id = $product->id;
-        $cartItem->user_id = $this->id;
-        $cartItem->save();
-        return "added";
-    }
-
-
-    public function setCartProductQuantity(Product $product, int $quantity)
-    {
-        if (!$quantity < 0) {
-            return 'invalid-quantity';
-        }
-
-        $cartItem = $this->shoppingCart()->where('product_id', $product->id)->first();
-        if (!$cartItem) {
-            return "not-found";
-        }
-
-        if ($quantity > $cartItem->product->stock) {
-            return "invalid-quantity";
-        }
-
-        if ($quantity === 0) {
-            $this->shoppingCart()->where('product_id', $product->id)->delete();
-        } else {
-            $this->shoppingCart()->where('product_id', $product->id)->update(['quantity' => $quantity]);
-        }
-
-        return "success";
-    }
 
 
     public function scopeGetAllCustomers($query)
@@ -95,4 +44,98 @@ class Customer extends User
     {
         return $query->where('id', $id)->where('role', 'customer')->first();
     }
+
+
+    public function toggleFavourite($product)
+    {
+        if ($this->favourites()->where('product_id', $product->id)->exists()) {
+            $this->favourites()->detach($product);
+            return "removed";
+        }
+
+        $this->favourites()->attach($product);
+        return "added";
+
+    }
+
+    public function addToCart(Product $product, int $quantity)
+    {
+
+        if ($quantity <= 0) {
+            return "fail";
+        }
+
+        $cartItem = $this->shoppingCart()->where('product_id', $product->id)->first();
+        if (!$cartItem) {
+
+            ShoppingCartItem::create([
+                'product_id' => $product->id,
+                'user_id' => $this->id,
+                'quantity' => $quantity
+            ]);
+
+            return "added";
+        }
+
+        if ($quantity > $cartItem->product->stock) {
+            return "fail";
+        }
+
+        $this->shoppingCart()->where('product_id', $product->id)->update(['quantity' => $quantity]);
+        return "added";
+
+    }
+
+
+    public function removeFromCart($product)
+    {
+        $cartItem = $this->shoppingCart()->where('product_id', $product->id)->first();
+        if (!$cartItem) {
+            return ['status' => 'fail', 'message' => 'Product not found in cart!'];
+        }
+
+        $this->shoppingCart()->where('product_id', $product->id)->delete();
+        return ['status' => 'success', 'message' => 'Product deleted from cart!'];
+
+    }
+
+    public function getNumberOfCartProducts()
+    {
+        return $this->shoppingCart()->sum('quantity');
+    }
+
+
+    public function incrementCartItemQuantity(Product $product)
+    {
+        $cartItem = $this->shoppingCart()->where('product_id', $product->id);
+
+        if ($cartItem->first()) {
+            $cartItem->increment('quantity');
+        } else {
+            ShoppingCartItem::create([
+                'product_id' => $product->id,
+                'user_id' => $this->id
+            ]);
+        }
+        return "incremented";
+    }
+
+
+
+    public function decrementCartItemQuantity(Product $product)
+    {
+        $cartItem = $this->shoppingCart()->where('product_id', $product->id);
+
+        if ($cartItem->first()) {
+            $this->shoppingCart()->where('product_id', $product->id)->decrement('quantity');
+            if ($cartItem->first()->quantity === 0) {
+                $this->shoppingCart()->where('product_id', $product->id)->delete();
+            }
+        } else {
+            "fail";
+        }
+        return "decremented";
+    }
+
+
 }

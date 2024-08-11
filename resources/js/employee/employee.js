@@ -1,5 +1,7 @@
 import $ from "jquery";
 
+import { alertFail, alertSuccess, hideAlertAfter } from "../utils/alerts";
+
 export default function () {
     console.log("Employee file");
 }
@@ -55,26 +57,4 @@ function changeImage(imageName) {
     const url = $("#show-image").attr("src");
     const imagePath = url.slice(0, url.lastIndexOf("/") + 1);
     $("#show-image").attr("src", `${imagePath}${imageName}`);
-}
-
-function alertSuccess(message) {
-    return `
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <span>${message}</span>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>`;
-}
-
-function alertFail(message) {
-    return `
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <span>${message}</span>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>`;
-}
-
-function hideAlertAfter(time) {
-    window.setTimeout(function () {
-        $("#alert").html("");
-    }, time);
 }

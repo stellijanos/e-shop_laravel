@@ -40,7 +40,6 @@ app.component("example-component", ExampleComponent);
 
 const currentPath = window.location.pathname;
 
-
 if (currentPath.includes("/products/create")) {
     import("./employee/product").then((module) => {
         module.default();
@@ -57,9 +56,16 @@ if (currentPath.match(/^\/employee\/.*\/edit/)) {
             module.default();
         });
     }
-
 }
 
-// if (currentPath === '/employee')
+if (currentPath === "/") {
+    import("./customer/favourite").then((module) => {
+        module.default();
+    });
+
+    import("./customer/cart").then((module) => {
+        module.default();
+    });
+}
 
 console.log("janos from app.js");

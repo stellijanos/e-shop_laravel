@@ -136,7 +136,7 @@ class CustomerController extends Controller
     }
 
 
-    public function favourite(Product $product)
+    public function toggleFavourite(Product $product)
     {
         if (!$product) {
             return response()->json([
@@ -154,17 +154,18 @@ class CustomerController extends Controller
             ], 401);
         }
 
-        $response = $customer->addFavourite($product);
+        $status = $customer->toggleFavourite($product);
+        $message = $status === "added" ? "Product added to favourites!" : "Product removed from favourites!";
 
         return response()->json([
-            'status' => 'success',
-            'message' => $response
+            'status' => $status,
+            'message' => $message
         ]);
 
     }
 
 
-    public function addToCart(Product $product)
+    public function addToCart(Product $product, int $quantity)
     {
         if (!$product) {
             return response()->json([
@@ -182,33 +183,113 @@ class CustomerController extends Controller
             ], 401);
         }
 
-        $response = $customer->addToCart($product);
+        $status = $customer->addToCart($product, $quantity);
+
+        $nrOfCartProducts = $customer->getNumberOfCartProducts();
+
+        $message = $status === "fail" ? "Invalid quantity!" : "Product added to cart!";
+        $statusCode = $status === "fail" ? 400 : 200;
+
         return response()->json([
-            'status' => 'success',
-            'message' => $response
-        ]);
+            'status' => $status,
+            'message' => $message,
+            'data' => [
+                'nrCartProducts' => $nrOfCartProducts,
+            ]
+        ], $statusCode);
     }
 
-
-    public function changeQuantity(Product $product, int $quantity)
+    public function delteFromCart(Product $product)
     {
         if (!$product) {
-            return response()->json('not-found');
+            if (!$product) {
+                return response()->json([
+                    'status' => 'fail',
+                    'message' => 'Product not found!'
+                ], 404);
+            }
         }
 
         $customer = Customer::getCustomer(Auth::user()->id);
 
         if (!$customer) {
-            return response()->json('customer-not-found');
+            return response()->json([
+                'status' => 'fail',
+                'message' => 'You are not logged in!'
+            ], 401);
         }
 
-        $response = $customer->setCartProductQuantity($product, $quantity);
+        $response = $customer->removeFromCart($product);
 
-        if ($response !== "success") {
-            return response()->json($response);
-        }
+        return response()->json($response);
 
-        $cart = $customer->shoppingCart()->with('product')->get();
-        return view('home.cart.products', compact('cart'));
     }
+
+
+    public function incrementCartItemQuantity(Product $product)
+    {
+        if (!$product) {
+            return response()->json([
+                'status' => 'fail',
+                'message' => 'Product not found!'
+            ], 404);
+        }
+
+        $customer = Customer::getCustomer(Auth::user()->id);
+
+        if (!$customer) {
+            return response()->json([
+                'status' => 'fail',
+                'message' => 'You are not logged in!'
+            ], 401);
+        }
+
+        $status = $customer->incrementCartItemQuantity($product);
+
+        $nrOfCartProducts = $customer->getNumberOfCartProducts();
+
+        $message = "Product added to cart!";
+        $statusCode = $status === "fail" ? 400 : 200;
+
+        return response()->json([
+            'status' => $status,
+            'message' => $message,
+            'data' => [
+                'nrOfCartProducts' => $nrOfCartProducts,
+            ]
+        ], $statusCode);
+
+    }
+    public function decrementCartItemQuantity(Product $product)
+    {
+
+    }
+
+
+
+
+
+
+
+    // public function changeQuantity(Product $product, int $quantity)
+    // {
+    //     if (!$product) {
+    //         return response()->json('not-found');
+    //     }
+
+    //     $customer = Customer::getCustomer(Auth::user()->id);
+
+    //     if (!$customer) {
+    //         return response()->json('customer-not-found');
+    //     }
+
+    //     $response = $customer->setCartProductQuantity($product, $quantity);
+
+    //     if ($response !== "success") {
+    //         return response()->json($response);
+    //     }
+
+    //     $cart = $customer->shoppingCart()->with('product')->get();
+    //     return view('home.cart.products', compact('cart'));
+    // }
 }

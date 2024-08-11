@@ -36,15 +36,12 @@
         
 
         @if($products->count() === 0)
-            @include('home.no-products')
+            @include('customer.home.no-products')
         @else
-            @include('home.products')
+            @include('customer.home.products')
         @endif 
 
     </div>
 </form>
 
-@auth
-    @include('product.js-handling')
-@endauth
 @endsection

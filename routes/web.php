@@ -20,7 +20,7 @@ Auth::routes();
 // Route::middleware('auth.customer')->group(function() {
 
 Route::get('/', [\App\Http\Controllers\Customer\HomeController::class, 'index'])->name('home');
-Route::get('/favourites', [App\Http\Controllers\Customer\HomeController::class, 'favourites'])->name('favourites');
+Route::get('/favourites', [App\Http\Controllers\Customer\HomeController::class, 'showFavourites'])->name('favourites.show');
 Route::get('/cart', [App\Http\Controllers\Customer\HomeController::class, 'cart'])->name('cart');
 Route::get('/product/{product}', [App\Http\Controllers\Customer\ProductController::class, 'show'])->name('product');
 
@@ -28,8 +28,12 @@ Route::get('/product/{product}', [App\Http\Controllers\Customer\ProductControlle
 
 
 
-Route::post('user/favourites/{product}', [App\Http\Controllers\Customer\CustomerController::class, 'favourite'])->name('user.add-to-favourites');
-Route::post('/user/cart/{product}/quantity/{quantity}', [App\Http\Controllers\Customer\CustomerController::class, 'addToCart'])->name('user.add-to-cart');
+Route::post('user/favourites/{product}', [App\Http\Controllers\Customer\CustomerController::class, 'toggleFavourite'])->name('user.toggle-favourite');
+// Route::post('/user/cart/{product}/quantity/{quantity}', [App\Http\Controllers\Customer\CustomerController::class, 'addToCart'])->name('user.add-to-cart');
+Route::post('/user/cart/{product}/quantity/increment', [App\Http\Controllers\Customer\CustomerController::class, 'incrementCartItemQuantity'])->name('user.inc-cart-item');
+Route::post('/user/cart/{product}/quantity/decrement', [App\Http\Controllers\Customer\CustomerController::class, 'decrementCartItemQuantity'])->name('user.dec-cart-item');
+
+Route::delete('/user/cart/{product}', [App\Http\Controllers\Customer\CustomerController::class, 'delteFromCart'])->name('user.delete-from-cart');
 
 Route::prefix('account')->group(function () {
     Route::get('/', [App\Http\Controllers\Customer\CustomerController::class, 'index'])->name('account.index');

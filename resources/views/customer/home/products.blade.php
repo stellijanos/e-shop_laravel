@@ -21,7 +21,8 @@
                         @endphp
                         <a class="col-4 text-center add-to-favourites"
                             data-product-id="{{$product->id}}"><?=$favouriteIcon?></a>
-                        <a class="col-4 text-center add-to-cart" data-product-id="{{$product->id}}"><i
+                        <a class="col-4 text-center inc-cart-item" data-product-id="{{$product->id}}"
+                            data-new-quantity="{{($cart[$product->id] ?? 0) + 1}}"><i
                                 class="fa-solid fa-cart-plus fa-2x"></i></a>
                     </div>
                 </figcaption>

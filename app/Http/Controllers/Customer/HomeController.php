@@ -63,23 +63,34 @@ class HomeController extends Controller
         // get the product applied with selected categories and filters
         $products = Product::categories($checked_category_ids)->filter($appliedFilters)->paginate(5);
 
-        $customer = Customer::getCustomer(Auth::user()->id);
 
-        // get favourite product id's
-        $favourites = !$customer ? [] : $customer->favourites()->pluck('id')->toArray();
+        $favourites = [];
+        $nrOfCartProducts = 0;
+        $cart = [];
+        if (Auth::check()) {
+            $customer = Customer::getCustomer(Auth::user()->id);
+            // get favourite product id's
+            $favourites = $customer->isCustomer() ? $customer->favourites()->pluck('id')->toArray() : [];
+
+            $nrOfCartProducts = $customer->isCustomer() ? $customer->getNumberOfCartProducts() : 0;
+
+            $cart = $customer->shoppingCart()->pluck('quantity', 'product_id')->toArray();
+        }
 
         // set category filter back to applied filters in order to be visible on the frontend which filter was applied
         $appliedFilters['category'] = $category_filter;
 
 
         return view(
-            'home.index-new',
+            'customer.home.index',
             compact(
                 'products',
                 'favourites',
                 'productSpecs',
                 'checked_category_names',
-                'appliedFilters'
+                'appliedFilters',
+                'nrOfCartProducts',
+                'cart'
             )
         );
     }
@@ -128,7 +139,7 @@ class HomeController extends Controller
     // }
 
 
-    public function favourites(Request $request)
+    public function showFavourites(Request $request)
     {
 
         $sort_by = $request->input('sort_by', 'price-asc');
@@ -136,7 +147,6 @@ class HomeController extends Controller
         $per_page = $this->productService->getPerPage($per_page);
 
         [$order_key, $order_value] = $this->productService->getOrderBy($sort_by);
-
 
         $customer = Customer::getCustomer(Auth::user()->id);
 
