@@ -21,15 +21,15 @@ Auth::routes();
 
 Route::get('/', [\App\Http\Controllers\Customer\HomeController::class, 'index'])->name('home');
 Route::get('/cart', [App\Http\Controllers\Customer\HomeController::class, 'cart'])->name('cart');
-Route::get('/product/{product}', [App\Http\Controllers\Customer\ProductController::class, 'show'])
-    ->name('product.show');
+Route::get('/product/{product}', [App\Http\Controllers\Customer\ProductController::class, 'show'])->name('product.show')
+    ->middleware(['set.current.customer']);
 
 // Route::post('/user/cart/{product}/quantity/{quantity}', [App\Http\Controllers\Customer\CustomerController::class, 'changeQuantity']);
 
 Route::middleware(['auth.user', 'auth.customer'])->group(function () {
 
     Route::middleware(['check.product.exists'])->group(function () {
-        Route::post('/user/favourites/{product}', [App\Http\Controllers\Customer\FavouritesController::class, 'toggleFavourite'])->name('user.toggle-favourite');
+        Route::post('/user/favourites/{product}/toggle', [App\Http\Controllers\Customer\FavouritesController::class, 'toggleFavourite'])->name('user.toggle-favourite');
         Route::delete('/user/favourites/{product}', [App\Http\Controllers\Customer\FavouritesController::class, 'removeFromFavourites'])->name('user.remove-favourite');
         Route::post('/user/cart/{product}/quantity/increment', [App\Http\Controllers\Customer\CartController::class, 'incrementCartItemQuantity'])->name('user.inc-cart-item');
         Route::post('/user/cart/{product}/quantity/decrement', [App\Http\Controllers\Customer\CartController::class, 'decrementCartItemQuantity'])->name('user.dec-cart-item');

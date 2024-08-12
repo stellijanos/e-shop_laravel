@@ -1,6 +1,6 @@
 import $ from "jquery";
-
 import { alertFail, alertSuccess } from "../utils/alerts";
+import { showSpinner, hideSpinner } from "../utils/spinner";
 
 export function toggleFavourites() {
     addListenerToggleBtns();
@@ -64,10 +64,13 @@ function toggle(el) {
     const badge = $("#favourites-count-badge");
     const nrFavourites = Number(badge.html());
     $.ajax({
-        url: `${window.location.origin}/user/favourites/${productId}`,
+        url: `${window.location.origin}/user/favourites/${productId}/toggle`,
         type: "post",
         headers: {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+        beforeSend: function () {
+            showSpinner();
         },
         success: function (res) {
             if (res.status === "added") {
@@ -82,6 +85,10 @@ function toggle(el) {
         },
         error: function (err) {
             alertFail(err.responseJSON.message);
+        },
+
+        complete: function () {
+            hideSpinner();
         },
     });
 }

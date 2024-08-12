@@ -58,15 +58,23 @@ if (currentPath.match(/^\/employee\/.*\/edit/)) {
     }
 }
 
-if (currentPath === "/" || currentPath === "/favourites") {
+if (
+    currentPath === "/" ||
+    currentPath === "/favourites" ||
+    currentPath.includes("/product/")
+) {
     import("./customer/cart").then((module) => {
         module.default();
     });
 }
 
-if (currentPath === "/") {
+if (currentPath === "/" || currentPath.includes("/product/")) {
     import("./customer/favourite").then((module) => {
         module.toggleFavourites();
+    });
+
+    import("../css/spinner.css").then((module) => {
+        console.log("spinner css loaded");
     });
 }
 

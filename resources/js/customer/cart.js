@@ -1,5 +1,6 @@
 import $ from "jquery";
 import { alertFail, alertSuccess } from "../utils/alerts";
+import { showSpinner, hideSpinner } from "../utils/spinner";
 
 export default function () {
     const cartIcons = document.querySelectorAll(".inc-cart-item");
@@ -20,6 +21,9 @@ function incrementCartItemQuantity(el) {
         headers: {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
         },
+        beforeSend: function() {
+            showSpinner();
+        },
         success: function (res) {
             el.innerHTML = '<i class="fa-solid fa-check fa-2x"></i>';
             alertSuccess(res.message);
@@ -32,5 +36,8 @@ function incrementCartItemQuantity(el) {
         error: function (err) {
             alertFail(err.responseJSON.message);
         },
+        complete: function() {
+            hideSpinner();
+        }
     });
 }

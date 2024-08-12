@@ -7,7 +7,6 @@
 
         <div class="product-item bg-body-secondary text-light-emphasis rounded text-center shadow pt-3" style="width:150px">
             <a href="{{ route('product.show', $product->id) }}">
-
                 <img class="rounded" src="{{asset('images/products/' . $product->image)}}" style="width:120px; height:120px"
                     alt="{{$product->name}}-image">
                 <figcaption>
@@ -21,9 +20,9 @@
                         @endphp
                         <a class="col-4 text-center toggle-favourites"
                             data-product-id="{{$product->id}}"><?=$favouriteIcon?></a>
-                        <a class="col-4 text-center inc-cart-item" data-product-id="{{$product->id}}"
-                            data-new-quantity="{{($cart[$product->id] ?? 0) + 1}}"><i
-                                class="fa-solid fa-cart-plus fa-2x"></i></a>
+                        <a class="col-4 text-center inc-cart-item" data-product-id="{{$product->id}}">
+                            <i class="fa-solid fa-cart-plus fa-2x"></i>
+                        </a>
                     </div>
                 </figcaption>
             </a>

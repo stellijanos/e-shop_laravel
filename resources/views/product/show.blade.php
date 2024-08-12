@@ -3,67 +3,80 @@
 @include('product.css')
 
 <style>
-    #product {
+    .card-body--main-info {
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
-        gap: 2rem;
+        justify-content: space-around;
+    }
+
+    .card-body__details {
+        padding-top: 20px;
+        font-size: 1.5rem;
+        padding: 30px;
+        margin-left: 0
+    }
+
+    .card-body__details {
+        position: relative;
     }
 </style>
 @php
     $favouriteIcon = $isFavourite ? '<i class="fa-solid fa-heart fa-2x" style="color:red;"></i>' : '<i class="fa-regular fa-heart fa-2x" ></i>'; 
 @endphp
-<div class="container" id="product">
-    <img class="rounded img-fluid" src="{{asset('images/products/' . $product->image)}}" alt="{{$product->name}}-image"
-        style="max-width:500px">
-    <div class="card" style="width:500px">
-        <div class="card-body" style="padding-left:30px;">
-            <p class="fs-1 fw-bold m-0">{{$product->name}}</p>
-            <p class="fs-1 text-start fw-bold m-2">${{$product->price}}</p>
-            <hr>
-            <div class="d-flex flex-row gap-3" style="color:#000;">
-                <button class="btn btn-white" data-product-id="{{$product->id}}" onclick="favourite(this)">
-                    <?=$favouriteIcon?>
-                </button>
-                <button class="btn btn-white" data-product-id="{{$product->id}}" onclick="addToCart(this)">
-                    <i class="fa-solid fa-cart-plus fa-2x"></i>
-                </button>
+
+<div class="container">
+    <div class="card w-100">
+        <div class="card-body card-body--main-info">
+            <img src="{{asset('images/products/' . $product->image)}}" class="{{$product->name}}-image"
+                style="width:80%; max-width:500px;">
+            <div class="card-body__details">
+                @include('visual-effects.spinner')
+                <h5 class="card-title fw-bold fs-1">{{$product->name}}</h5>
+                <p class="card-text">${{$product->price}}</p>
+                <p class="card-text">({{$product->stock}} left in stock)</p>
+                <p class="card-text">Category: {{$product->category->name}}</p>
+                <hr>
+                <div class="d-flex flex-row gap-3" style="color:#000;">
+                    <button class="btn btn-white toggle-favourites" data-product-id="{{$product->id}}">
+                        <?=$favouriteIcon?>
+                    </button>
+                    <button class="btn btn-white inc-cart-item" data-product-id="{{$product->id}}">
+                        <i class="fa-solid fa-cart-plus fa-2x"></i>
+                    </button>
+                </div>
             </div>
-            <hr>
-            <span class="fw-bold fs-3">Category: {{$product->category->name}}</span>
-            <hr>
+        </div>
+        <hr>
+        <div class="card-body">
             <span class="fw-bold fs-3">Description:</span>
             <p class="m-1">{{$product->description}}</p>
+            <hr>
         </div>
-    </div>
-    <div class="card" style="width:100%">
-        <div class="card-header d-flex justify-content-between">
-            <p class="fs-2 fw-bold m-0 px-5">Reviews ({{$product->reviews->count()}})</p>
-            @auth
-                @if(!$wasReviewed)
-                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#add-review-modal">
-                        Add a review
-                    </button>
-                @endif
-            @endauth
-        </div>
-
-        @auth
+        <hr>
+        <div class="card-body">
+            <h5 class="card-title">Reviews ({{$product->reviews->count()}})</h5>
             @if(!$wasReviewed)
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#add-review-modal">
+                    Add a review
+                </button>
                 @include('product._add-review-modal')
             @endif
-        @endauth
-        @foreach($product->reviews as $review)        
-            <hr>
-            <p>{{$review->customer->firstname}} {{$review->customer->lastname}} on
-                {{(new DateTime($review->created_at))->format('Y.m.d')}}</p>
-            Rating: {{$review->rating}}
-            Description: {{$review->description}}
-        @endforeach
+        </div>
+
+        <div class="card-body">
+            @forelse($product->reviews as $review)   
+                <hr>
+                <p>{{$review->customer->firstname}} {{$review->customer->lastname}} on
+                    {{(new DateTime($review->created_at))->format('Y.m.d')}}
+                </p>
+                Rating: {{$review->rating}}
+                Description: {{$review->description}}
+            @empty
+                <p>No reviews were found.</p>
+            @endforelse
+        </div>
     </div>
 </div>
 
-@auth
-    @include('product.js-handling')
-@endauth
 @endsection

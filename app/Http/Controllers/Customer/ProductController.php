@@ -17,16 +17,18 @@ class ProductController extends Controller
         $isFavourite = false;
         $wasReviewed = false;
 
-        $currentCustomer = $request->customer;
+        $favourites = [];
 
-        dd($product->reviews->customer);
+        $currentCustomer = $request->customer;
+        $nrOfCartProducts = 0;
 
         if ($currentCustomer) {
-            $favourite_products_ids = $currentCustomer->favourites()->pluck('id')->toArray();
-            $isFavourite = in_array($product->id, $favourite_products_ids);
+            $favourites = $currentCustomer->favourites()->pluck('id')->toArray();
+            $isFavourite = in_array($product->id, $favourites);
             $wasReviewed = $product->wasReviewedBy($currentCustomer->id);
+            $nrOfCartProducts = $currentCustomer->getNumberOfCartProducts();
         }
 
-        return view('product.show', compact('product', 'isFavourite', 'wasReviewed'));
+        return view('product.show', compact('product', 'isFavourite', 'wasReviewed', 'favourites', 'nrOfCartProducts'));
     }
 }
