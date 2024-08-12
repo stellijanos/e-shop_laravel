@@ -66,6 +66,7 @@ class Kernel extends HttpKernel
         'auth.employee' => \App\Http\Middleware\AuthEmployee::class,
         'auth.customer' => \App\Http\Middleware\AuthCustomer::class,
         'auth.user' => \App\Http\Middleware\AuthUser::class,
-        'check.product.exists' => \App\Http\Middleware\CheckProductExists::class
+        'check.product.exists' => \App\Http\Middleware\CheckProductExists::class,
+        'set.current.customer' => \App\Http\Middleware\SetCurrentCustomer::class,
     ];
 }

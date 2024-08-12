@@ -142,35 +142,6 @@ class HomeController extends Controller
     // }
 
 
-    public function showFavourites(Request $request)
-    {
-
-        $sort_by = $request->input('sort_by', 'price-asc');
-        $per_page = (int) $request->input('per_page', 6);
-        $per_page = $this->productService->getPerPage($per_page);
-
-        [$order_key, $order_value] = $this->productService->getOrderBy($sort_by);
-
-        $customer = Customer::getCustomer(Auth::user()->id);
-
-        $query = $customer->favourites()->orderBy($order_key, $order_value);
-
-        $products = $query->paginate($per_page)->appends([
-            'sort_by' => $sort_by,
-            'per_page' => $per_page
-        ]);
-
-        return view('home.favourites.index', compact(
-            'products',
-            'sort_by',
-            'per_page',
-        ) + [
-            'per_page_values' => $this->productService->PER_PAGE_VALUES,
-            // 'sort_by_values' => $this->SORT_BY_VALUES
-        ]);
-    }
-
-
 
     public function cart()
     {

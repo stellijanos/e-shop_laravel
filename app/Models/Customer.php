@@ -58,6 +58,16 @@ class Customer extends User
 
     }
 
+
+    public function removeFromFavourites($product)
+    {
+        if ($this->favourites()->where('product_id', $product->id)->exists()) {
+            $this->favourites()->detach($product);
+            return "removed";
+        }
+        return "fail";
+    }
+
     public function addToCart(Product $product, int $quantity)
     {
 

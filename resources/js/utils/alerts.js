@@ -1,4 +1,3 @@
-import { hide } from "@popperjs/core";
 import $ from "jquery";
 
 export function alertSuccess(message) {

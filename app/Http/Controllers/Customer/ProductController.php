@@ -10,21 +10,21 @@ use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
-    public function show(Product $product)
+    public function show(Request $request, Product $product)
     {
-        if (!$product) {
-            abort(404);
-        }
+
         $product = $product->load('reviews.customer');
         $isFavourite = false;
         $wasReviewed = false;
 
-        $customer = Customer::getCustomer(Auth::user()->id);
+        $currentCustomer = $request->customer;
 
-        if ($customer) {
-            $favourite_products_ids = $customer->favourites()->pluck('id')->toArray();
+        dd($product->reviews->customer);
+
+        if ($currentCustomer) {
+            $favourite_products_ids = $currentCustomer->favourites()->pluck('id')->toArray();
             $isFavourite = in_array($product->id, $favourite_products_ids);
-            $wasReviewed = $product->wasReviewedBy($customer->id);
+            $wasReviewed = $product->wasReviewedBy($currentCustomer->id);
         }
 
         return view('product.show', compact('product', 'isFavourite', 'wasReviewed'));

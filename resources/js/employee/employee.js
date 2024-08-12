@@ -1,6 +1,6 @@
 import $ from "jquery";
 
-import { alertFail, alertSuccess, hideAlertAfter } from "../utils/alerts";
+import { alertFail, alertSuccess } from "../utils/alerts";
 
 export default function () {
     console.log("Employee file");
@@ -34,7 +34,7 @@ export const updateForm = () => {
                 $("#update-btn").html("Updating...");
             },
             success: function (res) {
-                $("#alert").html(alertSuccess(res.message));
+                alertSuccess(res.message);
 
                 if (res.data.image) {
                     changeImage(res.data.image);
@@ -43,11 +43,10 @@ export const updateForm = () => {
                 // http://127.0.0.1:8000/images/products/
             },
             error: function (err) {
-                $("#alert").html(alertFail(err.responseJSON.message));
+                alertFail(err.responseJSON.message);
             },
             complete: function (xhr, status) {
                 $("#update-btn").html(updateBtnText);
-                hideAlertAfter(3000);
             },
         });
     });

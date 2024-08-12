@@ -58,13 +58,21 @@ if (currentPath.match(/^\/employee\/.*\/edit/)) {
     }
 }
 
-if (currentPath === "/") {
-    import("./customer/favourite").then((module) => {
-        module.default();
-    });
-
+if (currentPath === "/" || currentPath === "/favourites") {
     import("./customer/cart").then((module) => {
         module.default();
+    });
+}
+
+if (currentPath === "/") {
+    import("./customer/favourite").then((module) => {
+        module.toggleFavourites();
+    });
+}
+
+if (currentPath === "/favourites") {
+    import("./customer/favourite").then((module) => {
+        module.removeFromFavourites();
     });
 }
 
