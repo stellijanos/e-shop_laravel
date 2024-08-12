@@ -68,13 +68,16 @@ class HomeController extends Controller
         $nrOfCartProducts = 0;
         $cart = [];
         if (Auth::check()) {
+
             $customer = Customer::getCustomer(Auth::user()->id);
+
+            $favourites = $customer ? $customer->favourites()->pluck('id')->toArray() : [];
+
             // get favourite product id's
-            $favourites = $customer->isCustomer() ? $customer->favourites()->pluck('id')->toArray() : [];
 
-            $nrOfCartProducts = $customer->isCustomer() ? $customer->getNumberOfCartProducts() : 0;
+            $nrOfCartProducts = $customer ? $customer->getNumberOfCartProducts() : 0;
 
-            $cart = $customer->shoppingCart()->pluck('quantity', 'product_id')->toArray();
+            $cart = $customer ? $customer->shoppingCart()->pluck('quantity', 'product_id')->toArray() : [];
         }
 
         // set category filter back to applied filters in order to be visible on the frontend which filter was applied

@@ -40,9 +40,9 @@ class Customer extends User
         return $query->where('role', 'customer');
     }
 
-    public function scopeGetCustomer($query, int $id)
+    public static function getCustomer(int $id)
     {
-        return $query->where('id', $id)->where('role', 'customer')->first();
+        return self::where('id', $id)->where('role', 'customer')->first();
     }
 
 

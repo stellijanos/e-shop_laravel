@@ -20,18 +20,17 @@ function incrementCartItemQuantity(el) {
         headers: {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
         },
-        beforeSend: function () {
-            el.innerHTML = '<i class="fa-solid fa-check fa-2x"></i>';
-        },
         success: function (res) {
+            el.innerHTML = '<i class="fa-solid fa-check fa-2x"></i>';
             alertSuccess(res.message);
             badge.html(res.data.nrOfCartProducts);
+
+            window.setTimeout(function () {
+                el.innerHTML = '<i class="fa-solid fa-cart-plus fa-2x"></i>';
+            }, 1000);
         },
         error: function (err) {
             alertFail(err.responseJSON.message);
-        },
-        complete: function () {
-            el.innerHTML = '<i class="fa-solid fa-cart-plus fa-2x"></i>';
         },
     });
 }

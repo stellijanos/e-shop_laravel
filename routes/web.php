@@ -27,13 +27,15 @@ Route::get('/product/{product}', [App\Http\Controllers\Customer\ProductControlle
 // Route::post('/user/cart/{product}/quantity/{quantity}', [App\Http\Controllers\Customer\CustomerController::class, 'changeQuantity']);
 
 
+Route::middleware(['auth.user', 'auth.customer', 'check.product.exists'])->group(function () {
+    Route::post('/user/favourites/{product}', [App\Http\Controllers\Customer\FavouritesController::class, 'toggleFavourite'])->name('user.toggle-favourite');
+    Route::post('/user/cart/{product}/quantity/increment', [App\Http\Controllers\Customer\CartController::class, 'incrementCartItemQuantity'])->name('user.inc-cart-item');
+    Route::post('/user/cart/{product}/quantity/decrement', [App\Http\Controllers\Customer\CartController::class, 'decrementCartItemQuantity'])->name('user.dec-cart-item');
+});
 
-Route::post('user/favourites/{product}', [App\Http\Controllers\Customer\CustomerController::class, 'toggleFavourite'])->name('user.toggle-favourite');
 // Route::post('/user/cart/{product}/quantity/{quantity}', [App\Http\Controllers\Customer\CustomerController::class, 'addToCart'])->name('user.add-to-cart');
-Route::post('/user/cart/{product}/quantity/increment', [App\Http\Controllers\Customer\CustomerController::class, 'incrementCartItemQuantity'])->name('user.inc-cart-item');
-Route::post('/user/cart/{product}/quantity/decrement', [App\Http\Controllers\Customer\CustomerController::class, 'decrementCartItemQuantity'])->name('user.dec-cart-item');
 
-Route::delete('/user/cart/{product}', [App\Http\Controllers\Customer\CustomerController::class, 'delteFromCart'])->name('user.delete-from-cart');
+Route::delete('/user/cart/{product}', [App\Http\Controllers\Customer\CartController::class, 'delteFromCart'])->name('user.delete-from-cart');
 
 Route::prefix('account')->group(function () {
     Route::get('/', [App\Http\Controllers\Customer\CustomerController::class, 'index'])->name('account.index');

@@ -34,7 +34,7 @@ function toggleFavourites(el) {
             alertSuccess(res.message);
         },
         error: function (err) {
-            alertFail(err.message);
+            alertFail(err.responseJSON.message);
         },
     });
 }
