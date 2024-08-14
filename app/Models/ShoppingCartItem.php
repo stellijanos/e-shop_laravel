@@ -12,6 +12,11 @@ class ShoppingCartItem extends Model
 
     protected $table = 'shopping_session_products';
 
+    protected $primaryKey = ['user_id', 'product_id'];
+    public $incrementing = false;
+    protected $keyType = 'string';
+
+
     public $timestamps = false;
 
     protected $fillable = [
@@ -20,12 +25,19 @@ class ShoppingCartItem extends Model
         'quantity'
     ];
 
-    public function customer():BelongsTo {
+    public function getKeyName()
+    {
+        return $this->primaryKey;
+    }
+
+    public function customer(): BelongsTo
+    {
         return $this->belongsTo(Customer::class);
     }
 
-    public function product():BelongsTo {
+    public function product(): BelongsTo
+    {
         return $this->belongsTo(Product::class);
     }
-  
+
 }

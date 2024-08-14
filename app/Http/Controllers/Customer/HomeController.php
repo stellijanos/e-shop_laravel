@@ -143,10 +143,4 @@ class HomeController extends Controller
 
 
 
-    public function cart()
-    {
-        $cart = Auth::user()->shoppingCart()->with('product')->get();
-        return view('home.cart.index', compact('cart'));
-    }
-
 }

@@ -1,4 +1,4 @@
 # E-Shop
 
 ## Database Diagramm
-![database-diagramm](./app-images/database-diagramm.jpg)
+![database-diagramm](./documentation/database-diagramm.jpg)

@@ -97,14 +97,14 @@ class Customer extends User
     }
 
 
-    public function removeFromCart($product)
+    public function removeFromCart(Product $product)
     {
-        $cartItem = $this->shoppingCart()->where('product_id', $product->id)->first();
-        if (!$cartItem) {
+        $cartItem = $this->shoppingCart()->where('product_id', $product->id);
+        if (!$cartItem->first()) {
             return ['status' => 'fail', 'message' => 'Product not found in cart!'];
         }
 
-        $this->shoppingCart()->where('product_id', $product->id)->delete();
+        $cartItem->delete();
         return ['status' => 'success', 'message' => 'Product deleted from cart!'];
 
     }
@@ -115,11 +115,23 @@ class Customer extends User
     }
 
 
+    public function getCartItem(Product $product)
+    {
+        return ShoppingCartItem::where('user_id', $this->id)
+            ->where('product_id', $product->id)->with('product')
+            ->first();
+    }
+
+
     public function incrementCartItemQuantity(Product $product)
     {
         $cartItem = $this->shoppingCart()->where('product_id', $product->id);
 
         if ($cartItem->first()) {
+
+            if ($cartItem->first()->quantity + 1 > $product->stock) {
+                return "not_enough_in_stock";
+            }
             $cartItem->increment('quantity');
         } else {
             ShoppingCartItem::create([
@@ -137,10 +149,10 @@ class Customer extends User
         $cartItem = $this->shoppingCart()->where('product_id', $product->id);
 
         if ($cartItem->first()) {
-            $this->shoppingCart()->where('product_id', $product->id)->decrement('quantity');
-            if ($cartItem->first()->quantity === 0) {
-                $this->shoppingCart()->where('product_id', $product->id)->delete();
+            if ($cartItem->first()->quantity <= 1) {
+                return "min_quantity_is_1";
             }
+            $cartItem->decrement('quantity');
         } else {
             "fail";
         }

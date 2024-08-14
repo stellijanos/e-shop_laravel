@@ -20,7 +20,6 @@ Auth::routes();
 // Route::middleware('auth.customer')->group(function() {
 
 Route::get('/', [\App\Http\Controllers\Customer\HomeController::class, 'index'])->name('home');
-Route::get('/cart', [App\Http\Controllers\Customer\HomeController::class, 'cart'])->name('cart');
 Route::get('/product/{product}', [App\Http\Controllers\Customer\ProductController::class, 'show'])->name('product.show')
     ->middleware(['set.current.customer']);
 
@@ -28,11 +27,13 @@ Route::get('/product/{product}', [App\Http\Controllers\Customer\ProductControlle
 
 Route::middleware(['auth.user', 'auth.customer'])->group(function () {
 
+    Route::get('/cart', [App\Http\Controllers\Customer\CartController::class, 'show'])->name('cart');
+
     Route::middleware(['check.product.exists'])->group(function () {
         Route::post('/user/favourites/{product}/toggle', [App\Http\Controllers\Customer\FavouritesController::class, 'toggleFavourite'])->name('user.toggle-favourite');
         Route::delete('/user/favourites/{product}', [App\Http\Controllers\Customer\FavouritesController::class, 'removeFromFavourites'])->name('user.remove-favourite');
-        Route::post('/user/cart/{product}/quantity/increment', [App\Http\Controllers\Customer\CartController::class, 'incrementCartItemQuantity'])->name('user.inc-cart-item');
-        Route::post('/user/cart/{product}/quantity/decrement', [App\Http\Controllers\Customer\CartController::class, 'decrementCartItemQuantity'])->name('user.dec-cart-item');
+        Route::post('/user/cart/{product}/quantity/increment', [App\Http\Controllers\Customer\CartController::class, 'incrementCartItemQuantity'])->where('product', '[0-9]+')->name('user.inc-cart-item');
+        Route::post('/user/cart/{product}/quantity/decrement', [App\Http\Controllers\Customer\CartController::class, 'decrementCartItemQuantity'])->where('product', '[0-9]+')->name('user.dec-cart-item');
     });
     Route::get('/favourites', [App\Http\Controllers\Customer\FavouritesController::class, 'show'])->name('favourites.show');
 

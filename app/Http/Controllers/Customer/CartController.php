@@ -11,6 +11,19 @@ use Illuminate\Support\Facades\Auth;
 class CartController extends Controller
 {
 
+    public function show(Request $request)
+    {
+
+        $customer = $request->customer;
+
+
+        $favourites = $customer->favourites()->pluck('id')->toArray();
+
+        $nrOfCartProducts = $customer->getNumberOfCartProducts();
+
+        $cart = $customer->shoppingCart()->with('product')->get();
+        return view('customer.cart.index', compact('cart', 'favourites', 'nrOfCartProducts'));
+    }
 
     public function incrementCartItemQuantity(Request $request, Product $product)
     {
@@ -18,15 +31,17 @@ class CartController extends Controller
 
         $status = $customer->incrementCartItemQuantity($product);
         $nrOfCartProducts = $customer->getNumberOfCartProducts();
+        $cartItem = $customer->getCartItem($product);
 
-        $message = "Product added to cart!";
-        $statusCode = $status === "fail" ? 400 : 200;
+        $message = $status === "incremented" ? "Product added to cart!" : "Only $product->Stock left in stock!";
+        $statusCode = $status === "incremented" ? 200 : 400;
 
         return response()->json([
             'status' => $status,
             'message' => $message,
             'data' => [
                 'nrOfCartProducts' => $nrOfCartProducts,
+                'cartItem' => $cartItem
             ]
         ], $statusCode);
 
@@ -35,23 +50,22 @@ class CartController extends Controller
     {
 
         $customer = $request->customer;
-
-        $status = $customer->incrementCartItemQuantity($product);
+        $status = $customer->decrementCartItemQuantity($product);
         $nrOfCartProducts = $customer->getNumberOfCartProducts();
+        $cartItem = $customer->getCartItem($product);
 
-        $message = "Product added to cart!";
-        $statusCode = $status === "fail" ? 400 : 200;
+        $message = $status === "decremented" ? "Product quantity decreased!" : ( $status === "fail" ? "Product not found!" : "Minimum quantity is 1!");
+        $statusCode = $status === "decremented" ? 200 : 400;
 
         return response()->json([
             'status' => $status,
             'message' => $message,
             'data' => [
                 'nrOfCartProducts' => $nrOfCartProducts,
+                'cartItem' => $cartItem
             ]
         ], $statusCode);
     }
-
-
 
 
 

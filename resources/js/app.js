@@ -4,6 +4,8 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
+import "@fortawesome/fontawesome-free/css/all.min.css";
+
 import "./bootstrap";
 import { createApp } from "vue";
 
@@ -39,6 +41,12 @@ app.component("example-component", ExampleComponent);
 // app.mount('#app');
 
 const currentPath = window.location.pathname;
+
+// const jsIncludes = {
+//     "/": []
+// }
+
+// ###################################################
 
 if (currentPath.includes("/products/create")) {
     import("./employee/product").then((module) => {
@@ -83,5 +91,18 @@ if (currentPath === "/favourites") {
         module.removeFromFavourites();
     });
 }
+
+if (currentPath === "/cart") {
+    import("../css/customer/cart.css");
+
+    import("./customer/cart").then((module) => {
+        module.incrementCartItemQuantity();
+        module.decrementCartItemQuantity();
+    });
+}
+
+import("../css/spinner.css").then((module) => {
+    console.log("spinner css loaded");
+});
 
 console.log("janos from app.js");

@@ -16,9 +16,6 @@
         <link rel="dns-prefetch" href="//fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
 
-        <!-- Fontawesome CDN -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-            crossorigin="anonymous">
         <!-- Scripts -->
         @vite(['resources/sass/app.scss', 'resources/js/app.js'])
         <script>
@@ -30,6 +27,26 @@
         </script>
 
         <style>
+            #spinner-overlay {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 1050;
+
+            }
+
+            .spinner-border {
+                width: 3rem;
+                height: 3rem;
+                border-width: 0.25em;
+            }
+
             a.dropdown-item:hover {
                 background-color: lightgray;
             }
@@ -57,12 +74,14 @@
                 transform: translateX(-50%);
             }
         </style>
-
-
     </head>
-
     <body class="bg-secondary-subtle">
-        <div id="app">
+        <div class="overlay" id="spinner-overlay">
+            <div class="spinner-border" role="status" id="spinner">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+        <div id="app" style="display:none">
             <nav class="navbar navbar-expand-md navbar-light bg-transparent shadow-sm">
                 <div class="container">
                     <a class="navbar-brand" href="{{ url('/') }}">
@@ -167,7 +186,21 @@
                 @yield('content')
             </main>
         </div>
-        <footer class="text-center">&copy; Stelli Janos. All rights reserved.</footer>
+        <footer class="text-center" style="display:none">&copy; Stelli Janos. All rights reserved.</footer>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const spinner = document.getElementById('spinner-overlay');
+                const app = document.getElementById('app');
+                const footer = document.getElementsByTagName('footer')[0];
+
+                window.onload = () => {
+                    document.body.removeChild(spinner);
+                    app.style.display = 'block';
+                    footer.style.display = 'block';
+                };
+            });
+        </script>
     </body>
 
 </html>
