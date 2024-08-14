@@ -2,6 +2,8 @@ import $ from "jquery";
 import { alertFail, alertSuccess } from "../utils/alerts";
 import { showSpinner, hideSpinner } from "../utils/spinner";
 
+import noProducts from "./no-products";
+
 export function incrementCartItemQuantity() {
     const cartIcons = document.querySelectorAll(".inc-cart-item");
     cartIcons.forEach(function (el) {
@@ -16,6 +18,15 @@ export function decrementCartItemQuantity() {
     cartIcons.forEach(function (el) {
         el.addEventListener("click", function () {
             decrementQuantity(el);
+        });
+    });
+}
+
+export function deleteCartItem() {
+    const cartIcons = document.querySelectorAll(".del-cart-item");
+    cartIcons.forEach(function (el) {
+        el.addEventListener("click", function () {
+            deleteItem(el);
         });
     });
 }
@@ -52,30 +63,49 @@ function decrementQuantity(el) {
         headers: {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
         },
-        beforeSend: function () {
-            showSpinner();
-        },
         success: function (res) {
             handleSuccess({ el, res });
         },
         error: function (err) {
             alertFail(err.responseJSON.message);
         },
-        complete: function () {
-            hideSpinner();
+    });
+}
+
+function deleteItem(el) {
+    const productId = el.getAttribute("data-product-id");
+    $.ajax({
+        url: `${window.location.origin}/user/cart/${productId}t`,
+        method: "post",
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+        data: {
+            _method: "delete",
+        },
+        success: function (res) {
+            handleSuccess({ el, res, deleted: true });
+            $(`#${productId}-item`).remove();
+        },
+        error: function (err) {
+            alertFail(err.responseJSON.message);
         },
     });
 }
 
-function handleSuccess({ el, res }) {
+function handleSuccess({ el, res, deleted }) {
     const badge = $("#cart-count-badge");
+    badge.html(res.data.nrOfCartProducts);
+    alertSuccess(res.message);
+
+    if (!res.data.nrOfCartProducts)
+        return $("#main-container").html(noProducts());
+
+    if (deleted) return;
     const cartItem = res.data.cartItem;
 
-    alertSuccess(res.message);
-    badge.html(res.data.nrOfCartProducts);
-
     if (window.location.pathname === "/cart") {
-        setCartItemDetails(res.data.cartItem);
+        setCartItemDetails(cartItem);
     } else {
         toggleTickIcon(el);
     }

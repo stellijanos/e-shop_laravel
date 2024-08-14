@@ -101,11 +101,11 @@ class Customer extends User
     {
         $cartItem = $this->shoppingCart()->where('product_id', $product->id);
         if (!$cartItem->first()) {
-            return ['status' => 'fail', 'message' => 'Product not found in cart!'];
+            return "fail";
         }
 
         $cartItem->delete();
-        return ['status' => 'success', 'message' => 'Product deleted from cart!'];
+        return "success";
 
     }
 

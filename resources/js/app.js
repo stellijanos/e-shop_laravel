@@ -72,7 +72,7 @@ if (
     currentPath.includes("/product/")
 ) {
     import("./customer/cart").then((module) => {
-        module.default();
+        module.incrementCartItemQuantity();
     });
 }
 
@@ -98,6 +98,7 @@ if (currentPath === "/cart") {
     import("./customer/cart").then((module) => {
         module.incrementCartItemQuantity();
         module.decrementCartItemQuantity();
+        module.deleteCartItem();
     });
 }
 

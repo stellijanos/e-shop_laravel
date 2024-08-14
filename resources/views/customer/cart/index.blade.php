@@ -2,11 +2,11 @@
 @section('content')
 
 
-<div class="container">
-    @empty($cart)
-        @include('home.no-products')
+<div class="container" id="main-container">
+    @if(count($cart) === 0)
+        @include('customer.home.no-products')
     @else
         @include('customer.cart.product-list')
-    @endempty
+    @endif
 </div>
 @endsection

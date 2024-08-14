@@ -3,7 +3,7 @@
         @php    $product = $item->product;
             $quantity = $item->quantity; 
         @endphp 
-        <div class="col card mb-3">
+        <div class="col card mb-3" id="{{$product->id}}-item">
             <div class="row g-0">
                 <div class="col-4 d-flex align-items-center">
                     <img src="{{asset('images/products/' . $product->image)}}" style="width:130px; padding:10px"
@@ -23,7 +23,7 @@
                     </h5>
                     <div class="fw-bold fs-3 d-flex justify-content-between align-items-center">
                         <div class="fw-bold fs-3 d-flex justify-content-between" style="width:150px">
-                            <button 
+                            <button
                                 class="bg-dark border-0 text-white square rounded-start-2 dec-cart-item {{$quantity <= 1 ? 'disabled' : ''}}"
                                 data-product-id="{{$product->id}}" id="{{$product->id}}-dec-btn">
                                 <i class="fa-solid fa-minus"></i>
@@ -37,8 +37,9 @@
                                 <i class="fa-solid fa-plus"></i>
                             </button>
                         </div>
-                        <button class="btn btn-light text-danger fs-2 p-0 square remove-cart-item"><i
-                                class="fa-solid fa-trash"></i></button>
+                        <button class="btn btn-light text-danger fs-2 p-0 square del-cart-item"
+                            data-product-id="{{$product->id}}"><i class="fa-solid fa-trash"></i>
+                        </button>
                     </div>
                 </div>
             </div>

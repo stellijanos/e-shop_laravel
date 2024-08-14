@@ -54,7 +54,7 @@ class CartController extends Controller
         $nrOfCartProducts = $customer->getNumberOfCartProducts();
         $cartItem = $customer->getCartItem($product);
 
-        $message = $status === "decremented" ? "Product quantity decreased!" : ( $status === "fail" ? "Product not found!" : "Minimum quantity is 1!");
+        $message = $status === "decremented" ? "Product quantity decreased!" : ($status === "fail" ? "Product not found!" : "Minimum quantity is 1!");
         $statusCode = $status === "decremented" ? 200 : 400;
 
         return response()->json([
@@ -103,18 +103,10 @@ class CartController extends Controller
         ], $statusCode);
     }
 
-    public function delteFromCart(Product $product)
+    public function deleteItem(Request $request, Product $product)
     {
-        if (!$product) {
-            if (!$product) {
-                return response()->json([
-                    'status' => 'fail',
-                    'message' => 'Product not found!'
-                ], 404);
-            }
-        }
 
-        $customer = Customer::getCustomer(Auth::user()->id);
+        $customer = $request->customer;
 
         if (!$customer) {
             return response()->json([
@@ -123,9 +115,19 @@ class CartController extends Controller
             ], 401);
         }
 
-        $response = $customer->removeFromCart($product);
+        $status = $customer->removeFromCart($product);
 
-        return response()->json($response);
+        $nrOfCartProducts = $customer->getNumberOfCartProducts();
+
+        $message = $status === "fail" ? 'Product not found in cart!' : 'Product deleted from cart!';
+
+        return response()->json([
+            'status' => $status,
+            'message' => $message,
+            'data' => [
+                'nrOfCartProducts' => $nrOfCartProducts,
+            ]
+        ]);
 
     }
 
