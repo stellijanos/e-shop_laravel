@@ -32,7 +32,7 @@
                 top: 0;
                 left: 0;
                 width: 100%;
-                height: 100%;
+                height: 1000%;
                 background: rgba(0, 0, 0, 0);
                 display: flex;
                 align-items: center;
@@ -75,6 +75,7 @@
             }
         </style>
     </head>
+
     <body class="bg-secondary-subtle">
         <div class="overlay" id="spinner-overlay">
             <div class="spinner-border" role="status" id="spinner">
@@ -195,7 +196,9 @@
                 const footer = document.getElementsByTagName('footer')[0];
 
                 window.onload = () => {
-                    document.body.removeChild(spinner);
+                    // document.body.removeChild(spinner);
+                    spinner.style.display = 'none';
+                    spinner.style.background = 'rgba(0, 0, 0, 0.2)';
                     app.style.display = 'block';
                     footer.style.display = 'block';
                 };

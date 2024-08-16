@@ -19,9 +19,12 @@ Auth::routes();
 
 // Route::middleware('auth.customer')->group(function() {
 
-Route::get('/', [\App\Http\Controllers\Customer\HomeController::class, 'index'])->name('home');
-Route::get('/product/{product}', [App\Http\Controllers\Customer\ProductController::class, 'show'])->name('product.show')
-    ->middleware(['set.current.customer']);
+
+Route::middleware(['set.current.customer'])->group(function () {
+    Route::get('/', [\App\Http\Controllers\Customer\HomeController::class, 'index'])->name('home');
+    Route::post('/', [\App\Http\Controllers\Customer\HomeController::class, 'applyFilter'])->name('filter.apply');
+    Route::get('/product/{product}', [App\Http\Controllers\Customer\ProductController::class, 'show'])->name('product.show');
+});
 
 // Route::post('/user/cart/{product}/quantity/{quantity}', [App\Http\Controllers\Customer\CustomerController::class, 'changeQuantity']);
 

@@ -22,12 +22,114 @@ class HomeController extends Controller
     }
 
 
+    private function getAllSpecs()
+    {
+        $productSpecs = ProductSpec::getAllSpecsGroupedByName();
+
+        $productSpecs['category'] = Category::orderBy('name')->get()->pluck('name')->toArray();
+
+        // sort all the specs by key
+        ksort($productSpecs);
+
+        return $productSpecs;
+    }
+
+    public function index(Request $request)
+    {
+
+
+        $products = Product::with('category')->paginate(5);
+        $customer = $request->customer;
+
+        $productSpecs = $this->getAllSpecs();
+
+        $favourites = $customer ? $customer->favourites()->pluck('id')->toArray() : [];
+        $nrOfCartProducts = $customer ? $customer->getNumberOfCartProducts() : 0;
+        $cart = $customer ? $customer->shoppingCart()->pluck('quantity', 'product_id')->toArray() : [];
+
+        return view(
+            'customer.home.index',
+            compact(
+                'products',
+                'favourites',
+                'nrOfCartProducts',
+                'productSpecs',
+                'cart'
+            )
+        );
+    }
+
+    private function getNewQueryString($req)
+    {
+
+        $key = $req['specName'];
+        $value = $req['specValue'];
+        $apply = $req['apply'];
+        $queryString = $req['queryString'];
+
+        parse_str($queryString, $queryParams);
+
+        if ($apply === "true") {
+
+            if (!isset($queryParams[$key])) {
+                $queryParams[$key] = [];
+            }
+
+            if (!is_array($queryParams[$key])) {
+                $queryParams[$key] = [$queryParams[$key]];
+            }
+
+            if (!in_array($value, $queryParams[$key])) {
+                $queryParams[$key][] = $value;
+            }
+        } else {
+
+            if (!isset($queryParams[$key]))
+                return;
+
+            if (!is_array($queryParams[$key])) {
+                if ($queryParams[$key] === $value) {
+                    unset($queryParams[$key]);
+                }
+                return;
+            }
+            $queryParams[$key] = array_values(array_filter($queryParams[$key], function ($v) use ($value) {
+                return $v !== $value;
+            }));
+
+            if (empty($queryParams[$key])) {
+                unset($queryParams[$key]);
+            }
+        }
+
+        return http_build_query($queryParams);
+    }
+
+
+    public function applyFilter(Request $request)
+    {
+
+        $queryString = $this->getNewQueryString($request->all());
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Filter applied!',
+            'data' => [
+                'queryString' => $queryString,
+            ]
+        ]);
+    }
+
+
+
+
+
     /**
      * Show the application dashboard.
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index(Request $request)
+    public function indexOld(Request $request)
     {
 
         // get all the filters from the request
@@ -85,7 +187,7 @@ class HomeController extends Controller
 
 
         return view(
-            'customer.home.index',
+            'customer.home.old2-index',
             compact(
                 'products',
                 'favourites',

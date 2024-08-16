@@ -106,4 +106,14 @@ import("../css/spinner.css").then((module) => {
     console.log("spinner css loaded");
 });
 
+import("../css/product/product.css").then((module) => {
+    console.log("Product css loaded!");
+});
+
 console.log("janos from app.js");
+
+if (currentPath === "/") {
+    import("./customer/filter").then(module => {
+        module.default();
+    });
+}
