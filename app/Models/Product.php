@@ -66,9 +66,17 @@ class Product extends Model
     {
 
         foreach ($filters as $filter => $values) {
-            $query->whereHas('specs', function (Builder $query) use ($filter, $values) {
-                $query->Where('name', $filter)->whereIn('value', $values);
-            });
+
+            if ($filter === 'category') {
+                $query->whereHas('category', function (Builder $query) use ($filter, $values) {
+                    $query->WhereIn('name', $values);
+                });
+            } else {
+                $query->whereHas('specs', function (Builder $query) use ($filter, $values) {
+                    $query->Where('name', $filter)->whereIn('value', $values);
+                });
+            }
+
         }
         // dd($query->toSql());
         return $query;
@@ -108,7 +116,8 @@ class Product extends Model
 
 
 
-    public function changeImage($image) {
+    public function changeImage($image)
+    {
         $this->removeImage();
 
         $imageName = date('Ymdhis') . uniqid() . '.' . $image->extension();

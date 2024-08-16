@@ -31,7 +31,7 @@ function applyFilter(el) {
             showSpinner();
         },
         success: function (res) {
-            console.log(res);
+            $('#product-list').html(res.data.html);
             alertSuccess(res.message);
             updateQueryParam(res.data.queryString);
         },

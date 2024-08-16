@@ -27,6 +27,10 @@
         </script>
 
         <style>
+            ::-webkit-scrollbar {
+                width: 0px;
+            }
+
             #spinner-overlay {
                 position: absolute;
                 top: 0;
