@@ -63,11 +63,17 @@ function decrementQuantity(el) {
         headers: {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
         },
+        beforeSend: function () {
+            showSpinner();
+        },
         success: function (res) {
             handleSuccess({ el, res });
         },
         error: function (err) {
             alertFail(err.responseJSON.message);
+        },
+        complete: function () {
+            hideSpinner();
         },
     });
 }
@@ -83,12 +89,18 @@ function deleteItem(el) {
         data: {
             _method: "delete",
         },
+        beforeSend: function () {
+            showSpinner();
+        },
         success: function (res) {
             handleSuccess({ el, res, deleted: true });
             $(`#${productId}-item`).remove();
         },
         error: function (err) {
             alertFail(err.responseJSON.message);
+        },
+        complete: function () {
+            hideSpinner();
         },
     });
 }
