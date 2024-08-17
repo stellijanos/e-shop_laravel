@@ -22,7 +22,7 @@
                     </a>
                     <div class="row justify-content-around mb-1">
                         @php
-                            $favouriteIcon = in_array($product->id, $favourites)
+                            $favouriteIcon = !isset($favourites) || in_array($product->id, $favourites)
                                 ? '<i class="fa-solid fa-heart fa-2x" style="color:red;"></i>'
                                 : '<i class="fa-regular fa-heart fa-2x" ></i>'; 
                         @endphp
@@ -37,7 +37,7 @@
         @endforeach
     </div>
     <div class="text-center" id="products-link">
-        {{$products->links()}}
+        
     </div>
 
 @endif

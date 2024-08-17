@@ -23,7 +23,7 @@ class FavouritesController extends Controller
         $nrOfCartProducts = $customer->getNumberOfCartProducts();
 
         return view('customer.favourites.index', compact('products', 'favourites', 'nrOfCartProducts'));
-                
+
         // $sort_by = $request->input('sort_by', 'price-asc');
         // $per_page = (int) $request->input('per_page', 6);
         // $per_page = $this->productService->getPerPage($per_page);
@@ -72,17 +72,15 @@ class FavouritesController extends Controller
 
         $status = $customer->removeFromFavourites($product);
 
-        $products = $customer->favourites()->with('category')->paginate(1);
-        
+        $products = $customer->favourites()->with('category')->get();
 
         $favourites = $customer->favourites()->pluck('id')->toArray();
-
 
         return response()->json([
             'status' => $status,
             'message' => $status === "removed" ? "Product removed from favourites!" : "Something went wrong!",
             'data' => [
-                'products' => $products->items(),
+                'html' => view('customer.home.products', compact('products'))->render(),
                 'favourites' => $favourites
             ]
         ]);

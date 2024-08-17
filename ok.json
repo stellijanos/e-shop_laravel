@@ -1,0 +1,11 @@
+{
+    "status": "removed",
+    "message": "Product removed from favourites!",
+    "data": {
+        "html": "<div class=\"product-item bg-body-secondary text-light-emphasis rounded text-center shadow pt-3\" style=\"width:150px\">\r\n        <a href=\"http:\/\/127.0.0.1:8000\/product\/1\">\r\n            <img class=\"rounded\" src=\"http:\/\/127.0.0.1:8000\/images\/products\/2024081008531566b72a7b7b1ce.png\" style=\"width:120px; height:120px\"\r\n                alt=\"Phone-image\">\r\n            <figcaption>\r\n                <p class=\"text-truncate fs-3 fw-bold m-0\" style=\"max-width: 150px;\">Phone<\/p>\r\n                <p class=\"text-truncate fw-bold m-0\" style=\"max-width: 150px;\">(Electronics)<\/p>\r\n                <p class=\"text-truncate m-1\" style=\"max-width: 150px;\">Very good phone, reliable<\/p>\r\n                <p class=\"fs-5 text-start fw-bold m-2\">$999.00<\/p>\r\n                <div class=\"row justify-content-around mb-1\">\r\n                    <a class=\"col-4 text-center toggle-favourites\" data-product-id=\"1\"><i\r\n                            class=\"fa-solid fa-heart fa-2x\" style=\"color:red;\"><\/i><\/a>\r\n                    <a class=\"col-4 text-center inc-cart-item\" data-product-id=\"1\"><i\r\n                            class=\"fa-solid fa-cart-plus fa-2x\"><\/i><\/a>\r\n                <\/div>\r\n            <\/figcaption>\r\n        <\/a>\r\n    <\/div>\r\n",
+        "favourites": [
+            1,
+            2
+        ]
+    }
+}
