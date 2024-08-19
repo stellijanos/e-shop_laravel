@@ -72,7 +72,7 @@ if (
     currentPath.includes("/product/")
 ) {
     import("./customer/cart").then((module) => {
-        module.incrementCartItemQuantity();
+        module.addItem();
     });
 }
 
@@ -93,12 +93,14 @@ if (currentPath === "/favourites") {
 }
 
 if (currentPath === "/cart") {
-    import("../css/customer/cart.css");
+    import("../css/customer/cart.css").then(() => {
+        console.log("cart css loaded.");
+    });
 
     import("./customer/cart").then((module) => {
-        module.incrementCartItemQuantity();
-        module.decrementCartItemQuantity();
-        module.deleteCartItem();
+        module.incQuantity();
+        module.decQuantity();
+        module.deleteItem();
     });
 }
 
@@ -113,7 +115,7 @@ import("../css/product/product.css").then((module) => {
 console.log("janos from app.js");
 
 if (currentPath === "/") {
-    import("./customer/filter").then(module => {
+    import("./customer/filter").then((module) => {
         module.default();
     });
 }

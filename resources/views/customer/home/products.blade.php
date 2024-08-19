@@ -26,7 +26,7 @@
                                 ? '<i class="fa-solid fa-heart fa-2x" style="color:red;"></i>'
                                 : '<i class="fa-regular fa-heart fa-2x" ></i>'; 
                         @endphp
-                        <a class="col-4 text-center inc-cart-item" data-product-id="{{$product->id}}">
+                        <a class="col-4 text-center add-to-cart" data-product-id="{{$product->id}}">
                             <i class="fa-solid fa-cart-plus fa-2x"></i>
                         </a>
                         <a class="col-4 text-center toggle-favourites"
@@ -37,7 +37,7 @@
         @endforeach
     </div>
     <div class="text-center" id="products-link">
-        
+
     </div>
 
 @endif
