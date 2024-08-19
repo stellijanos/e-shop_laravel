@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-<div class="container" id="cart-list">
+<div class="container mb-5" id="cart-list">
     @include('customer.cart.products')
 </div>
 @endsection
