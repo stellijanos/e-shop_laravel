@@ -63,6 +63,7 @@ Route::prefix('/employee')->group(function () {
     Route::resource('/customers', App\Http\Controllers\Employee\CustomerController::class);
     Route::resource('/categories', App\Http\Controllers\Employee\CategoryController::class);
     Route::resource('/products', App\Http\Controllers\Employee\ProductController::class);
+    Route::resource('/vouchers', App\Http\Controllers\Employee\VoucherController::class);
     Route::resource('/orders', App\Http\Controllers\Employee\OrderController::class);
     Route::resource('/reports', App\Http\Controllers\Employee\ReportController::class);
 });

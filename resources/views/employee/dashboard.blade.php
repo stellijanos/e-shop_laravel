@@ -42,9 +42,15 @@
                     </a>
                 </div>
                 <div class="text-center option">
-                    <a href="{{route('products.index')}}" class="nav-link option">
+                    <a href="{{route('orders.index')}}" class="nav-link option">
                         <img src="{{asset('images/orders.png')}}" alt="orders" width="100px;">
                         <p>Orders</p>
+                    </a>
+                </div>
+                <div class="text-center option">
+                    <a href="{{route('vouchers.index')}}" class="nav-link option">
+                        <img src="{{asset('images/vouchers.png')}}" alt="vouchers" width="100px;">
+                        <p>Vouchers</p>
                     </a>
                 </div>
                 <div class="text-center option">
