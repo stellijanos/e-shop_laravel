@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->foreignId('user_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('voucher_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
+            $table->unique('user_id');
         });
     }
 
@@ -27,6 +28,6 @@ return new class extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('shopping_session_coupons');
+        Schema::dropIfExists('shopping_session_vouchers');
     }
 };

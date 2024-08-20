@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -27,6 +28,14 @@ class Customer extends User
     public function shoppingCart(): HasMany
     {
         return $this->hasMany(ShoppingCartItem::class, 'user_id', 'id');
+    }
+
+
+    public function voucher(): BelongsTo
+    {
+        return $this->belongsTo(Voucher::class, 'voucher_id', 'id')
+            ->join('shopping_session_vouchers', 'users.id', '=', 'cart_vouchers.user_id')
+            ->whereColumn('cart_vouchers.user_id', 'users.id');
     }
 
 

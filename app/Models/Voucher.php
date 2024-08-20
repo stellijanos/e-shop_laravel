@@ -21,4 +21,11 @@ class Voucher extends Model
         'times_used',
         'active'
     ];
+
+    public function user()
+    {
+        return $this->hasOne(Customer::class, 'voucher_id', 'id')
+            ->join('shopping_session_vouchers', 'users.id', '=', 'cart_vouchers.user_id')
+            ->whereColumn('cart_vouchers.voucher_id', 'vouchers.id');
+    }
 }
