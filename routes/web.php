@@ -33,12 +33,17 @@ Route::middleware(['auth.user', 'auth.customer'])->group(function () {
     Route::get('/cart', [App\Http\Controllers\Customer\CartController::class, 'show'])->name('cart');
     Route::get('/favourites', [App\Http\Controllers\Customer\FavouritesController::class, 'show'])->name('favourites.show');
 
+    Route::middleware('validate.voucher')->group(function () {
+        Route::post('/user/cart/voucher', [App\Http\Controllers\Customer\CartController::class, 'addVoucher'])->name('user.add.cart.voucher');
+    });
+
     Route::middleware(['check.product.exists'])->group(function () {
         Route::post('/user/favourites/{product}/toggle', [App\Http\Controllers\Customer\FavouritesController::class, 'toggleFavourite'])->name('user.toggle-favourite');
         Route::delete('/user/favourites/{product}', [App\Http\Controllers\Customer\FavouritesController::class, 'removeFromFavourites'])->name('user.remove-favourite');
         Route::post('/user/cart/{product}/quantity/increment', [App\Http\Controllers\Customer\CartController::class, 'incrementCartItemQuantity'])->where('product', '[0-9]+')->name('user.inc-cart-item');
         Route::post('/user/cart/{product}/quantity/decrement', [App\Http\Controllers\Customer\CartController::class, 'decrementCartItemQuantity'])->where('product', '[0-9]+')->name('user.dec-cart-item');
         Route::delete('/user/cart/{product}', [App\Http\Controllers\Customer\CartController::class, 'deleteItem'])->name('user.del-cart-item');
+
     });
 
 });

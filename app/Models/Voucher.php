@@ -24,8 +24,25 @@ class Voucher extends Model
 
     public function user()
     {
-        return $this->hasOne(Customer::class, 'voucher_id', 'id')
-            ->join('shopping_session_vouchers', 'users.id', '=', 'cart_vouchers.user_id')
-            ->whereColumn('cart_vouchers.voucher_id', 'vouchers.id');
+        return $this->belongsToMany(Customer::class, 'shopping_session_vouchers', 'user_id', 'voucher_id');
+    }
+
+
+
+    // other functions
+
+    public function isActive()
+    {
+        return $this->active;
+    }
+
+
+    public function isExpired()
+    {
+        $start_date = new \DateTime($this->start_date);
+        $end_date = new \DateTime($this->end_date);
+        $now = new \DateTime();
+
+        return $now < $start_date || $now > $end_date;
     }
 }

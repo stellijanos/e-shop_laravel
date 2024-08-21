@@ -6,8 +6,7 @@
             $products_price = 0;
         @endphp
         @foreach ($cart as $item)
-            @php 
-                                                                                                    $product = $item->product;
+            @php        $product = $item->product;
                 $quantity = $item->quantity;
                 $products_price += $product->price * $quantity;
             @endphp 
@@ -82,13 +81,21 @@
                 </div>
             </div>
             <hr>
-            <div>
-                <p class="h3">Coupon</p>
+            <form id="apply-voucher-form">
+                <p class="h3">Voucher</p>
                 <div class="input-group">
-                    <input type="text" class="form-control" name="coupon" id="coupon" placeholder="Enter code here">
-                    <button class="btn btn-success input-group-text" {{isset($coupon) ? 'disabled' : ''}}>Apply</button>
+                    <input type="text" class="form-control" name="voucher" id="voucher" placeholder="Enter code here">
+                    <button class="btn btn-success input-group-text" id="apply-voucher" type="submit" {{isset($coupon) ? 'disabled' : ''}}>Apply</button>
                 </div>
-            </div>
+                @isset($voucher)
+                    <p style="color:green; padding:0 5px;">
+                        -{{$voucher->discount_type === 'percentage' ? "$voucher->value%" : "$$voucher->value"}} off
+                        ({{$voucher->code}})
+                        <i class="fa-solid fa-xmark" id="discard-voucher"></i>
+                    </p>`
+                @endisset
+
+            </form>
             <hr>
             <div>
                 <button class="btn btn-primary w-100">Proceed to checkout >>></button>

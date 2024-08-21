@@ -68,5 +68,6 @@ class Kernel extends HttpKernel
         'auth.user' => \App\Http\Middleware\AuthUser::class,
         'check.product.exists' => \App\Http\Middleware\CheckProductExists::class,
         'set.current.customer' => \App\Http\Middleware\SetCurrentCustomer::class,
+        'validate.voucher' => \App\Http\Middleware\ValidateVoucher::class
     ];
 }

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -31,11 +30,9 @@ class Customer extends User
     }
 
 
-    public function voucher(): BelongsTo
+    public function cartVoucher(): BelongsToMany
     {
-        return $this->belongsTo(Voucher::class, 'voucher_id', 'id')
-            ->join('shopping_session_vouchers', 'users.id', '=', 'cart_vouchers.user_id')
-            ->whereColumn('cart_vouchers.user_id', 'users.id');
+        return $this->belongsToMany(Voucher::class, 'shopping_session_vouchers', 'user_id', 'voucher_id');
     }
 
 
@@ -169,4 +166,22 @@ class Customer extends User
     }
 
 
+    public function applyVoucher(Voucher $voucher)
+    {
+
+        try {
+            if ($this->cartVoucher()->exists()) {
+                $this->cartVoucher()->detach();
+            }
+            $this->cartVoucher()->attach($voucher->id);
+            return 'success';
+        } catch (\Exception $e) {
+            \Log::error('Failed to apply voucher: ' . $e->getMessage());
+            return 'fail';
+        }
+    }
+
+    public function getCartVoucher() {
+        return $this->cartVoucher()->first();
+    }
 }

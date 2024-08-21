@@ -7,10 +7,19 @@ export const deleteItem = () => setEventListener("del-cart-item", remove);
 export const incQuantity = () => setEventListener("inc-cart-item", increment);
 export const decQuantity = () => setEventListener("dec-cart-item", decrement);
 
+export const applyCoupon = () => {
+    document
+        .getElementById("apply-voucher-form")
+        .addEventListener("submit", function (e) {
+            e.preventDefault();
+            const url = "/user/cart/voucher";
+            const data = { voucher: document.getElementById("voucher").value };
+            ajaxCall({ url, data });
+        });
+};
+
 function setEventListener(className, callback) {
-    console.log(className);
     const cartIcons = document.querySelectorAll(`.${className}`);
-    console.log(cartIcons);
     cartIcons.forEach(function (el) {
         el.addEventListener("click", function () {
             callback(el);
@@ -71,13 +80,19 @@ function ajaxCall({ el, url, data }) {
 
 function handleSuccess({ el, res }) {
     // common
-    const badge = $("#cart-count-badge");
-    badge.html(res.data.nrOfCartProducts);
     alertSuccess(res.message);
 
+    if (res.data.voucher) {
+        handleVoucher(res.data);
+        return;
+    }
+
+    const badge = $("#cart-count-badge");
+    badge.html(res.data.nrOfCartProducts);
+    // remove - increment - decrement
+    $("#cart-list").html(res.data.html);
+
     if (res.data.html) {
-        // remove - increment - decrement
-        $("#cart-list").html(res.data.html);
         setEventListener("del-cart-item", remove);
         setEventListener("inc-cart-item", increment);
         setEventListener("dec-cart-item", decrement);
@@ -85,6 +100,16 @@ function handleSuccess({ el, res }) {
         // add
         toggleTickIcon(el);
     }
+}
+
+function handleVoucher(data) {
+    console.log(data.voucher);
+    $('#voucher').val('');
+    $('#apply-voucher-form').append(`
+        <p style="color:green; padding:0 5px;">
+            -${data.discount_type === "percentage" ? `${data.value}%` : `$${data.value}` } off (${data.voucher})
+            <i class="fa-solid fa-xmark" id="discard-voucher"></i>
+        </p>`);
 }
 
 function toggleTickIcon(el) {

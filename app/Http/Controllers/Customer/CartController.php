@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\Customer;
+use App\Models\Voucher;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
@@ -11,18 +13,25 @@ class CartController extends Controller
 
     public function show(Request $request)
     {
+        /** @var Customer $customer */
         $customer = $request->customer;
 
         $favourites = $customer->favourites()->pluck('id')->toArray();
         $nrOfCartProducts = $customer->getNumberOfCartProducts();
         $cart = $customer->shoppingCart()->with('product')->get();
+        $voucher = $customer->getCartVoucher();
 
-        return view('customer.cart.index', compact('cart', 'favourites', 'nrOfCartProducts'));
+        // dd($voucher);
+
+        return view('customer.cart.index', compact('cart', 'favourites', 'nrOfCartProducts', 'voucher'));
     }
 
     public function incrementCartItemQuantity(Request $request, Product $product)
     {
+
         $getHtml = $request->getHtml;
+
+        /** @var Customer $customer */
         $customer = $request->customer;
 
         $status = $customer->incrementCartItemQuantity($product);
@@ -45,6 +54,7 @@ class CartController extends Controller
 
     public function decrementCartItemQuantity(Request $request, Product $product)
     {
+        /** @var Customer $customer */
         $customer = $request->customer;
 
         $status = $customer->decrementCartItemQuantity($product);
@@ -62,6 +72,7 @@ class CartController extends Controller
 
     public function deleteItem(Request $request, Product $product)
     {
+        /** @var Customer $customer */
         $customer = $request->customer;
 
         $status = $customer->removeFromCart($product);
@@ -74,6 +85,26 @@ class CartController extends Controller
         $data = compact('html', 'nrOfCartProducts');
 
         return response()->json(compact('status', 'message', 'data'), $statusCode);
+    }
+
+
+    public function addVoucher(Request $request)
+    {
+        /** @var Customer $customer */
+        $customer = $request->customer;
+
+        /** @var Voucher $voucher */
+        $voucher = $request->voucher;
+        $status = $customer->applyVoucher($voucher);
+
+        $message = $status === 'fail' ? 'Some error occured!' : 'Voucher applied to cart!';
+        $statusCode = $status === 'fail' ? 400 : 200;
+        $cart = $status === 'fail' ? [] : $customer->shoppingCart()->with('product')->get();
+        $html = $status === 'fail' ? '' : view('customer.cart.products', compact('cart', 'voucher'))->render();
+        $data = compact('html');
+
+        return response()->json(compact('status', 'message', 'data'), $statusCode);
+
     }
 
 }
