@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use App\Models\Voucher;
 use Closure;
 use Illuminate\Http\Request;
+use App\Utils\Response;
 
 class ValidateVoucher
 {
@@ -22,24 +23,11 @@ class ValidateVoucher
         $voucher = Voucher::where('code', $voucher_code)->first();
 
         if (!$voucher)
-            return response()->json([
-                'status' => 'fail',
-                'message' => 'Voucher does not exist!'
-            ], 404);
-
-        if (!$voucher->isActive()) {
-            return response()->json([
-                'status' => 'fail',
-                'message' => 'Voucher is invalid!'
-            ], 404);
-        }
-
-        if ($voucher->isExpired()) {
-            return response()->json([
-                'status' => 'fail',
-                'message' => 'Voucher has expired!'
-            ], 400);
-        }
+            return (new Response('fail', 'Voucher does not exist!', 404))->get();
+        if (!$voucher->isActive())
+            return (new Response('fail', 'Voucher is invalid!', 400))->get();
+        if ($voucher->isExpired())
+            return (new Response('fail', 'Voucher is expired!', 400))->get();
 
         $request->voucher = $voucher;
 

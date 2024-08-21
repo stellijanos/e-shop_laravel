@@ -32,7 +32,8 @@ class Customer extends User
 
     public function cartVoucher(): BelongsToMany
     {
-        return $this->belongsToMany(Voucher::class, 'shopping_session_vouchers', 'user_id', 'voucher_id');
+        return $this->belongsToMany(Voucher::class, 'shopping_session_vouchers', 'user_id', 'voucher_id')
+            ->withTimestamps();
     }
 
 
@@ -165,7 +166,6 @@ class Customer extends User
         return "decremented";
     }
 
-
     public function applyVoucher(Voucher $voucher)
     {
 
@@ -174,6 +174,7 @@ class Customer extends User
                 $this->cartVoucher()->detach();
             }
             $this->cartVoucher()->attach($voucher->id);
+            $voucher->incTimesUsed();
             return 'success';
         } catch (\Exception $e) {
             \Log::error('Failed to apply voucher: ' . $e->getMessage());
@@ -181,7 +182,8 @@ class Customer extends User
         }
     }
 
-    public function getCartVoucher() {
+    public function getCartVoucher(): Voucher|null
+    {
         return $this->cartVoucher()->first();
     }
 }

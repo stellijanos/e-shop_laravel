@@ -82,17 +82,20 @@ function handleSuccess({ el, res }) {
     // common
     alertSuccess(res.message);
 
-    if (res.data.voucher) {
-        handleVoucher(res.data);
-        return;
-    }
+    console.log('Janos');
+    console.log(res);
+
+    // if (res.data.voucher) {
+    //     handleVoucher(res.data);
+    //     return;
+    // }
 
     const badge = $("#cart-count-badge");
     badge.html(res.data.nrOfCartProducts);
     // remove - increment - decrement
-    $("#cart-list").html(res.data.html);
-
     if (res.data.html) {
+        $("#voucher").val("");
+        $("#cart-list").html(res.data.html);
         setEventListener("del-cart-item", remove);
         setEventListener("inc-cart-item", increment);
         setEventListener("dec-cart-item", decrement);
@@ -104,12 +107,7 @@ function handleSuccess({ el, res }) {
 
 function handleVoucher(data) {
     console.log(data.voucher);
-    $('#voucher').val('');
-    $('#apply-voucher-form').append(`
-        <p style="color:green; padding:0 5px;">
-            -${data.discount_type === "percentage" ? `${data.value}%` : `$${data.value}` } off (${data.voucher})
-            <i class="fa-solid fa-xmark" id="discard-voucher"></i>
-        </p>`);
+    
 }
 
 function toggleTickIcon(el) {

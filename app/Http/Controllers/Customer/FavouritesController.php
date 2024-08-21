@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Customer;
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
 use App\Models\Product;
+use App\Utils\Response;
 use Illuminate\Http\Request;
 
 class FavouritesController extends Controller
@@ -51,19 +52,13 @@ class FavouritesController extends Controller
 
     public function toggleFavourite(Request $request, Product $product)
     {
-
         $customer = $request->customer;
 
         $status = $customer->toggleFavourite($product);
         $message = $status === "added" ? "Product added to favourites!" : "Product removed from favourites!";
 
-        return response()->json([
-            'status' => $status,
-            'message' => $message
-        ]);
-
+        return (new Response($status, $message))->get();
     }
-
 
 
     public function removeFromFavourites(Request $request, Product $product)
@@ -76,13 +71,10 @@ class FavouritesController extends Controller
 
         $favourites = $customer->favourites()->pluck('id')->toArray();
 
-        return response()->json([
-            'status' => $status,
-            'message' => $status === "removed" ? "Product removed from favourites!" : "Something went wrong!",
-            'data' => [
-                'html' => view('customer.home.products', compact('products'))->render(),
-                'favourites' => $favourites
-            ]
-        ]);
+        $message = $status === "removed" ? "Product removed from favourites!" : "Something went wrong!";
+        $html = $status === "removed" ? view('customer.home.products', compact('products'))->render() : '';
+        $data = compact('html', 'favourites');
+
+        return (new Response($status, $message, 200, $data))->get();
     }
 }

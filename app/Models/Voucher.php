@@ -24,7 +24,8 @@ class Voucher extends Model
 
     public function user()
     {
-        return $this->belongsToMany(Customer::class, 'shopping_session_vouchers', 'user_id', 'voucher_id');
+        return $this->belongsToMany(Customer::class, 'shopping_session_vouchers', 'user_id', 'voucher_id')
+            ->withTimestamps();
     }
 
 
@@ -44,5 +45,19 @@ class Voucher extends Model
         $now = new \DateTime();
 
         return $now < $start_date || $now > $end_date;
+    }
+
+
+
+    public function incTimesUsed()
+    {
+        $this->times_used++;
+        $this->save();
+    }
+
+    public function decTimesUsed()
+    {
+        $this->times_used--;
+        $this->save();
     }
 }
