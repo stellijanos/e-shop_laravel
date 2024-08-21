@@ -101,7 +101,8 @@ if (currentPath === "/cart") {
         module.incQuantity();
         module.decQuantity();
         module.deleteItem();
-        module.applyCoupon();
+        module.applyVoucher();
+        module.discardVoucher();
     });
 }
 

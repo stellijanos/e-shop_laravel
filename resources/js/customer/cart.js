@@ -6,8 +6,22 @@ export const addItem = () => setEventListener("add-to-cart", add);
 export const deleteItem = () => setEventListener("del-cart-item", remove);
 export const incQuantity = () => setEventListener("inc-cart-item", increment);
 export const decQuantity = () => setEventListener("dec-cart-item", decrement);
+export const applyVoucher = () => setApplyVoucherEventListener();
+export const discardVoucher = () => setRemoveVoucherEventListener();
 
-export const applyCoupon = () => {
+function setRemoveVoucherEventListener() {
+    const removeVoucherBtn = document.getElementById("remove-voucher");
+
+    if (removeVoucherBtn) {
+        removeVoucherBtn.addEventListener("click", function () {
+            const url = "/user/cart/voucher";
+            const data = { _method: "delete" };
+            ajaxCall({ url, data });
+        });
+    }
+}
+
+function setApplyVoucherEventListener() {
     document
         .getElementById("apply-voucher-form")
         .addEventListener("submit", function (e) {
@@ -16,7 +30,7 @@ export const applyCoupon = () => {
             const data = { voucher: document.getElementById("voucher").value };
             ajaxCall({ url, data });
         });
-};
+}
 
 function setEventListener(className, callback) {
     const cartIcons = document.querySelectorAll(`.${className}`);
@@ -74,6 +88,7 @@ function ajaxCall({ el, url, data }) {
         },
         complete: function () {
             hideSpinner();
+            $("#voucher").val("");
         },
     });
 }
@@ -82,7 +97,7 @@ function handleSuccess({ el, res }) {
     // common
     alertSuccess(res.message);
 
-    console.log('Janos');
+    console.log("Janos");
     console.log(res);
 
     // if (res.data.voucher) {
@@ -94,8 +109,9 @@ function handleSuccess({ el, res }) {
     badge.html(res.data.nrOfCartProducts);
     // remove - increment - decrement
     if (res.data.html) {
-        $("#voucher").val("");
         $("#cart-list").html(res.data.html);
+        setApplyVoucherEventListener();
+        setRemoveVoucherEventListener();
         setEventListener("del-cart-item", remove);
         setEventListener("inc-cart-item", increment);
         setEventListener("dec-cart-item", decrement);
@@ -107,7 +123,6 @@ function handleSuccess({ el, res }) {
 
 function handleVoucher(data) {
     console.log(data.voucher);
-    
 }
 
 function toggleTickIcon(el) {

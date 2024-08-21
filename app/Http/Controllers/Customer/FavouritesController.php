@@ -16,11 +16,9 @@ class FavouritesController extends Controller
     {
 
         $customer = $request->customer;
-
+        
         $products = $customer->favourites()->get();
-
         $favourites = $customer->favourites()->pluck('id')->toArray();
-
         $nrOfCartProducts = $customer->getNumberOfCartProducts();
 
         return view('customer.favourites.index', compact('products', 'favourites', 'nrOfCartProducts'));
@@ -66,9 +64,7 @@ class FavouritesController extends Controller
         $customer = $request->customer;
 
         $status = $customer->removeFromFavourites($product);
-
         $products = $customer->favourites()->with('category')->get();
-
         $favourites = $customer->favourites()->pluck('id')->toArray();
 
         $message = $status === "removed" ? "Product removed from favourites!" : "Something went wrong!";

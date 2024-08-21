@@ -174,13 +174,28 @@ class Customer extends User
                 $this->cartVoucher()->detach();
             }
             $this->cartVoucher()->attach($voucher->id);
-            $voucher->incTimesUsed();
             return 'success';
         } catch (\Exception $e) {
             \Log::error('Failed to apply voucher: ' . $e->getMessage());
             return 'fail';
         }
     }
+
+
+    public function deleteVoucher()
+    {
+        try {
+            if ($this->cartVoucher()->exists()) {
+                $this->cartVoucher()->detach();
+            }
+            return 'success';
+        } catch (\Exception $e) {
+            \Log::error('Failed to remove voucher: ' . $e->getMessage());
+            return 'fail';
+        }
+    }
+
+
 
     public function getCartVoucher(): Voucher|null
     {

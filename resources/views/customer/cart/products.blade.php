@@ -3,12 +3,12 @@
 @else
     <div class="container col-lg-7 col-md-12">
         @php 
-            $products_price = 0;
+            $subtotal = 0;
         @endphp
         @foreach ($cart as $item)
             @php        $product = $item->product;
                 $quantity = $item->quantity;
-                $products_price += $product->price * $quantity;
+                $subtotal += $product->price * $quantity;
             @endphp 
             <div class="col card mb-3 cart-item" id="{{$product->id}}-item">
                 <div class="row g-0">
@@ -56,28 +56,33 @@
     <div class="container col-lg-4 col-md-12">
         <div>
             @php
-                $shipping_fee = $products_price < 150 ? 14.99 : 0.00;
+                $discount = isset($voucher) ? $voucher->discount_type === "fixed"
+                    ? $voucher->value > $subtotal ? $voucher->value : 0
+                    : number_format($subtotal * ($voucher->value / 100), 2)
+                    : 0;
+                $shipping_fee = ($subtotal - $discount) < 150 ? 14.99 : 0.00;
             @endphp
             <h3 class="text-center h2">Checkout</h3>
-
+            <hr>
             <div id="cart-summary" class="w-100">
                 <div class="line">
-                    <span>Products price</span>
-                    <span>${{number_format($products_price, 2)}}</span>
+                    <span>Subtotal</span>
+                    <span>${{number_format($subtotal, 2)}}</span>
                 </div>
-                <div class="line">
-                    <span>Shipping fee*</span>
-                    <span>${{number_format($shipping_fee, 2)}}</span>
-                </div>
-                @isset($discount)
+                @if($discount)
                     <div class="line">
                         <span>Discount</span>
                         <span>-${{number_format($discount, 2)}}</span>
                     </div>
-                @endisset
+                @endif
+                <div class="line">
+                    <span>Shipping fee*</span>
+                    <span>${{number_format($shipping_fee, 2)}}</span>
+                </div>
+
                 <div class="line">
                     <span>Total price</span>
-                    <span>${{number_format($products_price + $shipping_fee, 2)}}</span>
+                    <span>${{number_format($subtotal - $discount + $shipping_fee, 2)}}</span>
                 </div>
             </div>
             <hr>
@@ -91,10 +96,9 @@
                     <p style="color:green; padding:0 5px;">
                         -{{$voucher->discount_type === 'percentage' ? "$voucher->value%" : "$$voucher->value"}} off
                         ({{$voucher->code}})
-                        <i class="fa-solid fa-xmark" id="discard-voucher"></i>
-                    </p>`
+                        <i class="fa-solid fa-xmark" id="remove-voucher"></i>
+                    </p>
                 @endisset
-
             </form>
             <hr>
             <div>

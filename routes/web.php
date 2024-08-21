@@ -36,6 +36,7 @@ Route::middleware(['auth.user', 'auth.customer'])->group(function () {
     Route::middleware('validate.voucher')->group(function () {
         Route::post('/user/cart/voucher', [App\Http\Controllers\Customer\CartController::class, 'addVoucher'])->name('user.add.cart.voucher');
     });
+    Route::delete('/user/cart/voucher', [App\Http\Controllers\Customer\CartController::class, 'deleteVoucher'])->name('user.add.cart.voucher');
 
     Route::middleware(['check.product.exists'])->group(function () {
         Route::post('/user/favourites/{product}/toggle', [App\Http\Controllers\Customer\FavouritesController::class, 'toggleFavourite'])->name('user.toggle-favourite');

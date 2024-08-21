@@ -99,12 +99,30 @@ class CartController extends Controller
         /** @var Voucher $voucher */
         $voucher = $request->voucher;
         $status = $customer->applyVoucher($voucher);
-        
+
 
         $message = $status === 'fail' ? 'Some error occured!' : 'Voucher applied to cart!';
         $statusCode = $status === 'fail' ? 400 : 200;
         $cart = $status === 'fail' ? [] : $customer->shoppingCart()->with('product')->get();
         $html = $status === 'fail' ? '' : view('customer.cart.products', compact('cart', 'voucher'))->render();
+        $data = compact('html');
+
+        return (new Response($status, $message, $statusCode, $data))->get();
+
+    }
+
+
+    public function deleteVoucher(Request $request)
+    {
+        /** @var Customer $customer */
+        $customer = $request->customer;
+
+        $status = $customer->deleteVoucher();
+
+        $message = $status === 'fail' ? 'Some error occured!' : 'Voucher removed from cart!';
+        $statusCode = $status === 'fail' ? 400 : 200;
+        $cart = $status === 'fail' ? [] : $customer->shoppingCart()->with('product')->get();
+        $html = $status === 'fail' ? '' : view('customer.cart.products', compact('cart'))->render();
         $data = compact('html');
 
         return (new Response($status, $message, $statusCode, $data))->get();
