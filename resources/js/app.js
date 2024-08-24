@@ -121,3 +121,9 @@ if (currentPath === "/") {
         module.default();
     });
 }
+
+if (currentPath.includes('/employee')) {
+    import("../css/employee/employee.css").then(() => {
+        console.log('imported')
+    })
+}

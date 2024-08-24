@@ -1,5 +1,6 @@
 <?php
 
+use App\Utils\Response;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -83,6 +84,10 @@ Route::post('/product/{product}/reviews', [App\Http\Controllers\Customer\ReviewC
 Route::get('/home', function () {
     return redirect()->route('home');
 });
-Route::any('{any}', function () {
+Route::any('{any}', function (Request $request) {
+
+    if ($request->ajax()) {
+        return (new Response('fail', 'Something went wrong!', 400))->get();
+    }
     abort(404, 'The requested page was not found!');
 })->where('any', '.*');

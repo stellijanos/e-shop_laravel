@@ -1,14 +1,9 @@
 @extends('layouts.app')
 @section('content')
-@include('employee.style')
 <div class="container">
     <div class="card">
         <div class="card-header">
-            @include('employee.includes.breadcrumb', [
-    'current' => 'Edit',
-    'group' => 'vouchers',
-    'id' => $voucher->id,
-])
+            @include('employee.includes.breadcrumb', ['current' => 'Edit', 'group' => 'vouchers', 'id' => $voucher->id])
         </div>
         <div class="card-body">
             <div id="alert" class="top-middle"></div>

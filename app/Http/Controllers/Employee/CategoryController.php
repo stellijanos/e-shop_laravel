@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Employee;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Utils\Response;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
@@ -40,19 +40,16 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-
-        if ($request->category)
-
-            $request->validate([
-                'name' => 'required|string|max:255|unique:categories'
-            ]);
+        $request->validate([
+            'name' => 'required|string|max:255|unique:categories'
+        ]);
 
         Category::create([
             'name' => $request->name
         ]);
 
-        $request->session()->flash('status', 'Category "' . $request->name . '" successfully created!');
-        return redirect('/employee/category');
+        $request->session()->flash('status', "Category \"$request->name\" successfully created!");
+        return redirect()->route('categories.index');
     }
 
     /**
@@ -69,15 +66,12 @@ class CategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int $id
+     * @param  Category $category
      * @return \Illuminate\Contracts\View\View
      */
-    public function edit($id)
+    public function edit(Category $category)
     {
-        $category = Category::find($id);
-        if (!$category) {
-            abort(404);
-        }
+        $category || abort(404);
 
         return view('employee.category.edit', [
             'category' => $category
@@ -94,14 +88,11 @@ class CategoryController extends Controller
     public function update(Request $request, Category $category)
     {
         if (!$category) {
-            return response()->json(['status' => 'fail', 'message' => 'Category not found!']);
+            return (new Response('fail', 'Category not found!', 404))->get();
         }
 
         if ($category->name == $request->name) {
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Nothing to update!'
-            ], 200);
+            return (new Response('success', 'Nothing to update!'))->get();
         }
 
 
@@ -112,47 +103,32 @@ class CategoryController extends Controller
         $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
-            return response()->json([
-                'status' => 'fail',
-                'message' => json_encode($validator->errors()->toArray(), true),
-            ], 422);
+            return (new Response('fail', json_encode($validator->errors()->toArray(), true), 422))->get();
         }
 
         // if (!Auth::user()->correctPassword($request->password)) {
-        //     return response()->json([
-        //         'status' => 'fail',
-        //         'message' => 'Incorrect password!'
-        //     ], 401);
+        //      return (new Response('fail', 'Incorrect password!', 401))->get();
         // }
-
 
         $category->update([
             'name' => $request->name,
         ]);
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Category successfully updated!'
-        ], 200);
-
+        return (new Response('success', 'Category successfully updated!'))->get();
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param  \App\Models\Category $category
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy($id)
+    public function destroy(Category $category)
     {
-
-        $category = Category::find($id);
-        if (!$category) {
-            abort(404);
-        }
+        $category || abort(404);
         $category->delete();
 
-        Session()->flash('status', 'Category "' . $category->name . '" successfully updated!');
-        return redirect('/employee/category');
+        Session()->flash('status', "Category \"$category->name\" successfully updated!");
+        return redirect()->route('categories.index');
     }
 }

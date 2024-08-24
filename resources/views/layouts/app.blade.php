@@ -76,6 +76,9 @@
                 left: 50%;
                 z-index: 9999;
                 transform: translateX(-50%);
+                width:80%;
+                max-width:500px;
+                text-align:center;
             }
         </style>
     </head>

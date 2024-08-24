@@ -16,6 +16,8 @@ export const updateForm = () => {
 
         const formData = new FormData(this);
 
+        console.log($(this).attr("action"));
+
         // console.log();
         $.ajaxSetup({
             headers: {
@@ -36,9 +38,11 @@ export const updateForm = () => {
             success: function (res) {
                 alertSuccess(res.message);
 
-                if (res.data.image) {
+                if (res.data && res.data.image) {
                     changeImage(res.data.image);
                 }
+
+    
 
                 // http://127.0.0.1:8000/images/products/
             },
