@@ -14,14 +14,6 @@ use Illuminate\Support\Facades\Auth;
 class HomeController extends Controller
 {
 
-    private $productService;
-
-    public function __construct(ProductService $productService)
-    {
-        $this->productService = $productService;
-    }
-
-
     private function getAllSpecs()
     {
         $productSpecs = ProductSpec::getAllSpecsGroupedByName();
@@ -34,30 +26,6 @@ class HomeController extends Controller
         return $productSpecs;
     }
 
-    public function index(Request $request)
-    {
-
-
-        $products = Product::with('category')->paginate(5);
-        $customer = $request->customer;
-
-        $productSpecs = $this->getAllSpecs();
-
-        $favourites = $customer ? $customer->favourites()->pluck('id')->toArray() : [];
-        $nrOfCartProducts = $customer ? $customer->getNumberOfCartProducts() : 0;
-        $cart = $customer ? $customer->shoppingCart()->pluck('quantity', 'product_id')->toArray() : [];
-
-        return view(
-            'customer.home.index',
-            compact(
-                'products',
-                'favourites',
-                'nrOfCartProducts',
-                'productSpecs',
-                'cart'
-            )
-        );
-    }
 
     private function getNewQueryString($req)
     {
@@ -106,6 +74,32 @@ class HomeController extends Controller
     }
 
 
+
+    public function index(Request $request)
+    {
+
+        $products = Product::with('category')->paginate(5);
+        $customer = $request->customer;
+
+        $productSpecs = $this->getAllSpecs();
+
+        $favourites = $customer ? $customer->favourites()->pluck('id')->toArray() : [];
+        $nrOfCartProducts = $customer ? $customer->getNumberOfCartProducts() : 0;
+        $cart = $customer ? $customer->shoppingCart()->pluck('quantity', 'product_id')->toArray() : [];
+
+        return view(
+            'customer.home.index',
+            compact(
+                'products',
+                'favourites',
+                'nrOfCartProducts',
+                'productSpecs',
+                'cart'
+            )
+        );
+    }
+
+
     public function applyFilter(Request $request)
     {
 
@@ -126,6 +120,7 @@ class HomeController extends Controller
             'message' => 'Filter applied!',
             'data' => [
                 'queryString' => http_build_query($appliedFilters),
+                'nrProducts' => $products->count(),
                 'html' => view('customer.home.products', compact('products', 'favourites'))->render()
             ]
         ]);

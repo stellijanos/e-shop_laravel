@@ -1,7 +1,7 @@
 import $ from "jquery";
 
 import { showSpinner, hideSpinner } from "../utils/spinner";
-import { alertSuccess } from "../utils/alerts";
+import { alertFail, alertSuccess } from "../utils/alerts";
 
 export default function () {
     const filters = document.querySelectorAll(".filter");
@@ -31,12 +31,13 @@ function applyFilter(el) {
             showSpinner();
         },
         success: function (res) {
-            $('#product-list').html(res.data.html);
+            $("#product-list").html(res.data.html);
             alertSuccess(res.message);
             updateQueryParam(res.data.queryString);
+            $('#nr-products').html(res.data.nrProducts)
         },
         error: function (err) {
-            console.log(err.responseJSON);
+            alertFail(err.responseJSON);
         },
         complete: function () {
             hideSpinner();
@@ -49,31 +50,6 @@ function updateQueryParam(queryString) {
     url.search = queryString;
     console.log(queryString);
     history.replaceState(null, "", url.toString());
-}
-
-function toggleQueryParam(el) {
-    const currentUrl = window.location.href;
-    let url = new URL(currentUrl);
-
-    const searchedValue = `${encodeURIComponent(
-        `${el.name}[]`
-    )}=${encodeURIComponent(el.value)}`;
-
-    if (el.checked) {
-        url.searchParams.append(`${el.name}[]`, el.value);
-    } else {
-        let queryString = url.searchParams
-            .toString()
-            .split("&")
-            .filter((value) => value !== searchedValue)
-            .join("&");
-
-        url = `${window.location.pathname}${
-            queryString ? "?" + queryString : ""
-        }`;
-    }
-
-    history.replaceState(null, "", url);
 }
 
 function getCurrentQueryString() {
