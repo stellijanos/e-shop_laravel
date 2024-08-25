@@ -4,12 +4,10 @@ namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
-use App\Models\Customer;
 use App\Models\Product;
 use App\Models\ProductSpec;
-use App\Services\ProductService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Utils\Utils;
 
 class HomeController extends Controller
 {
@@ -26,52 +24,6 @@ class HomeController extends Controller
         return $productSpecs;
     }
 
-
-    private function getNewQueryString($req)
-    {
-
-        $key = $req['specName'];
-        $value = $req['specValue'];
-        $apply = $req['apply'];
-        $queryString = $req['queryString'];
-
-        parse_str($queryString, $queryParams);
-
-        if ($apply === "true") {
-
-            if (!isset($queryParams[$key])) {
-                $queryParams[$key] = [];
-            }
-
-            if (!is_array($queryParams[$key])) {
-                $queryParams[$key] = [$queryParams[$key]];
-            }
-
-            if (!in_array($value, $queryParams[$key])) {
-                $queryParams[$key][] = $value;
-            }
-        } else {
-
-            if (!isset($queryParams[$key]))
-                return;
-
-            if (!is_array($queryParams[$key])) {
-                if ($queryParams[$key] === $value) {
-                    unset($queryParams[$key]);
-                }
-                return;
-            }
-            $queryParams[$key] = array_values(array_filter($queryParams[$key], function ($v) use ($value) {
-                return $v !== $value;
-            }));
-
-            if (empty($queryParams[$key])) {
-                unset($queryParams[$key]);
-            }
-        }
-
-        return $queryParams;
-    }
 
 
 
@@ -103,12 +55,14 @@ class HomeController extends Controller
     public function applyFilter(Request $request)
     {
 
-        $appliedFilters = $this->getNewQueryString($request->all());
+        $queryParams = Utils::getAllQueryParams($request->all());
 
         $specs = $this->getAllSpecs();
-        $appliedFilters = array_intersect_key($appliedFilters, $specs);
+        $appliedFilters = array_intersect_key($queryParams, $specs);
 
-        $products = Product::filter($appliedFilters)
+        $sortBy = $queryParams['sortBy'] ?? 'default';
+
+        $products = Product::filter($appliedFilters)->sortBy($sortBy)
             ->with('category')
             ->paginate(100)
             ->appends($appliedFilters);
@@ -119,7 +73,7 @@ class HomeController extends Controller
             'status' => 'success',
             'message' => 'Filter applied!',
             'data' => [
-                'queryString' => http_build_query($appliedFilters),
+                'queryString' => http_build_query($queryParams),
                 'nrProducts' => $products->count(),
                 'html' => view('customer.home.products', compact('products', 'favourites'))->render()
             ]

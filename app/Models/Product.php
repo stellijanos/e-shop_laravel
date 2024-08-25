@@ -82,6 +82,24 @@ class Product extends Model
         return $query;
     }
 
+
+
+    public function scopeSortBy(Builder $query, string $sortBy)
+    {
+        if ($sortBy === "default")
+            return $query->orderBy('id');
+
+        $accepted = ['price-asc', 'price-desc', 'name-asc', 'name-desc'];
+        if (!in_array($sortBy, $accepted))
+            return $query;
+
+        [$column, $direction] = explode('-', $sortBy);
+
+        return $query->orderBy($column, $direction);
+    }
+
+
+
     // other functions
     public function wasReviewedBy(int $customerId)
     {

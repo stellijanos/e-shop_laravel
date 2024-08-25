@@ -2,6 +2,7 @@ import $ from "jquery";
 
 import { showSpinner, hideSpinner } from "../utils/spinner";
 import { alertFail, alertSuccess } from "../utils/alerts";
+import { getCurrentQueryString, updateQueryParam } from "../utils/queryString";
 
 export default function () {
     const filters = document.querySelectorAll(".filter");
@@ -34,7 +35,7 @@ function applyFilter(el) {
             $("#product-list").html(res.data.html);
             alertSuccess(res.message);
             updateQueryParam(res.data.queryString);
-            $('#nr-products').html(res.data.nrProducts)
+            $("#nr-products").html(res.data.nrProducts);
         },
         error: function (err) {
             alertFail(err.responseJSON);
@@ -43,15 +44,4 @@ function applyFilter(el) {
             hideSpinner();
         },
     });
-}
-
-function updateQueryParam(queryString) {
-    const url = new URL(window.location.href);
-    url.search = queryString;
-    console.log(queryString);
-    history.replaceState(null, "", url.toString());
-}
-
-function getCurrentQueryString() {
-    return new URL(window.location.href).searchParams.toString();
 }
