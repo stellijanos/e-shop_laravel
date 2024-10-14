@@ -5,7 +5,6 @@
         @include('employee.includes.breadcrumb', ['current' => 'Create', 'group' => 'products'])
     </div>
     <div class="card-body overflow-x-auto" style="height:70vh">
-        @include('employee.includes.alerts')
         <form action="{{route('products.store')}}" method="post" enctype="multipart/form-data">
             @csrf
             <div class="input-group mb-3">

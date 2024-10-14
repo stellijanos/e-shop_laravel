@@ -99,7 +99,7 @@ class ProductController extends Controller
 
 
         $request->session()->flash('status', 'Product successfully added!');
-        return redirect('/employee/product');
+        return redirect()->route('products.store');
 
     }
 
@@ -230,6 +230,6 @@ class ProductController extends Controller
         $product->remove();
 
         Session()->flash('status', 'Product #' . $product->id . ' successfully deleted!');
-        return redirect('/employee/product');
+        return redirect()->route('products.index');
     }
 }

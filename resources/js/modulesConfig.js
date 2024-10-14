@@ -44,7 +44,7 @@ const modulesConfig = {
     "/employee/products/[0-9]+/edit": [
         { module: "./employee/product", functions: ["default"] },
     ],
-    "/products/create": [
+    "/employee/products/create": [
         { module: "./employee/product", functions: ["default"] },
     ],
 

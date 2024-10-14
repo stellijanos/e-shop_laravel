@@ -21,8 +21,9 @@ class DatabaseSeeder extends Seeder
             'firstname' => 'Janos',
             'lastname' => 'Stelli',
             'email' => 'stellijanos23@gmail.com',
+            'phone' =>'0712345678',
             'email_verified_at' => now(),
-            'password' => Hash::make('123'),
+            'password' => '$2y$12$AIux9tECdZA3Pi2Wtk6WFelKUXwYmMzrhE6qXWsPm/GM9q9R7l0Bi',
             'role' => 'admin'
         ]);
     }

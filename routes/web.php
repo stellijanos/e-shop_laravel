@@ -37,7 +37,7 @@ Route::middleware(['auth.user', 'auth.customer'])->group(function () {
     Route::middleware('validate.voucher')->group(function () {
         Route::post('/user/cart/voucher', [App\Http\Controllers\Customer\CartController::class, 'addVoucher'])->name('user.add.cart.voucher');
     });
-    Route::delete('/user/cart/voucher', [App\Http\Controllers\Customer\CartController::class, 'deleteVoucher'])->name('user.add.cart.voucher');
+    Route::delete('/user/cart/voucher', [App\Http\Controllers\Customer\CartController::class, 'deleteVoucher']);
 
     Route::middleware(['check.product.exists'])->group(function () {
         Route::post('/user/favourites/{product}/toggle', [App\Http\Controllers\Customer\FavouritesController::class, 'toggleFavourite'])->name('user.toggle-favourite');
@@ -57,7 +57,7 @@ Route::prefix('account')->group(function () {
     Route::get('/edit', [App\Http\Controllers\Customer\CustomerController::class, 'edit'])->name('account.edit');
     Route::put('/edit', [App\Http\Controllers\Customer\CustomerController::class, 'update']);
     Route::get('/delete', [App\Http\Controllers\Customer\CustomerController::class, 'delete'])->name('account.delete');
-    Route::delete('/delete', [App\Http\Controllers\Customer\CustomerController::class, 'destroy'])->name('account.delete');
+    Route::delete('/delete', [App\Http\Controllers\Customer\CustomerController::class, 'destroy']);
 });
 // });
 
@@ -86,8 +86,8 @@ Route::get('/home', function () {
 });
 Route::any('{any}', function (Request $request) {
 
-    if ($request->ajax()) {
-        return (new Response('fail', 'Something went wrong!', 400))->get();
-    }
+    // if ($request->isXmlHttpRequest()) {
+    //     return (new Response('fail', 'Something went wrong!', 400))->get();
+    // }
     abort(404, 'The requested page was not found!');
 })->where('any', '.*');

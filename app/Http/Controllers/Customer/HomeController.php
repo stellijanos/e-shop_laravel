@@ -30,9 +30,13 @@ class HomeController extends Controller
     public function index(Request $request)
     {
 
+        // get all produts with catories and paginate with 5 (show 5 / page)
         $products = Product::with('category')->paginate(5);
+
+        // get the customer from the middleware
         $customer = $request->customer;
 
+        // get all product specs
         $productSpecs = $this->getAllSpecs();
 
         $favourites = $customer ? $customer->favourites()->pluck('id')->toArray() : [];
