@@ -19,3 +19,6 @@ yarn-error.log
 /public/images/products/*
 
 /extra 
+
+# /scripts/initial_setup.sh
+# /scripts/deploy.sh
