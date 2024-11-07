@@ -3,11 +3,9 @@ import $ from "jquery";
 import { alertFail, alertSuccess } from "../utils/alerts";
 
 export default function () {
-    console.log("Employee file");
 }
 
 export const updateForm = () => {
-    console.log("employee options edit form");
 
     const updateBtnText = $("#update-btn").html();
 
@@ -16,7 +14,7 @@ export const updateForm = () => {
 
         const formData = new FormData(this);
 
-        console.log($(this).attr("action"));
+        // console.log($(this).attr("action"));
 
         // console.log();
         $.ajaxSetup({

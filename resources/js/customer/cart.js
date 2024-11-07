@@ -22,14 +22,14 @@ function setRemoveVoucherEventListener() {
 }
 
 function setApplyVoucherEventListener() {
-    document
-        .getElementById("apply-voucher-form")
-        .addEventListener("submit", function (e) {
-            e.preventDefault();
-            const url = "/user/cart/voucher";
-            const data = { voucher: document.getElementById("voucher").value };
-            ajaxCall({ url, data });
-        });
+    const applyVoucherForm = document.getElementById("apply-voucher-form");
+    if (!applyVoucherForm) return;
+    applyVoucherForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const url = "/user/cart/voucher";
+        const data = { voucher: document.getElementById("voucher").value };
+        ajaxCall({ url, data });
+    });
 }
 
 function setEventListener(className, callback) {
@@ -96,9 +96,6 @@ function ajaxCall({ el, url, data }) {
 function handleSuccess({ el, res }) {
     // common
     alertSuccess(res.message);
-
-    console.log("Janos");
-    console.log(res);
 
     // if (res.data.voucher) {
     //     handleVoucher(res.data);

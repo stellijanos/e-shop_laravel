@@ -5,6 +5,6 @@ export function getCurrentQueryString() {
 export function updateQueryParam(queryString) {
     const url = new URL(window.location.href);
     url.search = queryString;
-    console.log(queryString);
+    // console.log(queryString);
     history.replaceState(null, "", url.toString());
 }

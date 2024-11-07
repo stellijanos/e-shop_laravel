@@ -14,7 +14,7 @@ export default function () {
 }
 
 function applyFilter(el) {
-    console.log(el.value, el.checked, el.name);
+    // console.log(el.value, el.checked, el.name);
 
     $.ajax({
         url: "/",
