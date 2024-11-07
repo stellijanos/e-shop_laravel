@@ -55,7 +55,7 @@
                     <button class="btn btn-white toggle-favourites" data-product-id="{{$product->id}}">
                         <?=$favouriteIcon?>
                     </button>
-                    <button class="btn btn-white inc-cart-item" data-product-id="{{$product->id}}">
+                    <button class="btn btn-white add-to-cart" data-product-id="{{$product->id}}">
                         <i class="fa-solid fa-cart-plus fa-2x"></i>
                     </button>
                 </div>
@@ -92,7 +92,7 @@
                     @endfor
                 </div>
                 @if ($review->description)
-                    Description: {{$review->description}}
+                    "{{$review->description}}"
                 @endif
             @empty
                 <p>No reviews were found.</p>

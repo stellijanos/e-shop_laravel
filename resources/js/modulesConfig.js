@@ -28,7 +28,7 @@ const modulesConfig = {
         { module: "../css/customer/cart.css", functions: null },
     ],
 
-    "/product/": [
+    "/product/.*": [
         { module: "./customer/cart", functions: ["addItem"] },
         { module: "./customer/favourite", functions: ["toggleFavourites"] },
         { module: "../css/spinner.css", functions: null },
