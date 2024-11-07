@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Employee\VoucherController;
 use App\Utils\Response;
 use Illuminate\Support\Facades\Route;
 
@@ -20,7 +21,6 @@ Auth::routes();
 
 // Route::middleware('auth.customer')->group(function() {
 
-
 Route::middleware(['set.current.customer'])->group(function () {
     Route::get('/', [\App\Http\Controllers\Customer\HomeController::class, 'index'])->name('home');
     Route::post('/', [\App\Http\Controllers\Customer\HomeController::class, 'applyFilter'])->name('filter.apply');
@@ -35,9 +35,9 @@ Route::middleware(['auth.user', 'auth.customer'])->group(function () {
     Route::get('/favourites', [App\Http\Controllers\Customer\FavouritesController::class, 'show'])->name('favourites.show');
 
     Route::middleware('validate.voucher')->group(function () {
-        Route::post('/user/cart/voucher', [App\Http\Controllers\Customer\CartController::class, 'addVoucher'])->name('user.add.cart.voucher');
+        Route::post('/users/cart/voucher', [App\Http\Controllers\Customer\CartController::class, 'addVoucher'])->name('user.add.cart.voucher');
     });
-    Route::delete('/user/cart/voucher', [App\Http\Controllers\Customer\CartController::class, 'deleteVoucher']);
+    Route::delete('/users/cart/voucher', [App\Http\Controllers\Customer\CartController::class, 'deleteVoucher']);
 
     Route::middleware(['check.product.exists'])->group(function () {
         Route::post('/user/favourites/{product}/toggle', [App\Http\Controllers\Customer\FavouritesController::class, 'toggleFavourite'])->name('user.toggle-favourite');
@@ -45,7 +45,6 @@ Route::middleware(['auth.user', 'auth.customer'])->group(function () {
         Route::post('/user/cart/{product}/quantity/increment', [App\Http\Controllers\Customer\CartController::class, 'incrementCartItemQuantity'])->where('product', '[0-9]+')->name('user.inc-cart-item');
         Route::post('/user/cart/{product}/quantity/decrement', [App\Http\Controllers\Customer\CartController::class, 'decrementCartItemQuantity'])->where('product', '[0-9]+')->name('user.dec-cart-item');
         Route::delete('/user/cart/{product}', [App\Http\Controllers\Customer\CartController::class, 'deleteItem'])->name('user.del-cart-item');
-
     });
 
 });
@@ -73,6 +72,9 @@ Route::prefix('/employee')->group(function () {
     Route::resource('/vouchers', App\Http\Controllers\Employee\VoucherController::class);
     Route::resource('/orders', App\Http\Controllers\Employee\OrderController::class);
     Route::resource('/reports', App\Http\Controllers\Employee\ReportController::class);
+
+    Route::put('/vouchers/{voucher}/toogle-active', [VoucherController::class, 'toggleActive']);
+
 });
 
 // Route::resource('/reviews', App\Http\Controllers\User\ReviewController::class);

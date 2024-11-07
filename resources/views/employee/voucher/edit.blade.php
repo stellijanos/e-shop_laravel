@@ -9,6 +9,7 @@
             <div id="alert" class="top-middle"></div>
             <form id="update-form" action="{{route('vouchers.update', $voucher->id)}}">
                 @csrf
+                @method('PUT')
                 <div class="form-floating mb-3">
                     <input class="form-control w-50" type="text" id="name" name="name" value="{{$voucher->name}}">
                     <label for="name">Name</label>

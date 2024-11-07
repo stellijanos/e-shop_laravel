@@ -14,12 +14,15 @@
                 No vouchers were found.
             </div>
         @else
-            <table class="table table-striped">
+            <table class="table table-striped text-center">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Name</th>
-                        <th scope="col" class="text-center" colspan="3">Options</th>
+                        <th scope="col">From</th>
+                        <th scope="col">Until</th>
+                        <th scope="col">Active</th>
+                        <th scope="col" class="text-center">Options</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -27,14 +30,23 @@
                         <tr>
                             <td>{{$voucher->id}}</td>
                             <td>{{$voucher->name}}</td>
-                            <td><a class="btn btn-warning" href="{{route('vouchers.edit', $voucher->id)}}">Edit</a>
+                            <td>{{\Carbon\Carbon::parse($voucher->start_date)->format('Y.m.d H:i:s')}}</td>
+                            <td>{{\Carbon\Carbon::parse($voucher->end_date)->format('Y.m.d H:i:s')}}</td>
+                            <td>
+                                <div class="form-check form-switch d-flex justify-content-center">
+                                    <input class="form-check-input voucher-active-switch" type="checkbox" role="switch"
+                                        data-voucher-id="{{$voucher->id}}" {{$voucher->active ? 'checked' : ''}}>
+                                </div>
                             </td>
                             <td>
-                                <form action="{{route('vouchers.destroy', $voucher->id)}}" method="post">
+                                <form class="input-group rounded w-100 d-flex justify-content-center" action="{{route('vouchers.destroy', $voucher->id)}}" method="post" >
                                     @csrf
                                     @method('DELETE')
-                                    <button class="btn btn-danger">Delete</button>
+                                    <a class="btn btn-warning input-group-text rounded-start text-center"
+                                        href="{{route('vouchers.edit', $voucher->id)}}"><i class="bi bi-pencil-square"></i></a>
+                                    <button class="btn btn-danger input-group-text"><i class="bi bi-trash3-fill"></i></button>
                                 </form>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>

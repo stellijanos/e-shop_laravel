@@ -14,7 +14,7 @@ function setRemoveVoucherEventListener() {
 
     if (removeVoucherBtn) {
         removeVoucherBtn.addEventListener("click", function () {
-            const url = "/user/cart/voucher";
+            const url = "/users/cart/voucher";
             const data = { _method: "delete" };
             ajaxCall({ url, data });
         });
@@ -26,7 +26,7 @@ function setApplyVoucherEventListener() {
     if (!applyVoucherForm) return;
     applyVoucherForm.addEventListener("submit", function (e) {
         e.preventDefault();
-        const url = "/user/cart/voucher";
+        const url = "/users/cart/voucher";
         const data = { voucher: document.getElementById("voucher").value };
         ajaxCall({ url, data });
     });

@@ -14,9 +14,6 @@ export const updateForm = () => {
 
         const formData = new FormData(this);
 
-        // console.log($(this).attr("action"));
-
-        // console.log();
         $.ajaxSetup({
             headers: {
                 "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
@@ -24,7 +21,7 @@ export const updateForm = () => {
         });
         $.ajax({
             url: $(this).attr("action"),
-            type: "POST",
+            type: 'POST',
             data: formData,
             cache: false,
             processData: false,
@@ -40,7 +37,7 @@ export const updateForm = () => {
                     changeImage(res.data.image);
                 }
 
-    
+
 
                 // http://127.0.0.1:8000/images/products/
             },
