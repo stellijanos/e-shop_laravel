@@ -53,7 +53,7 @@ class ReviewController extends Controller
             'description' => $request->description ?? ''
         ]);
 
-        return redirect()->route('product', ['product' => $product->id]);
+        return redirect()->route('product.show', ['product' => $product->id]);
     }
 
 

@@ -20,6 +20,20 @@
     .card-body__details {
         position: relative;
     }
+
+    .user-rating {
+        font-size: 2rem;
+    }
+
+    .user-rating .checked {
+        color: #ffc700;
+        /* Golden color for filled stars */
+    }
+
+    .user-rating span {
+        color: #ccc;
+        /* Gray color for unfilled stars */
+    }
 </style>
 @php
     $favouriteIcon = $isFavourite ? '<i class="fa-solid fa-heart fa-2x" style="color:red;"></i>' : '<i class="fa-regular fa-heart fa-2x" ></i>'; 
@@ -51,27 +65,35 @@
         <div class="card-body">
             <span class="fw-bold fs-3">Description:</span>
             <p class="m-1">{{$product->description}}</p>
-            <hr>
         </div>
         <hr>
         <div class="card-body">
             <h5 class="card-title">Reviews ({{$product->reviews->count()}})</h5>
-            @if(!$wasReviewed)
-                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#add-review-modal">
-                    Add a review
-                </button>
-                @include('product._add-review-modal')
-            @endif
-        </div>
+            @auth
+                @if(Auth::user()->role !== 'admin' && !$wasReviewed)
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#add-review-modal">
+                        Add a review
+                    </button>
+                    @include('product._add-review-modal')
+                @endif
+            @endauth
 
-        <div class="card-body">
             @forelse($product->reviews as $review)   
                 <hr>
-                <p>{{$review->customer->firstname}} {{$review->customer->lastname}} on
+                <p class="mb-0"><b>{{$review->customer->firstname}} {{$review->customer->lastname}}</b> on
                     {{(new DateTime($review->created_at))->format('Y.m.d')}}
                 </p>
-                Rating: {{$review->rating}}
-                Description: {{$review->description}}
+                <div class="user-rating">
+                    @for ($i = 1; $i <= $review->rating; $i++)
+                        <span class="checked">&#9733;</span>
+                    @endfor
+                    @for ($j = $i; $j <= 5; $j++)
+                        <span>&#9733;</span>
+                    @endfor
+                </div>
+                @if ($review->description)
+                    Description: {{$review->description}}
+                @endif
             @empty
                 <p>No reviews were found.</p>
             @endforelse
