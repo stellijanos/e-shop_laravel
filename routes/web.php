@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Customer\ReviewController;
 use App\Utils\Response;
 use Illuminate\Support\Facades\Route;
 
@@ -48,6 +49,8 @@ Route::middleware(['auth.user', 'auth.customer'])->group(function () {
 
     });
 
+
+
 });
 
 
@@ -79,6 +82,7 @@ Route::prefix('/employee')->group(function () {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Route::post('/product/{product}/reviews', [App\Http\Controllers\Customer\ReviewController::class, 'create'])->name('products.reviews.create');
+Route::put('/products/{product}/reviews/{review}', [ReviewController::class, 'update']);
 
 
 Route::get('/home', function () {
