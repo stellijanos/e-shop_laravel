@@ -10,6 +10,9 @@ class Review extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = ['user_id', 'product_id'];
+    public $incrementing = false;
+
     protected $fillable = [
         'product_id',
         'user_id',
@@ -44,6 +47,14 @@ class Review extends Model
         return self::where('user_id', $user->id)
             ->where('product_id', $product->id)
             ->first();
+    }
+
+
+    public static function deleteReview(User $user, Product $product)
+    {
+        return Review::where('user_id', $user->id)
+            ->where('product_id', $product->id)
+            ->delete();
     }
 
 }

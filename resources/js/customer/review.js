@@ -51,7 +51,7 @@ export default function btnReviewModalListener() {
 
 function updateReview(review) {
     document.getElementById(`review-${review.product_id}-${review.user_id}-description`).innerHTML = review.description
-        ? `<p>${review.description}</p>` : '';
+        ? `<p>"${review.description}"</p>` : '';
 
     markRatingsChecked(review.rating);
 }

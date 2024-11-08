@@ -135,11 +135,38 @@ class ReviewController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  Review $review
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Product $product, User $user)
     {
-        //
+
+        $review = Review::getByUserAndProduct($user, $product);
+
+        if (!$review) {
+            return response()->json([
+                'message' => 'Review not found.',
+            ], 404);
+        }
+
+        $wasReviewed = $product->wasReviewedBy(Auth::user()->id);
+
+        if (!$wasReviewed) {
+            return response()->json([
+                'message' => 'You do not have a review for this product.',
+            ], 422);
+        }
+
+        if (Review::deleteReview($user, $product)) {
+            return response()->json([
+                'message' => 'Review successfully deleted.',
+                'status' => 'success'
+            ]);
+        }
+
+        return response()->json([
+            'message' => 'Failed to delete review.',
+            'status' => 'error'
+        ], 500);
     }
 }
