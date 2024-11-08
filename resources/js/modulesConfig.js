@@ -34,6 +34,7 @@ const modulesConfig = {
         { module: "./customer/cart", functions: ["addItem"] },
         { module: "./customer/favourite", functions: ["toggleFavourites"] },
         { module: "../css/spinner.css", functions: null },
+        { module: "./customer/review.js", functions: ["default"] },
     ],
 
     "/employee.*": [

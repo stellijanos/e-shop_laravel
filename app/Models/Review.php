@@ -27,4 +27,23 @@ class Review extends Model
         return $this->belongsTo(Product::class);
     }
 
+
+    public static function getByUserAndProduct(User $user, Product $product)
+    {
+        return self::where('user_id', $user->id)
+            ->where('product_id', $product->id)
+            ->first();
+    }
+
+    public static function updateReview(User $user, Product $product, $data)
+    {
+        self::where('user_id', $user->id)
+            ->where('product_id', $product->id)
+            ->update($data);
+
+        return self::where('user_id', $user->id)
+            ->where('product_id', $product->id)
+            ->first();
+    }
+
 }

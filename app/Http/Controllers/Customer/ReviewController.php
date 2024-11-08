@@ -80,26 +80,36 @@ class ReviewController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  Product $prodcuct
-     * @param  Review review
+     * @param  User $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product, Review $review)
+    public function update(Request $request, Product $product, User $user)
     {
+
+        $review = Review::getByUserAndProduct($user, $product);
+
+        if (!$review) {
+            return response()->json([
+                'message' => 'Review not found.',
+            ], 404);
+        }
 
         $wasReviewed = $product->wasReviewedBy(Auth::user()->id);
 
-        if (!$wasReviewed)
-            return redirect()->route('product', ['product' => $product->id]);
+        if (!$wasReviewed) {
+            return response()->json([
+                'message' => 'You do not have a review for this product.',
+            ], 422);
+        }
 
         $rules = [
             'rating' => 'required|numeric|min:1|max:5',
-            'description' => 'max:1000'
+            'description' => 'sometimes|max:1000'
         ];
 
         $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
-
             return response()->json([
                 'message' => 'Validation failed.',
                 'errors' => $validator->errors()->toArray()
@@ -107,10 +117,12 @@ class ReviewController extends Controller
 
         }
 
-        $review->update([
+        $data = [
             'rating' => $request->rating,
             'description' => $request->description
-        ]);
+        ];
+
+        $review = Review::updateReview($user, $product, $data);
 
         return response()->json([
             'message' => 'Successfully updated',

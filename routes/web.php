@@ -84,7 +84,7 @@ Route::prefix('/employee')->group(function () {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Route::post('/product/{product}/reviews', [App\Http\Controllers\Customer\ReviewController::class, 'create'])->name('products.reviews.create');
-Route::put('/products/{product}/reviews/{review}', [ReviewController::class, 'update']);
+Route::put('/products/{product}/reviews/user/{user}', [ReviewController::class, 'update'])->name('products.reviews.update');
 
 
 Route::get('/home', function () {
