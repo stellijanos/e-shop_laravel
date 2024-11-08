@@ -2,39 +2,6 @@
 @section('content')
 @include('product.css')
 
-<style>
-    .card-body--main-info {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: space-around;
-    }
-
-    .card-body__details {
-        padding-top: 20px;
-        font-size: 1.5rem;
-        padding: 30px;
-        margin-left: 0
-    }
-
-    .card-body__details {
-        position: relative;
-    }
-
-    .user-rating {
-        font-size: 2rem;
-    }
-
-    .user-rating .checked {
-        color: #ffc700;
-        /* Golden color for filled stars */
-    }
-
-    .user-rating span {
-        color: #ccc;
-        /* Gray color for unfilled stars */
-    }
-</style>
 @php
     $favouriteIcon = $isFavourite ? '<i class="fa-solid fa-heart fa-2x" style="color:red;"></i>' : '<i class="fa-regular fa-heart fa-2x" ></i>'; 
 @endphp
@@ -79,21 +46,36 @@
             @endauth
 
             @forelse($product->reviews as $review)   
-                <hr>
-                <p class="mb-0"><b>{{$review->customer->firstname}} {{$review->customer->lastname}}</b> on
-                    {{(new DateTime($review->created_at))->format('Y.m.d')}}
-                </p>
-                <div class="user-rating">
-                    @for ($i = 1; $i <= $review->rating; $i++)
-                        <span class="checked">&#9733;</span>
-                    @endfor
-                    @for ($j = $i; $j <= 5; $j++)
-                        <span>&#9733;</span>
-                    @endfor
+                <div class="d-flex flew-row justify-content-between">
+                    <div>
+
+                        <hr>
+
+                        <p class="mb-0"><b>{{$review->customer->firstname}} {{$review->customer->lastname}}</b> on
+                            {{(new DateTime($review->created_at))->format('Y.m.d')}}
+                        </p>
+                        <div class="user-rating">
+                            @for ($i = 1; $i <= $review->rating; $i++)
+                                <span class="checked">&#9733;</span>
+                            @endfor
+                            @for ($j = $i; $j <= 5; $j++)
+                                <span>&#9733;</span>
+                            @endfor
+                        </div>
+                        @if ($review->description)
+                            "{{$review->description}}"
+                        @endif
+                    </div>
+                    @if($wasReviewed)
+                        <div>
+                            <form action="" method="post">
+                                @csrf
+                                @method('DELETE')
+                                <button class="btn btn-danger">Delete</button>
+                            </form>
+                        </div>
+                    @endif
                 </div>
-                @if ($review->description)
-                    "{{$review->description}}"
-                @endif
             @empty
                 <p>No reviews were found.</p>
             @endforelse

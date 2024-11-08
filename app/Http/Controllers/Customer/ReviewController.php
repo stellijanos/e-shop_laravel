@@ -8,6 +8,7 @@ use App\Models\Review;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class ReviewController extends Controller
 {
@@ -31,12 +32,7 @@ class ReviewController extends Controller
     public function create(Request $request, Product $product)
     {
 
-        if (!$product)
-            abort(404, 'Product not found!');
-
         $wasReviewed = $product->wasReviewedBy(Auth::user()->id);
-
-        // dd($wasReviewed);
 
         if ($wasReviewed)
             return redirect()->route('product', ['product' => $product->id]);
@@ -83,12 +79,45 @@ class ReviewController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  Product $prodcuct
+     * @param  Review review
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Product $product, Review $review)
     {
-        //
+
+        $wasReviewed = $product->wasReviewedBy(Auth::user()->id);
+
+        if (!$wasReviewed)
+            return redirect()->route('product', ['product' => $product->id]);
+
+        $rules = [
+            'rating' => 'required|numeric|min:1|max:5',
+            'description' => 'max:1000'
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+
+            return response()->json([
+                'message' => 'Validation failed.',
+                'errors' => $validator->errors()->toArray()
+            ], 422);
+
+        }
+
+        $review->update([
+            'rating' => $request->rating,
+            'description' => $request->description
+        ]);
+
+        return response()->json([
+            'message' => 'Successfully updated',
+            'data' => [
+                'review' => $review
+            ]
+        ]);
     }
 
     /**
