@@ -1,3 +1,5 @@
+import { functions } from "lodash";
+
 const modulesConfig = {
     "/": [
         { module: "./customer/cart", functions: ["addItem"] },
@@ -47,7 +49,9 @@ const modulesConfig = {
     "/employee/products/create": [
         { module: "./employee/product", functions: ["default"] },
     ],
-
+    "/employee/vouchers": [
+        { module: "./employee/voucher.js", functions: ["default"] }
+    ],
     "*": [
         { module: "../css/spinner.css", functions: null },
         { module: "../css/product/product.css", functions: null },

@@ -20,6 +20,7 @@ class ValidateVoucher
     {
 
         $voucher_code = $request->voucher;
+
         $voucher = Voucher::where('code', $voucher_code)->first();
 
         if (!$voucher)

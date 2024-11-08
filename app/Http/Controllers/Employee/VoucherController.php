@@ -120,38 +120,55 @@ class VoucherController extends Controller
      */
     public function update(Request $request, Voucher $voucher)
     {
-        if (!$voucher) {
-            return response()->json(['status' => 'fail', 'message' => 'Voucher not found!']);
-        }
 
-        if ($voucher->name == $request->name) {
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Nothing to update!'
-            ], 200);
-        }
-
+        // return response()->json([
+        //     'message' => 'success',
+        //     'data' => $request->all()
+        // ]);
 
         $rules = [
-            'name' => 'required|string|max:255|unique:vouchers'
+            "name" => 'required|string|max:255|unique:vouchers,name,' . $voucher->id,
+            "code" => "required|string|max:15|unique:vouchers,code," . $voucher->id,
+            "description" => "required|string|max:2048",
+            "discount_type" => "required|string|in:percentage,fixed",
+            "value" => "required|numeric|min:1",
+            "usage_limit" => "required|min:1",
+            "start_date" => "required|date",
+            "end_date" => [
+                'required',
+                'date',
+                function ($attribute, $value, $fail) use ($request) {
+                    $startDate = Carbon::parse($request->input('start_date'));
+                    $endDate = Carbon::parse($value);
+
+                    if ($endDate < $startDate) {
+                        $fail('The end date must be after or equal to the start date.');
+                    }
+                }
+            ],
         ];
 
         $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
             return response()->json([
-                'status' => 'fail',
-                'message' => json_encode($validator->errors()->toArray(), true),
+                'message' => 'Validation failed.',
+                'errors' => json_encode($validator->errors()->toArray(), true),
             ], 422);
         }
 
-
         $voucher->update([
             'name' => $request->name,
+            "code" => $request->code,
+            "description" => $request->description,
+            "discount_type" => $request->discount_type,
+            "value" => $request->value,
+            "usage_limit" => $request->usage_limit,
+            "start_date" => $request->start_date,
+            "end_date" => $request->end_date
         ]);
 
         return response()->json([
-            'status' => 'success',
             'message' => 'Voucher successfully updated!'
         ], 200);
 
@@ -167,6 +184,21 @@ class VoucherController extends Controller
     {
         $voucher->delete();
         Session()->flash('status', 'Voucher "' . $voucher->name . '" successfully updated!');
-        return redirect('/employee/voucher');
+        return redirect('/employee/vouchers');
+    }
+
+
+    public function toggleActive(Voucher $voucher)
+    {
+
+        $voucher->active = !$voucher->active;
+        $voucher->save();
+
+        return response()->json([
+            'message' => 'Successfully updated',
+            'data' => [
+                'isActive' => $voucher->active
+            ]
+        ]);
     }
 }
