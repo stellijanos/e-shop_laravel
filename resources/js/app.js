@@ -1,13 +1,6 @@
 import "@fortawesome/fontawesome-free/css/all.min.css";
-
 import "./bootstrap";
 import 'bootstrap-icons/font/bootstrap-icons.css';
-
-import { imports } from "./imports";
-
-const currentPath = window.location.pathname;
-
-imports(currentPath).then(() => showPage());
 
 function showPage() {
     const spinner = document.getElementById("spinner-overlay");
@@ -22,3 +15,7 @@ function showPage() {
         footer.style.display = "block";
     };
 }
+
+
+showPage();
+
