@@ -9,6 +9,7 @@ export default function () {
 
 function addListenerSortBy() {
     const sortBySelect = document.getElementById("sort-by");
+    if (!sortBySelect) return;
     sortBySelect.addEventListener("change", function () {
         sortBy(this.value);
     });

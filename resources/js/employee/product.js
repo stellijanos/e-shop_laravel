@@ -1,3 +1,24 @@
+
+export default function () {
+    const addSpecBtn = document.getElementById("add-spec-btn");
+    const removeInputBtns = document.querySelectorAll(".remove-spec");
+    const specs = document.getElementById("specs");
+
+
+    if (!addSpecBtn || !removeInputBtns || !specs) return;
+
+    addSpecBtn.addEventListener("click", function () {
+        addInputGroup(specs);
+    });
+
+    removeInputBtns.forEach((btn) => {
+        btn.addEventListener("click", function () {
+            removeInputGroup(btn);
+        });
+    });
+}
+
+
 function removeInputGroup(btn) {
     const inputGroup = btn.closest(".input-group");
     if (inputGroup) {
@@ -16,22 +37,7 @@ function addInputGroup(specs) {
     specs.appendChild(newInputGroup);
 
     newInputGroup.querySelector('.remove-spec').addEventListener("click", function () {
-        removeInputGroup(newInputGroup);    
+        removeInputGroup(newInputGroup);
     });
 }
 
-export default function () {
-    const addSpecBtn = document.getElementById("add-spec-btn");
-    const removeInputBtns = document.querySelectorAll(".remove-spec");
-    const specs = document.getElementById("specs");
-
-    addSpecBtn.addEventListener("click", function () {
-        addInputGroup(specs);
-    });
-
-    removeInputBtns.forEach((btn) => {
-        btn.addEventListener("click", function () {
-            removeInputGroup(btn);
-        });
-    });
-}

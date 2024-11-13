@@ -2,9 +2,10 @@
 import $ from "jquery";
 import { alertSuccess, alertFail } from "../utils/alerts";
 
-export default function addVoucherActiveSwitchEventListener() {
-
-    document.querySelectorAll('.voucher-active-switch').forEach((btn) => {
+export default function () {
+    const voucherBtns = document.querySelectorAll('.voucher-active-switch');
+    if (!voucherBtns) return;
+    voucherBtns.forEach((btn) => {
         btn.addEventListener('click', function () {
             toggleVoucherActive(btn);
         });

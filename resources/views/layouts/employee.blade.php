@@ -16,7 +16,7 @@
         </div>
     @endif
 </div>
-<div class="container">
+<div class="container" id="app-page" data-page="employee">
     @yield('content.employee')
 </div>
 @endsection

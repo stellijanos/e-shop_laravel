@@ -6,6 +6,7 @@ import { getCurrentQueryString, updateQueryParam } from "../utils/queryString";
 
 export default function () {
     const filters = document.querySelectorAll(".filter");
+    if (!filters) return;
     filters.forEach((el) => {
         el.addEventListener("change", function () {
             applyFilter(el);

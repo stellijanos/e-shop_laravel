@@ -12,6 +12,7 @@ export function removeFromFavourites() {
 
 function addListenerToggleBtns() {
     const favouriteIcons = document.querySelectorAll(".toggle-favourites");
+    if (!favouriteIcons) return;
     favouriteIcons.forEach(function (el) {
         el.addEventListener("click", function () {
             toggle(el);
@@ -21,6 +22,7 @@ function addListenerToggleBtns() {
 
 function addListenerRemoveBtns() {
     const favouriteIcons = document.querySelectorAll(".toggle-favourites");
+    if (!favouriteIcons) return;
     favouriteIcons.forEach(function (el) {
         el.addEventListener("click", function () {
             remove(el);

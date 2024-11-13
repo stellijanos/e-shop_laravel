@@ -7,6 +7,9 @@ export default function () {
 
 export const updateForm = () => {
 
+    const updateForm = $("#update-form");
+    if (!updateForm) return;
+    
     const updateBtnText = $("#update-btn").html();
 
     $("#update-form").on("submit", function (e) {

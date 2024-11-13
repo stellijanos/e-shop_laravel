@@ -6,7 +6,7 @@
     $favouriteIcon = $isFavourite ? '<i class="fa-solid fa-heart fa-2x" style="color:red;"></i>' : '<i class="fa-regular fa-heart fa-2x" ></i>'; 
 @endphp
 
-<div class="container">
+<div class="container" id="app-page" data-page="product">
     <div class="card w-100">
         <div class="card-body card-body--main-info">
             <img src="{{asset('images/products/' . $product->image)}}" class="{{$product->name}}-image"
@@ -49,7 +49,7 @@
             @endauth
 
             @forelse($product->reviews as $review)   
-                    @include('product.print-review')
+                @include('product.print-review')
             @empty
                 <p>No reviews were found.</p>
             @endforelse

@@ -1,8 +1,11 @@
 import $ from 'jquery';
 import { alertFail, alertSuccess } from '../utils/alerts';
 
-export default function btnReviewModalListener() {
-    document.getElementById('btn-review-modal').addEventListener('click', function (e) {
+export default function () {
+
+    const btnReviewModal = document.getElementById('btn-review-modal');
+    if (!btnReviewModal) return;
+    btnReviewModal.addEventListener('click', function (e) {
         e.preventDefault();
 
         const form = document.getElementById('form-review-modal');
