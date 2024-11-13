@@ -9,16 +9,15 @@ export const decQuantity = () => setEventListener("dec-cart-item", decrement);
 export const applyVoucher = () => setApplyVoucherEventListener();
 export const discardVoucher = () => setRemoveVoucherEventListener();
 
-function setRemoveVoucherEventListener() {
-    const removeVoucherBtn = document.getElementById("remove-voucher");
 
-    if (removeVoucherBtn) {
-        removeVoucherBtn.addEventListener("click", function () {
-            const url = "/users/cart/voucher";
-            const data = { _method: "delete" };
-            ajaxCall({ url, data });
+function setEventListener(className, callback) {
+    const cartIcons = document.querySelectorAll(`.${className}`);
+    if (!cartIcons) return;
+    cartIcons.forEach(function (el) {
+        el.addEventListener("click", function () {
+            callback(el);
         });
-    }
+    });
 }
 
 function setApplyVoucherEventListener() {
@@ -32,14 +31,19 @@ function setApplyVoucherEventListener() {
     });
 }
 
-function setEventListener(className, callback) {
-    const cartIcons = document.querySelectorAll(`.${className}`);
-    cartIcons.forEach(function (el) {
-        el.addEventListener("click", function () {
-            callback(el);
-        });
+function setRemoveVoucherEventListener() {
+    const removeVoucherBtn = document.getElementById("remove-voucher");
+    if (!removeVoucherBtn) return;
+    removeVoucherBtn.addEventListener("click", function () {
+        const url = "/users/cart/voucher";
+        const data = { _method: "delete" };
+        ajaxCall({ url, data });
     });
 }
+
+
+
+
 
 function add(el) {
     const productId = el.getAttribute("data-product-id");

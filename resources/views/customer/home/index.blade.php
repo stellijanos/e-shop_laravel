@@ -11,7 +11,7 @@ $sortBy = [
 ]
 
 ?>
-<div class="container d-flex flex-column">
+<div class="container d-flex flex-column" id="app-page" data-page="home">
     <div class="header-options d-flex flex-row mb-3 w-100 gap-3">
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#filter-modal">
             Filters <span>(0)</span>
