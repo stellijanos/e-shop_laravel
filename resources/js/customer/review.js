@@ -33,7 +33,6 @@ export default function () {
                 $("#alert").html("");
             },
             success: function (res) {
-                ;
                 console.log(res);
                 updateReview(res.data.review);
 
@@ -53,7 +52,11 @@ export default function () {
 }
 
 function updateReview(review) {
-    document.getElementById(`review-${review.product_id}-${review.user_id}-description`).innerHTML = review.description
+    const currentReview = document.getElementById(`review-${review.product_id}-${review.user_id}-description`);
+    if (!currentReview) {
+        return window.location.reload();
+    }
+    currentReview.innerHTML = review.description
         ? `<p>"${review.description}"</p>` : '';
 
     markRatingsChecked(review.rating);

@@ -34,22 +34,32 @@ class ReviewController extends Controller
 
         $wasReviewed = $product->wasReviewedBy(Auth::user()->id);
 
-        if ($wasReviewed)
-            return redirect()->route('product', ['product' => $product->id]);
+        if ($wasReviewed) {
+
+            return response()->json([
+                'message' => 'Product already reviewed.'
+            ], 422);
+        }
 
         $request->validate([
             'rating' => 'required|numeric|min:1|max:5',
             'description' => 'max:1000'
         ]);
 
-        Review::create([
+        $review = Review::create([
             'product_id' => $product->id,
             'user_id' => Auth::user()->id,
             'rating' => $request->rating,
             'description' => $request->description ?? ''
         ]);
 
-        return redirect()->route('product.show', ['product' => $product->id]);
+        return response()->json([
+            'message' => 'Successfully created.',
+            'data' => [
+                'review' => $review
+            ]
+        ]);
+
     }
 
 
