@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Customer\ReviewController;
 use App\Http\Controllers\Employee\VoucherController;
+use App\Http\Middleware\EmployeeAuth;
 use App\Utils\Response;
 use Illuminate\Support\Facades\Route;
 
@@ -66,7 +67,7 @@ Route::prefix('account')->group(function () {
 
 
 // Employee routes middleware('auth.customer')->
-Route::prefix('/employee')->group(function () {
+Route::prefix('/employee')->middleware([EmployeeAuth::class])->group(function () {
     Route::get('/', [App\Http\Controllers\Employee\EmployeeController::class, 'dashboard'])->name('employee.dashboard');
     Route::resource('/employees', App\Http\Controllers\Employee\EmployeeController::class);
     Route::resource('/customers', App\Http\Controllers\Employee\CustomerController::class);
