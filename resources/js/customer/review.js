@@ -1,17 +1,20 @@
 import $ from 'jquery';
 import { alertFail, alertSuccess } from '../utils/alerts';
 
-export default function () {
+export const updateReview = () => handleReview('btn-review-modal', 'form-review-modal');
+export const deleteReview = () => handleReview('delete-review-btn', 'delete-review-form');
 
-    const btnReviewModal = document.getElementById('btn-review-modal');
-    if (!btnReviewModal) return;
-    btnReviewModal.addEventListener('click', function (e) {
+
+function handleReview(btnId, formId) {
+
+    const btn = document.getElementById(btnId);
+    if (!btn) return;
+    btn.addEventListener('click', function (e) {
         e.preventDefault();
 
-        const form = document.getElementById('form-review-modal');
+        const form = document.getElementById(formId);
         const formData = new FormData(form);
 
-        // Creating an object to log data for debugging purposes
         const data = {};
         formData.forEach((value, key) => {
             data[key] = value;
@@ -27,31 +30,42 @@ export default function () {
             url: form.action,
             type: 'POST',
             data: formData,
-            processData: false,  // Prevents jQuery from processing the data
-            contentType: false,  // Prevents jQuery from setting the Content-Type header
+            processData: false,
+            contentType: false,
             beforeSend: function () {
                 $("#alert").html("");
             },
-            success: function (res) {
-                console.log(res);
-                updateReview(res.data.review);
+            success: function (res, textStatus, jqXHR) {
 
-
-                alertSuccess(res.message || 'Successful.');
+                if (jqXHR.status === 200) {
+                    update(res.data.review);
+                    alertSuccess(res.message || 'Successful.');
+                } else if (jqXHR.status === 204) {
+                    remove(btn.getAttribute('data-review'));
+                    alertSuccess('Review successfully deleted.');
+                }
             },
             error: function (err) {
                 alertFail(err.responseJSON?.message || 'Something went wrong.');
             },
             complete: function () {
-                // Any additional cleanup code can go here
+
             }
         });
 
-        console.log(data);  // Debugging the data
     });
 }
 
-function updateReview(review) {
+function remove(reviewId) {
+    const currentReview = document.getElementById(reviewId);
+    if (!currentReview) {
+        return;
+    }
+    currentReview.remove();
+}
+
+
+function update(review) {
     const currentReview = document.getElementById(`review-${review.product_id}-${review.user_id}-description`);
     if (!currentReview) {
         return window.location.reload();
@@ -66,9 +80,9 @@ function markRatingsChecked(rating) {
     const ratingElements = document.querySelectorAll('.user-rating > span');
     ratingElements.forEach((element, index) => {
         if (index < rating) {
-            element.classList.add('checked'); // Add a checked class
+            element.classList.add('checked');
         } else {
-            element.classList.remove('checked'); // Remove the checked class if any
+            element.classList.remove('checked');
         }
     });
 }

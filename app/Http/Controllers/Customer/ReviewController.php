@@ -171,7 +171,7 @@ class ReviewController extends Controller
             return response()->json([
                 'message' => 'Review successfully deleted.',
                 'status' => 'success'
-            ]);
+            ], 204);
         }
 
         return response()->json([

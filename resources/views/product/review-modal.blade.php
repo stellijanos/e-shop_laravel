@@ -71,7 +71,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-primary"
+                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal"
                     id="btn-review-modal">{{$update ?? false ? 'Update' : 'Create'}}</button>
             </div>
         </form>
