@@ -18,10 +18,11 @@ class AuthUser
     public function handle(Request $request, Closure $next)
     {
         if (!Auth::check()) {
-            return response()->json([
+            response()->json([
                 'status' => 'fail',
                 'message' => 'You are not logged in!'
             ], 401);
+            abort(404);
         }
 
         return $next($request);

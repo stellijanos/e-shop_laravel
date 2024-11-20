@@ -71,7 +71,7 @@
                                 <i class="fa-solid fa-heart position-relative">
                                     <span style="font-size: 12px; padding: 3px 6px;"
                                         class="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-danger">
-                                        <span id="favourites-count-badge">{{count($favourites)}}</span>
+                                        <span id="favourites-count-badge">{{count($favourites ?? [])}}</span>
                                         <span class="visually-hidden">unread messages</span>
                                     </span>
                                 </i> Favourites</a>
@@ -81,7 +81,7 @@
                                 <i class="fa-solid fa-cart-shopping position-relative">
                                     <span style="font-size: 12px; padding: 6px 6px;"
                                         class="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-danger">
-                                        <span id="cart-count-badge">{{$nrOfCartProducts}}</span>
+                                        <span id="cart-count-badge">{{$nrOfCartProducts ?? 0}}</span>
                                         <span class="visually-hidden">unread messages</span>
                                     </span>
                                 </i> Cart

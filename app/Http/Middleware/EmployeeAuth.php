@@ -17,8 +17,11 @@ class EmployeeAuth
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!Auth::guard('employee')->check()) {
+        if (!Auth::user()->isEmployee()) {
+            abort(404);
+            // if (!Auth::user()->isEmployee()) {
             return redirect()->route('home');
+            // }
         }
 
         return $next($request);
